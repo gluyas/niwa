@@ -1,5 +1,6 @@
 package swen222.niwa.model.world;
 
+import swen222.niwa.gui.Visible;
 import swen222.niwa.model.entity.Entity;
 import java.awt.*;
 
@@ -8,12 +9,7 @@ import java.awt.*;
  *
  * @author Marc
  */
-public interface Prop {
-
-	/**
-	 * @return An Image representation of this prop. For use by the
-	 */
-	Image sprite();
+public interface Prop extends Visible {
 
 	/**
 	 * @return True if the given Entity can move onto a Tile with this prop. (or an equivalent case)
