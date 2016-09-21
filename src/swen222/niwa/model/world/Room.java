@@ -34,6 +34,11 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 		return null;
 	}
 
+	// TODO: remove this - exists for testing purposes
+	public static Room emptyRoom(int w, int h) {
+		return new Room(w, h);
+	}
+
 	/**
 	 * Gets the Tile in this Room at a specified Location
 	 * @param loc the Location to find the Tile at
