@@ -12,9 +12,6 @@ import swen222.niwa.model.world.Tile.Texture;
 
 public class DevTexture implements Texture {
 
-
-
-
 		static Image bamboo;
 		static Image bigRock;
 		static Image bigTree;
