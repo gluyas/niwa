@@ -1,6 +1,7 @@
 package swen222.niwa.model.world;
 
 import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.world.Tile.Texture;
 
 import java.io.File;
 import java.util.Set;
@@ -37,6 +38,14 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	// TODO: remove this - exists for testing purposes
 	public static Room emptyRoom(int w, int h) {
 		return new Room(w, h);
+	}
+
+	//TODO: remove this - exists for testing purposes
+	public static Room basicRoom(){
+		Room newRoom = new Room(2,2);
+		newRoom.tiles[0][0]= new Tile(1,new DevTexture(DevTexture.grass));
+		return newRoom;
+
 	}
 
 	/**
