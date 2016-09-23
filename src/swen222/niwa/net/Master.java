@@ -11,7 +11,7 @@ import java.net.Socket;
  * @author Hamish M
  *
  */
-public class Master {
+public class Master extends Thread{
 	
 	// TODO: Need a reference to the game
 	private final int broadcastClock;
