@@ -1,5 +1,11 @@
 package swen222.niwa.model.world;
 
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.gui.Visible;
 import swen222.niwa.model.entity.Entity;
@@ -55,5 +61,8 @@ public class Tile implements Visible {
 		// general idea here is that the texture will be able to construct the isometric view of a block
 		Sprite sprite(int height);
 	}
+
+
+
 
 }
