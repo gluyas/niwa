@@ -16,7 +16,7 @@ import swen222.niwa.model.entity.Entity;
  * @author Marc
  * @author Jack U
  */
-public abstract class Tile implements Visible {
+public class Tile implements Visible {
 
 	public final int height;
 	public final Texture texture;
@@ -70,64 +70,5 @@ public abstract class Tile implements Visible {
 	}
 	
 	
-	public static final class GrassTile extends Tile{
-		
-		static final boolean canOccupy = true;
-		static DevTexture texture = new DevTexture(DevTexture.grassBlock1);
-		
-		public GrassTile(int height){
-			super(height,texture,canOccupy);
-		}
-		
-	}
-	
-	public static final class DirtTile extends Tile{
-		
-		static final boolean canOccupy = true;
-		static DevTexture texture = new DevTexture(DevTexture.dirtBlock);
-		
-		public DirtTile(int height){
-			super(height,texture,canOccupy);
-		}
-		
-	}
-	
-	public static final class SandTile extends Tile{
-		
-		static final boolean canOccupy = true;
-		static DevTexture texture = new DevTexture(DevTexture.sandBlock);
-		
-		public SandTile(int height){
-			super(height,texture,canOccupy);
-		}
-		
-	}
-	
-	public static final class StoneTile extends Tile{
-		
-		static final boolean canOccupy = true;
-		static DevTexture texture = new DevTexture(DevTexture.stoneBlock);
-		
-		public StoneTile(int height){
-			super(height,texture,canOccupy);
-		}
-		
-	}
-	
-	public static final class WaterTile extends Tile{
-		
-		static final boolean canOccupy = false;
-		static DevTexture texture = new DevTexture(DevTexture.waterBlock1);
-		
-		public WaterTile(int height){
-			super(height,texture,canOccupy);
-		}
-		
-	}
-	
-	
-
-
-
 
 }

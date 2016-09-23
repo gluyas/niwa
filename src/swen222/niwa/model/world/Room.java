@@ -43,7 +43,7 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	//TODO: remove this - exists for testing purposes
 	public static Room basicRoom(){
 		Room newRoom = new Room(2,2);
-		newRoom.tiles[0][0]= new Tile(1,new DevTexture(DevTexture.grass));
+		newRoom.tiles[0][0]= new Tile(1,new DevTexture(DevTexture.dirtBlock),true);
 		return newRoom;
 
 	}
