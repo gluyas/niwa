@@ -10,6 +10,7 @@ import java.util.Observer;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 
 import swen222.niwa.Controller;
 
@@ -38,6 +39,8 @@ public class NiwaFrame extends JFrame implements Observer{
 		this.setJMenuBar(menuBar);
 		add(gamePanel,BorderLayout.CENTER);
 		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 		pack();
 		setVisible(true); // make sure we are visible!
 		
@@ -50,8 +53,5 @@ public class NiwaFrame extends JFrame implements Observer{
 		// TODO Auto-generated method stub
 		
 	}
-
-
-	
 
 }
