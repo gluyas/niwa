@@ -26,6 +26,7 @@ public class NiwaFrame extends JFrame implements Observer{
 	
 	final MenuBar menuBar;
 	final GamePanel gamePanel;
+	final InventoryPanel invPanel;
 	
 	
 	public NiwaFrame(Controller control) throws HeadlessException{
@@ -35,9 +36,11 @@ public class NiwaFrame extends JFrame implements Observer{
 		
 		menuBar=new MenuBar(control);
 		gamePanel=new GamePanel(control);
+		invPanel = new InventoryPanel(control);
 		
 		this.setJMenuBar(menuBar);
 		add(gamePanel,BorderLayout.CENTER);
+		add(invPanel, BorderLayout.WEST);
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		

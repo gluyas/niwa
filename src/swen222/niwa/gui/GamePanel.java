@@ -26,9 +26,6 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	
 	public GamePanel(Controller control){
 		this.control=control;
-		
-		add(new InventoryBtn());
-		add(new InventoryBtn());
 	}
 
 	
