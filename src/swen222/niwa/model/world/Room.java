@@ -1,6 +1,8 @@
 package swen222.niwa.model.world;
 
 import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.world.Tile.Texture;
+import swen222.niwa.model.world.Tile.TileType;
 
 import java.io.File;
 import java.util.Set;
@@ -38,6 +40,8 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	public static Room emptyRoom(int w, int h) {
 		return new Room(w, h);
 	}
+
+	
 
 	/**
 	 * Gets the Tile in this Room at a specified Location

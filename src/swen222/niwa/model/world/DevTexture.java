@@ -12,9 +12,6 @@ import swen222.niwa.model.world.Tile.Texture;
 
 public class DevTexture implements Texture {
 
-
-
-
 		static Image bamboo;
 		static Image bigRock;
 		static Image bigTree;
@@ -58,35 +55,35 @@ public class DevTexture implements Texture {
 				bamboo = ImageIO.read(new File("images/bamboo.png"));
 				bigRock = ImageIO.read(new File("images/bigRock.png"));
 				bush = ImageIO.read(new File("images/bush.png"));
-				dirtBlock = ImageIO.read(new File("images/dirtBlock.png"));
+				dirtBlock = ImageIO.read(new File("images/dirt-Block.png"));
 				fence = ImageIO.read(new File("images/fence.png"));
 				flower = ImageIO.read(new File("images/flower.png"));
-				grassBlock1= ImageIO.read(new File("images/grassBlock1.png"));
-				grassBlock2 = ImageIO.read(new File("images/grassBlock2.png"));
-				grassBlock3 = ImageIO.read(new File("images/grassBlock3.png"));
+				grassBlock1= ImageIO.read(new File("images/grass-Block1.png"));
+				grassBlock2 = ImageIO.read(new File("images/grass-Block2.png"));
+				grassBlock3 = ImageIO.read(new File("images/grass-Block3.png"));
 				path1 = ImageIO.read(new File("images/path1.png"));
 				path2 = ImageIO.read(new File("images/path2.png"));
-				playerBlackFront = ImageIO.read(new File("images/playerBlackFront.png"));
-				playerBlackSide = ImageIO.read(new File("images/playerBlackSide.png"));
-				playerBlueFront = ImageIO.read(new File("images/playerBlueFrontpng"));
-				playerBlueSide = ImageIO.read(new File("images/playerBlueSide.png"));
-				playerGrayFront = ImageIO.read(new File("images/playerGrayFront.png"));
-				playerGraySide = ImageIO.read(new File("images/playerGraySide.png"));
-				playerGreenFront = ImageIO.read(new File("images/playerGreenFront.png"));
-				playerGreenSide = ImageIO.read(new File("images/playerGreenSide.png"));
-				playerWhiteFront = ImageIO.read(new File("images/playerWhiteFront.png"));
-				playerWhiteSide = ImageIO.read(new File("images/playerWhiteSide.png"));
-				sandBlock = ImageIO.read(new File("images/sandBlock.png"));
+				playerBlackFront = ImageIO.read(new File("images/player-black-front.png"));
+				playerBlackSide = ImageIO.read(new File("images/player-black-side.png"));
+				playerBlueFront = ImageIO.read(new File("images/player-blue-front.png"));
+				playerBlueSide = ImageIO.read(new File("images/player-blue-side.png"));
+				playerGrayFront = ImageIO.read(new File("images/player-gray-front.png"));
+				playerGraySide = ImageIO.read(new File("images/player-gray-side.png"));
+				playerGreenFront = ImageIO.read(new File("images/player-green-front.png"));
+				playerGreenSide = ImageIO.read(new File("images/player-green-side.png"));
+				playerWhiteFront = ImageIO.read(new File("images/player-white-front.png"));
+				playerWhiteSide = ImageIO.read(new File("images/player-white-side.png"));
+				sandBlock = ImageIO.read(new File("images/sand-Block.png"));
 				seed = ImageIO.read(new File("images/seed.png"));
 				smallRock = ImageIO.read(new File("images/smallRock.png"));
 				smallTree = ImageIO.read(new File("images/smallTree.png"));
 				soil = ImageIO.read(new File("images/soil.png"));
-				stoneBlock = ImageIO.read(new File("images/stoneBlock.png"));
-				templateBlock = ImageIO.read(new File("images/templateBlock.png"));
-				templateObject = ImageIO.read(new File("images/templateObject.png"));
-				waterBlock1 = ImageIO.read(new File("images/waterBlock1.png"));
-				waterBlock2 = ImageIO.read(new File("images/waterBlock2.png"));
-				waterBlock3 = ImageIO.read(new File("images/waterBlock3.png"));
+				stoneBlock = ImageIO.read(new File("images/stone-Block.png"));
+				templateBlock = ImageIO.read(new File("images/template-block.png"));
+				templateObject = ImageIO.read(new File("images/template-object.png"));
+				waterBlock1 = ImageIO.read(new File("images/water-Block1.png"));
+				waterBlock2 = ImageIO.read(new File("images/water-Block2.png"));
+				waterBlock3 = ImageIO.read(new File("images/water-Block3.png"));
 				zen1 = ImageIO.read(new File("images/zen1.png"));
 
 			} catch (IOException e) {

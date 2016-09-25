@@ -1,3 +1,4 @@
+
 package swen222.niwa.gui;
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
@@ -46,8 +47,6 @@ public class NiwaFrame extends JFrame implements Observer{
 		
 		pack();
 		setVisible(true); // make sure we are visible!
-		
-		
 	}
 
 
@@ -58,3 +57,4 @@ public class NiwaFrame extends JFrame implements Observer{
 	}
 
 }
+
