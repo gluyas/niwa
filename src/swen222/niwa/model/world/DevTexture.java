@@ -13,11 +13,15 @@ import swen222.niwa.model.world.Tile.Texture;
 public class DevTexture implements Texture {
 
 		static Image bamboo;
-		static Image bigRock;
-		static Image bigTree;
+		static Image bigRock1;
+		static Image bigRock2;
+		static Image bigTree1;
+		static Image bigTree2;
+		static Image bigTree3;
 		static Image bush;
 		static Image dirtBlock;
-		static Image fence;
+		static Image fenceSide;
+		static Image fenceFront;
 		static Image flower;
 		static Image grassBlock1;
 		static Image grassBlock2;
@@ -53,10 +57,15 @@ public class DevTexture implements Texture {
 		static {
 			try {
 				bamboo = ImageIO.read(new File("images/bamboo.png"));
-				bigRock = ImageIO.read(new File("images/bigRock.png"));
+				bigRock1 = ImageIO.read(new File("images/bigRock1.png"));
+				bigRock2 = ImageIO.read(new File("images/bigRock2.png"));
+				bigTree1 = ImageIO.read(new File("images/bigTree1.png"));
+				bigTree2 = ImageIO.read(new File("images/bigTree2.png"));
+				bigTree3 = ImageIO.read(new File("images/bigTree3.png"));
 				bush = ImageIO.read(new File("images/bush.png"));
 				dirtBlock = ImageIO.read(new File("images/dirt-Block.png"));
-				fence = ImageIO.read(new File("images/fence.png"));
+				fenceFront = ImageIO.read(new File("images/fence-front.png"));
+				fenceSide = ImageIO.read(new File("images/fence-side.png"));
 				flower = ImageIO.read(new File("images/flower.png"));
 				grassBlock1= ImageIO.read(new File("images/grass-Block1.png"));
 				grassBlock2 = ImageIO.read(new File("images/grass-Block2.png"));

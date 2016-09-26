@@ -15,13 +15,17 @@ import swen222.niwa.model.world.Tile;
  */
 public class ParserTests {
 	
-	File f;
+	File testRoom1;
+	File testRoom2;
 	RoomParser parser;
+	RoomParser parser2;
 	
 	@Before
 	public void setup(){
-		f = new File("rooms/testRoom.xml");
-		parser = new RoomParser(f);
+		testRoom1 = new File("rooms/testRoom.xml");
+		testRoom2 = new File("rooms/testRoom2.xml");
+		parser = new RoomParser(testRoom1);
+		parser2 = new RoomParser(testRoom2);
 		
 	}
 	
@@ -40,10 +44,19 @@ public class ParserTests {
 	@Test
 	public void testTileCreation(){
 		Tile[][] tileList = parser.getTiles();
+
 		assert(tileList[0][0].getType().equals(Tile.TileType.GRASSTILE));
 		assert(tileList[4][4].getType().equals(Tile.TileType.GRASSTILE));
 		assert(tileList.length==5);
 		assert(tileList[0].length==5);
+	}
+	
+	@Test
+	public void testTileCreation2(){
+		Tile[][] tileList = parser2.getTiles();
+		
+		assert(tileList[2][2].getType().equals(Tile.TileType.WATERTILE));
+		assert(tileList[4][3].getType().equals(Tile.TileType.STONETILE));
 	}
 	
 
