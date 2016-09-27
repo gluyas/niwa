@@ -3,7 +3,6 @@ package swen222.niwa.model.entity;
 import java.util.ArrayList;
 
 import swen222.niwa.gui.Sprite;
-import swen222.niwa.model.world.Inventory;
 import swen222.niwa.model.world.Location;
 
 public class PlayerEntity extends Entity{
@@ -26,8 +25,8 @@ public class PlayerEntity extends Entity{
 	public void addItem(Entity item){
 		inventory.add(item);
 	}
-	
-	
+
+
 	public boolean canPickUp(){
 		if(inventory.size()==inventoryCapacity){
 			return false;
