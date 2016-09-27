@@ -3,20 +3,17 @@
 <width>7</width> <height>5</height>
 
 <tiles>
-<line>gsssssg</line>
-<line>sgwwwgs</line>
-<line>sswwwss</line>
-<line>sgwwwgs</line>
-<line>gsssssg</line>
-
-
+	<line>gsssssg</line>
+	<line>sgwwwgs</line>
+	<line>sswwwss</line>
+	<line>sgwwwgs</line>
+	<line>gsssssg</line>
 </tiles>
 
-<objects>
-zen1,seed,zen1
-</objects>
 
-<coordinates>
-1.1,3.4,6.5
-</coordinates>
+<prop type = "zen1" col = "1" row = "1"/>
+<prop type = "zen1" col = "5" row = "1"/>
+<entity type = "seed" col = "0" row = "4"/>
+<entity type = "seed" col = "1" row = "6"/>
+<entity type = "seed" col = "3" row = "4"/>
 </class>

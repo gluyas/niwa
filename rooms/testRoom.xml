@@ -3,18 +3,14 @@
 <width>5</width> <height>5</height>
 
 <tiles>
-<line>ggggg</line>
-<line>ggggg</line>
-<line>ggggg</line>
-<line>ggggg</line>
-<line>ggggg</line>
+	<line>ggggg</line>
+	<line>ggggg</line>
+	<line>ggggg</line>
+	<line>ggggg</line>
+	<line>ggggg</line>
 </tiles>
 
-<objects>
-smallTree,seed,seed,seed,bigTree
-</objects>
-
-<coordinates>
-0.0,1.4,2.4,2.4,4.4
-</coordinates>
+<prop type = "bigTree" col = "1" row = "0" />
+<prop type = "bigTree" col = "2" row = "0" />
+<prop type = "bigTree" col = "3" row = "0" />
 </class>

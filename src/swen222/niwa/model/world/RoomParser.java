@@ -24,8 +24,8 @@ public class RoomParser {
 	Document doc;
 	Element rootElement;
 
-	int width;
-	int height;
+	public static int width;
+	public static int height;
 
 	public RoomParser(File f){
 		this.currentFile = f;
@@ -152,7 +152,7 @@ public class RoomParser {
 
 	/**
 	 * Gets the props from the xml, and returns a 2D array representation of them
-	 * on the map.
+	 * on the map. 
 	 * @return
 	 */
 	public Prop[][] getProps(){
@@ -169,25 +169,85 @@ public class RoomParser {
             if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
                 Element el = (Element) list.item(i);
 
-
+                //get the type, col, and row as strings
                 String type = el.getAttribute("type");
-                String col = el.getAttribute("col");
-                String row = el.getAttribute("row");
+                String stringCol = el.getAttribute("col");
+                String stringRow = el.getAttribute("row");
+                
+                //convert them to appropriate types
+                Prop.PropType propType = stringToEnumProp(type);
+                int col = Integer.valueOf(stringCol);
+                int row = Integer.valueOf(stringRow);
+                
+                //add the prop in the 2D array
+                props[row][col]=new Prop(propType);
+                
 
             }
 		}
 
+		return props;
 
+		}
+	
+	
+	/**
+	 * Gets the entities from the xml, and returns a 2D array representation of them
+	 * on the map. *NOTE* In construction - Commented out for the moment
+	 * @return
+	 */
+	/*
+	public Entity[][] getEntities(){
 
+		Entity[][] entities = new Entity[height][width];
 
+		NodeList list = rootElement.getElementsByTagName("entity");
+		if(list.getLength()==0){
+			return entities;
+		}
 
+		//go through all the elements with the name 'entity'
+		for (int i = 0; i < list.getLength(); i++) {
+            if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                Element el = (Element) list.item(i);
 
+                //get the type, col, and row as strings
+                String type = el.getAttribute("type");
+                String stringCol = el.getAttribute("col");
+                String stringRow = el.getAttribute("row");
+                
+                //convert them to appropriate types
+                Prop.PropType propType = stringToEnum(type);
+                int col = Integer.valueOf(stringCol);
+                int row = Integer.valueOf(stringRow);
+                
+                //add the prop in the 2D array
+                props[row][col]=new Prop(propType);
+                
+
+            }
+		}
 
 		return props;
 
 		}
+		*/
 
 
+	public Prop.PropType stringToEnumProp(String type){
+		
+		String capsString = type.toUpperCase();
+		return Enum.valueOf(Prop.PropType.class, capsString);
+		
+	}
+	
+
+	public Prop.PropType stringToEnumEntity(String type){
+		
+		String capsString = type.toUpperCase();
+		return Enum.valueOf(Prop.PropType.class, capsString);
+		
+	}
 
 
 }

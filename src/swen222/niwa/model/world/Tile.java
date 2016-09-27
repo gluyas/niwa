@@ -96,6 +96,15 @@ public class Tile implements Visible {
 	public TileType getType(){
 		return this.type;
 	}
+	
+	/**
+	 * Adds a prop to the tile
+	 * @param p
+	 */
+	public void addProp(Prop p){
+		this.prop=p;
+	}
+	
 
 	/**
 	 * Checks if a specified Entity may occupy the Location of this Tile
@@ -107,7 +116,7 @@ public class Tile implements Visible {
 
 	public boolean canOccupy(Entity e) {
 		if (!canOccupy){return false;}
-		else return prop.canPassThrough(e);
+		else return prop.canPassThrough();
 	}
 
 	@Override

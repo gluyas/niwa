@@ -14,10 +14,10 @@ import java.util.Set;
  */
 public class Room { // extends Observable if we make it mutable, but unlikely
 
-	public final int width;  // keep these fields final if we go for Rooms being immutable
-	public final int height; // there doesn't seem like any good use case where these would need to change
+	public static int width;  // keep these fields final if we go for Rooms being immutable
+	public static int height; // there doesn't seem like any good use case where these would need to change
 
-	private final Tile[][] tiles; // each location l corresponds to tiles[l.row][l.col]
+	private static Tile[][] tiles; // each location l corresponds to tiles[l.row][l.col]
 
 	private Set<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
 									// locations store the room they correspond to so it wouldn't complicate much to
@@ -31,10 +31,28 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	 * @return the newly created Room
 	 */
 	public static Room newFromFile(File f) {
-		// TODO: write file parser, construct a new Room and fill in the Tiles
-		// ensure that checks are in place so that there are no null Tiles
-		return null;
+		
+		RoomParser parser = new RoomParser(f);
+		width=parser.width;
+		height=parser.height;
+		
+		Room room = new Room(width,height);
+		
+		room.tiles = parser.getTiles();
+		
+		Prop[][] props = parser.getProps();
+		for(int row = 0; row<width; row++){
+			for(int col = 0; col<width; col++){
+				if(props[row][col]!=null){
+					room.tiles[row][col].addProp(props[row][col]);
+				}
+			}
+		}
+		
+		return room;
 	}
+	
+	
 
 	// TODO: remove this - exists for testing purposes
 	public static Room emptyRoom(int w, int h) {
@@ -60,7 +78,7 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	private Room(int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.tiles = new Tile[width][height];
+		
 	}
 
 }

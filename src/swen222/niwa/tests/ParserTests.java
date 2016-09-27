@@ -5,6 +5,7 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
+import swen222.niwa.model.world.Prop;
 import swen222.niwa.model.world.RoomParser;
 import swen222.niwa.model.world.Tile;
 
@@ -57,6 +58,15 @@ public class ParserTests {
 		
 		assert(tileList[2][2].getType().equals(Tile.TileType.WATERTILE));
 		assert(tileList[4][3].getType().equals(Tile.TileType.STONETILE));
+	}
+	
+	@Test
+	public void testPropCreation1(){
+		Prop[][] props = parser.getProps();
+		
+		assert(props[0][1].getType().equals(Prop.PropType.BIGTREE));
+		assert((props[3][2]==null));
+		
 	}
 	
 
