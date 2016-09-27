@@ -1,5 +1,7 @@
 package swen222.niwa.model.entity;
 
+import java.util.ArrayList;
+
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.model.world.Inventory;
 import swen222.niwa.model.world.Location;
@@ -7,11 +9,12 @@ import swen222.niwa.model.world.Location;
 public class PlayerEntity extends Entity{
 
 	public String name;
-	public Inventory holding;
+	public ArrayList<Entity> inventory;
+	public int inventoryCapacity = 3;
 
 	public PlayerEntity(Location loc) {
 		super(loc);
-		holding =new Inventory();
+		inventory= new ArrayList<Entity>();
 	}
 
 	@Override
@@ -20,15 +23,13 @@ public class PlayerEntity extends Entity{
 		return null;
 	}
 
-	public boolean pickUp(){
-		if(!canPickUp()){
-			return false;
-		}
-		return true;
+	public void addItem(Entity item){
+		inventory.add(item);
 	}
-
+	
+	
 	public boolean canPickUp(){
-		if(holding.isFull()){
+		if(inventory.size()==inventoryCapacity){
 			return false;
 		}
 		return true;
