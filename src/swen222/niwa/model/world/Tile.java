@@ -17,16 +17,16 @@ import swen222.niwa.model.entity.Entity;
  * @author Jack U
  */
 public class Tile implements Visible {
-	
+
 	public enum TileType{
 		GRASSTILE,
 		STONETILE,
 		SANDTILE,
 		DIRTTILE,
 		WATERTILE
-		
+
 	}
-	
+
 	public TileType type;
 	public final int height;
 	public Texture texture;
@@ -37,8 +37,8 @@ public class Tile implements Visible {
 		this.height = height;
 		this.type = type;
 		setTileVariables(type);
-		
-		
+
+
 	}
 
 	public Tile(int height, TileType type, Prop prop) {
@@ -47,7 +47,7 @@ public class Tile implements Visible {
 		this.prop = prop;
 		setTileVariables(type);
 	}
-	
+
 	/**
 	 * Sets variables for specific tiles, as different
 	 * tiles have different behaviours
@@ -59,36 +59,36 @@ public class Tile implements Visible {
 			this.texture = new DevTexture(DevTexture.grassBlock1);
 			this.canOccupy = true;
 			break;
-		
+
 		case STONETILE:
 			texture = new DevTexture(DevTexture.stoneBlock);
 			this.canOccupy = true;
 			break;
-		
-		
+
+
 		case SANDTILE:
 			texture = new DevTexture(DevTexture.sandBlock);
 			this.canOccupy = true;
 			break;
-		
-		
+
+
 		case DIRTTILE:
 			texture = new DevTexture(DevTexture.dirtBlock);
 			this.canOccupy = true;
 			break;
-	
-		
+
+
 		case WATERTILE:
 			texture = new DevTexture(DevTexture.waterBlock1);
 			this.canOccupy = false;
 			break;
-	
+
 		}
-	
-		
+
+
 	}
-	
-	
+
+
 	/**
 	 * Gets the type of the tile
 	 * @return
@@ -104,7 +104,7 @@ public class Tile implements Visible {
 	 * @return true if the Entity is allowed to occupy the Location of this Tile
 	 */
 	//TODO: Hamish B please review - game rule implementation; move functionality to appropriate class if necessary
-	
+
 	public boolean canOccupy(Entity e) {
 		if (!canOccupy){return false;}
 		else return prop.canPassThrough(e);
@@ -127,9 +127,9 @@ public class Tile implements Visible {
 		// general idea here is that the texture will be able to construct the isometric view of a block
 		Sprite sprite(int height);
 	}
-	
-	
-	
+
+
+
 }
 
 

@@ -1,3 +1,4 @@
+
 package swen222.niwa.gui;
 
 import java.awt.*;
@@ -16,11 +17,13 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 	private boolean hover;
 	private String item;// name of the item in this slot, null if empty
 	private Dimension dimension;
-	private static final int SIZE = 50;
+	public static final int SIZE = 50;
 	private Color color;// stand in for thumb nail image, for testing purposes
 	private int count;// how many of this kind of item the player has
 
 	public InventoryBtn() {
+		item = "Empty";
+		count = 0;
 		hover = false;
 		dimension = new Dimension(SIZE, SIZE);
 		color = Color.CYAN;
@@ -35,12 +38,11 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 		setToolTipText(item + ", " + count);
 	}
 
-	public String getItem() {
-		return item;
-	}
-
-	public void setItem(String item) {
+	public void updateButton(String item, int count){
 		this.item = item;
+		this.count = count;
+		setActionCommand(item);
+		setToolTipText(item + ", " + count);
 	}
 
 	public Color getColor() {
@@ -93,6 +95,11 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
 
 }
+
