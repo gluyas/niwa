@@ -101,7 +101,10 @@ public class RoomParser {
 	 */
 	public Tile[][] getTiles(){
 		
-		Tile[][] tiles = new Tile[width][height];
+		
+		
+		Tile[][] tiles = new Tile[height][width];
+		
 		
 		NodeList list = rootElement.getElementsByTagName("line");
 		if(list.getLength()!=getHeight()){
@@ -113,27 +116,31 @@ public class RoomParser {
 			String line = list.item(row).getTextContent();
 			for(int col = 0; col<width; col++){
 				//breaks up the line into chars
-				Tile t;
+				Tile t = new Tile(1,TileType.GRASSTILE);
 				char s = line.charAt(col);
+			
 				//creates different tiles depending on the char
 				switch(s){
 				case 'g': 
-					tiles[row][col]=new Tile(1,TileType.GRASSTILE);
+					t=new Tile(1,TileType.GRASSTILE);
 					break;
 				case 's':
-					tiles[row][col]=new Tile(1,TileType.STONETILE);
+					t=new Tile(1,TileType.STONETILE);
 					break;
 				case 'a':
-					tiles[row][col]=new Tile(1,TileType.SANDTILE);
+					t=new Tile(1,TileType.SANDTILE);
 					break;
 				case 'd':
-					tiles[row][col]=new Tile(1,TileType.DIRTTILE);
+					t=new Tile(1,TileType.DIRTTILE);
 					break;
 				case 'w':
-					tiles[row][col]=new Tile(1,TileType.WATERTILE);
+					t=new Tile(1,TileType.WATERTILE);
 					break;	
 				}
+				
+				tiles[row][col]=t;
 			}
+			
 		}
 		
 		return tiles;
