@@ -3,6 +3,8 @@ package swen222.niwa.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
@@ -24,31 +26,48 @@ public class InventoryPanel extends JPanel{
 	private Controller control;
 	
 	private InventoryBtn[] buttons;
-	private ButtonGroup group;
+	private DeselectableButtonGroup group;
 	
 	public InventoryPanel(Controller control){
 		this.control = control;
 		buttons = new InventoryBtn[INV_WIDTH*INV_HEIGHT];
-		group = new ButtonGroup();
+		group = new DeselectableButtonGroup();
+		
+		for(int i = 0; i < buttons.length; i++){
+			buttons[i] = new InventoryBtn();
+			group.add(buttons[i]);
+			add(buttons[i]);
+		}
 		
 		setLayout(new GridLayout(INV_HEIGHT, INV_WIDTH, 2, 2));
 		setBackground(Color.DARK_GRAY);// for testing, don't worry about it
 		
 		
-		assignButtons();
+		updateInventory(getTestSet());
 	}
 	
-	private void assignButtons(){
-		for(int i = 0; i < buttons.length; i++){
-			buttons[i] = new InventoryBtn();
-			group.add(buttons[i]);
-			add(buttons[i]);
+	private void updateInventory(Map<String,Integer> items){
+		int i = 0;
+		for(String s : items.keySet()){
+			buttons[i].updateButton(s, items.get(s));
+			i++;
 		}
 	}
 	
 	@Override
 	public Dimension getPreferredSize(){
 		return new Dimension(WIDTH, HEIGHT);
+	}
+	
+	//methods for testing concept
+	
+	private Map<String,Integer> getTestSet(){
+		Map<String,Integer> items = new HashMap<>();
+		items.put("red", 1);
+		items.put("blue", 2);
+		items.put("green", 3);
+		items.put("HAH, you thought it was gonna be a colour again", 5);
+		return items;
 	}
 
 }
