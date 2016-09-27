@@ -1,5 +1,8 @@
 package swen222.niwa.net;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 /**
@@ -12,21 +15,31 @@ import java.net.Socket;
  *
  */
 public class Master extends Thread{
-	
+
 	// TODO: Need a reference to the game
 	private final int broadcastClock;
 	private final int uid; // a unique id
 	private final Socket socket;
-	
+
 	public Master(int broadcastClock, int uid, Socket socket) {
 		this.broadcastClock = broadcastClock;
 		this.uid = uid;
 		this.socket = socket;
 	}
-	
+
 	public void run(){
 		// TODO: While the game is active, this method should be continuously running. It should
 		// be receiving information from clients and then broadcasting it back to the client.
+
+		try {
+			DataInputStream input = new DataInputStream(socket.getInputStream());
+			DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 	}
 
 }

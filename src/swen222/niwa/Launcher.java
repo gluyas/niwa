@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import swen222.niwa.net.ClockThread;
+import swen222.niwa.net.Master;
 import swen222.niwa.net.Slave;
 
 /**
@@ -25,6 +26,8 @@ public class Launcher {
 		String host = null;
 		int port = 32768;
 		int clockPeriod = 20;
+		int broadcastClock = 5;
+		int numOfPlayers = 0;
 
 		// Parse the command line arguments
 		for(int i = 0 ; i < args.length ; i++){
@@ -32,6 +35,7 @@ public class Launcher {
 				String argument = args[i];
 				if(argument.equals("-server")){
 					server = true;
+					numOfPlayers = Integer.parseInt(args[++i]);
 				}else if(argument.equals("-connect")){
 					host = args[++i];
 				}
@@ -41,7 +45,7 @@ public class Launcher {
 		// Check what to do
 		if(server){
 			// Running in server mode
-			runServer(port, clockPeriod);
+			runServer(port, clockPeriod, broadcastClock, numOfPlayers);
 		}else if(host != null){
 			// Running in client mode
 			runClient(host, port);
@@ -59,7 +63,7 @@ public class Launcher {
 	 * Creates a server socket and listens for connections from client sockets,
 	 * once all clients have connected it starts a game.
 	 */
-	private static void runServer(int port, int gameClock){
+	private static void runServer(int port, int gameClock, int broadcastClock, int numOfPlayers){
 		// Setup a clock thread
 		ClockThread clock = new ClockThread(gameClock);
 
@@ -67,12 +71,22 @@ public class Launcher {
 		System.out.println("SERVER LISTENING ON PORT: " +port);
 
 		try{
+			Master[] connections = new Master[numOfPlayers];
 			// Create the server socket
 			ServerSocket server = new ServerSocket(port);
 			while(true){
 				// Listen for a socket
 				Socket client = server.accept();
 				System.out.println(client.getInetAddress() + " HAS CONNECTED.");
+				// TODO: need to create the user ID e.g. int uid = game.registerPlayer();
+				// then pass it into the Master object e.g. new Master(broadcastClock, uid, client)
+				connections[--numOfPlayers] = new Master(broadcastClock, 0, client);
+				connections[numOfPlayers].start();
+				// If all clients have connected
+				if(numOfPlayers == 0){
+					System.out.println("ALL CLIENTS ACCEPTED");
+					startGame(clock);
+				}
 			}
 
 		}catch(IOException e){

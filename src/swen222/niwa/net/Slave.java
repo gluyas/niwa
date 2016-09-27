@@ -4,7 +4,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
+
+import swen222.niwa.Controller;
+import swen222.niwa.gui.NiwaFrame;
 
 /**
  * A slave connection receives information about the current state of the board
@@ -27,7 +31,17 @@ public class Slave extends Thread implements KeyListener{
 	}
 
 	public void run(){
-		System.out.println("client is doing stuff");
+		try{
+			input = new DataInputStream(socket.getInputStream());
+			output = new DataOutputStream(socket.getOutputStream());
+			NiwaFrame gameWindow = new NiwaFrame(new Controller());
+
+			while(true){
+
+			}
+		}catch(IOException e){
+
+		}
 	}
 
 	@Override
