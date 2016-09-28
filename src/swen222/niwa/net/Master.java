@@ -34,6 +34,27 @@ public class Master extends Thread{
 		try {
 			DataInputStream input = new DataInputStream(socket.getInputStream());
 			DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+			boolean exit=false;
+
+			while(!exit) {
+
+				try {
+
+					if(input.available() != 0) {
+						System.out.println("received a message from a client");
+						// read message from client.
+						String message = "message received";
+						// Now, broadcast the message back to the client
+						byte[] encodedMessage = message.getBytes();
+						output.write(encodedMessage);
+						output.flush();
+						Thread.sleep(broadcastClock);
+					}
+
+				} catch(InterruptedException e) {
+				}
+			}
+			socket.close(); // release socket ... v.important!
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

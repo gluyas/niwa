@@ -38,7 +38,7 @@ public class ClockThread extends Thread{
 		while(true){
 			try{
 				Thread.sleep(delay);
-				System.out.println(tickCount + " tick");
+				//System.out.println(tickCount + " tick");
 				tickCount++;
 			}catch(InterruptedException e){
 				// Should never get here.

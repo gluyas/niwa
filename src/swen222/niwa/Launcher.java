@@ -114,7 +114,8 @@ public class Launcher {
 
 	}
 
-	private static void startGame(ClockThread clock){
+	private static void startGame(ClockThread clock, Master... connections){
+
 		clock.start();
 	}
 
