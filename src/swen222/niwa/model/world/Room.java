@@ -14,6 +14,8 @@ import java.util.Set;
  */
 public class Room { // extends Observable if we make it mutable, but unlikely
 
+	public static String name; //each room needs a name, may display this on GUI possibly
+	
 	public static int width;  // keep these fields final if we go for Rooms being immutable
 	public static int height; // there doesn't seem like any good use case where these would need to change
 

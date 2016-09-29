@@ -87,6 +87,14 @@ public class Tile implements Visible {
 
 
 	}
+	
+	/**
+	 * Returns the height of the tile
+	 * @return
+	 */
+	public int getHeight(){
+		return this.height;
+	}
 
 
 	/**
