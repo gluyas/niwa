@@ -86,7 +86,7 @@ public class Prop implements Visible {
 			break;
 
 		case SMALLTREE:
-			texture = new DevTexture(DevTexture.smallTree);
+			texture = new DevTexture(DevTexture.smallTree1);
 			this.canOccupy = false;
 			break;
 

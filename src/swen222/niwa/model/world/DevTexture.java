@@ -27,8 +27,10 @@ public class DevTexture implements Texture {
 		static Image grassBlock2;
 		static Image grassBlock3;
 		static Image grass;
-		static Image path1;
-		static Image path2;
+		static Image path1Side;
+		static Image path1Front;
+		static Image path2Side;
+		static Image path2Front;
 		static Image playerBlackFront;
 		static Image playerBlackSide;
 		static Image playerBlueFront;
@@ -42,7 +44,9 @@ public class DevTexture implements Texture {
 		static Image sandBlock;
 		static Image seed;
 		static Image smallRock;
-		static Image smallTree;
+		static Image smallTree1;
+		static Image smallTree2;
+		static Image smallTree3;
 		static Image soil;
 		static Image stoneBlock;
 		static Image templateBlock;
@@ -70,8 +74,10 @@ public class DevTexture implements Texture {
 				grassBlock1= ImageIO.read(new File("images/grass-Block1.png"));
 				grassBlock2 = ImageIO.read(new File("images/grass-Block2.png"));
 				grassBlock3 = ImageIO.read(new File("images/grass-Block3.png"));
-				path1 = ImageIO.read(new File("images/path1.png"));
-				path2 = ImageIO.read(new File("images/path2.png"));
+				path1Side = ImageIO.read(new File("images/path1-side.png"));
+				path1Front = ImageIO.read(new File("images/path1-front.png"));
+				path2Side = ImageIO.read(new File("images/path2-side.png"));
+				path2Front = ImageIO.read(new File("images/path2-front.png"));
 				playerBlackFront = ImageIO.read(new File("images/player-black-front.png"));
 				playerBlackSide = ImageIO.read(new File("images/player-black-side.png"));
 				playerBlueFront = ImageIO.read(new File("images/player-blue-front.png"));
@@ -85,7 +91,9 @@ public class DevTexture implements Texture {
 				sandBlock = ImageIO.read(new File("images/sand-Block.png"));
 				seed = ImageIO.read(new File("images/seed.png"));
 				smallRock = ImageIO.read(new File("images/smallRock.png"));
-				smallTree = ImageIO.read(new File("images/smallTree.png"));
+				smallTree1 = ImageIO.read(new File("images/smalltree1.png"));
+				smallTree2 = ImageIO.read(new File("images/smalltree2.png"));
+				smallTree3 = ImageIO.read(new File("images/smalltree3.png"));
 				soil = ImageIO.read(new File("images/soil.png"));
 				stoneBlock = ImageIO.read(new File("images/stone-Block.png"));
 				templateBlock = ImageIO.read(new File("images/template-block.png"));
