@@ -12,10 +12,12 @@ import javax.swing.JButton;
 public class NiwaBtn extends JButton implements MouseListener{
 	
 	private boolean hover;
+	private boolean click;
 	private String label;
 	
 	public NiwaBtn(String label){
 		hover = false;
+		click = false;
 		this.label = label;
 		
 	}
@@ -24,13 +26,20 @@ public class NiwaBtn extends JButton implements MouseListener{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		
-		g.setColor(new Color(0, 200, hover ? 109: 250));
+		if(click){
+			g.setColor(Color.RED);
+		}else if(hover){
+			g.setColor(Color.BLUE);
+		}else{
+			g.setColor(Color.GREEN);
+		}
+		
 		g.drawRect(0, 0, this.getWidth(), this.getHeight());
 		
 		FontMetrics fm = g.getFontMetrics();
 		Rectangle2D r = fm.getStringBounds(label, g);
 		int x = this.getWidth() - (int) r.getWidth()/2;
-		int y = 0;
+		int y = this.getHeight() - (int) r.getHeight()/2;
 		
 		g.setColor(Color.BLACK);
 		g.drawString(label, x, y);
@@ -56,14 +65,14 @@ public class NiwaBtn extends JButton implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		click = true;
+		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		click = false;
+		repaint();
 	}
 
 }
