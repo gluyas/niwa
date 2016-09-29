@@ -61,17 +61,20 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
+		int x = this.getWidth()/2 - SIZE/2;
+		int y = this.getHeight()/2 - SIZE/2;
 
 		if (this.isSelected()) {
 			g.setColor(Color.RED);
-			g.fillRect(0, 0, SIZE, SIZE);
+			g.fillRect(x, y, SIZE, SIZE);
 		}else{
 			g.setColor(new Color(206, 237, hover ? 109 : 164));
-			g.fillRect(0, 0, SIZE, SIZE);
+			g.fillRect(x, y, SIZE, SIZE);
 		}
 
 		g.setColor(getColor());
-		g.fillRect(SIZE/10, SIZE/10, SIZE - 2*(SIZE/10), SIZE - 2*(SIZE/10));
+		g.fillRect(x + SIZE/10, y + SIZE/10, SIZE - 2*(SIZE/10), SIZE - 2*(SIZE/10));
 	}
 
 	@Override
@@ -95,10 +98,7 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 
 }
