@@ -50,6 +50,8 @@ public class ParserTests {
 		assert(tileList[4][4].getType().equals(Tile.TileType.GRASSTILE));
 		assert(tileList.length==5);
 		assert(tileList[0].length==5);
+		
+		assert(tileList[2][2].getHeight()==2);
 	}
 	
 	@Test
@@ -58,6 +60,8 @@ public class ParserTests {
 		
 		assert(tileList[2][2].getType().equals(Tile.TileType.WATERTILE));
 		assert(tileList[4][3].getType().equals(Tile.TileType.STONETILE));
+		
+		assert(tileList[2][3].getHeight()==2);
 	}
 	
 	@Test

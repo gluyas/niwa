@@ -3,11 +3,11 @@
 <width>7</width> <height>5</height>
 
 <tiles>
-	<line>gsssssg</line>
-	<line>sgwwwgs</line>
-	<line>sswwwss</line>
-	<line>sgwwwgs</line>
-	<line>gsssssg</line>
+	<line>g1s1s1s1s1s1g1</line>
+	<line>s1g1w1w2w1g1s1</line>
+	<line>s1s1w1w2w1s1s1</line>
+	<line>s1g1w1w2w1g1s1</line>
+	<line>g1s1s1s1s1s1g1</line>
 </tiles>
 
 
