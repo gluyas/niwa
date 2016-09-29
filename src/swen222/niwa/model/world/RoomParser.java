@@ -24,14 +24,14 @@ public class RoomParser {
 	Document doc;
 	Element rootElement;
 
-	public static int width;
-	public static int height;
+	public int width;
+	public int height;
 
 	public RoomParser(File f){
 		this.currentFile = f;
 		parseFile();
-		width = getWidth();
-		height = getHeight();
+		this.width = getWidth();
+		this.height = getHeight();
 	}
 
 	/**
@@ -88,11 +88,11 @@ public class RoomParser {
 	public int getHeight(){
 		 NodeList list = rootElement.getElementsByTagName("height");
 		 if(list.getLength()!=1){
-			 throw new NoSuchElementException("There is no width from the file you are trying"
+			 throw new NoSuchElementException("There is no height from the file you are trying"
 			 		+ " to read from");
 		 }
-		 String width = list.item(0).getTextContent();
-		 return Integer.parseInt(width);
+		 String height = list.item(0).getTextContent();
+		 return Integer.parseInt(height);
 
 	}
 
@@ -113,35 +113,51 @@ public class RoomParser {
 		if(list.getLength()!=getHeight()){
 			throw new IndexOutOfBoundsException("The representation of the tiles is an incorrect size");
 		}
+		
+		
 
 		//goes through all of the lines from top to bottom
 		for(int row = 0; row<height; row++){
+			
 			String line = list.item(row).getTextContent();
-			for(int col = 0; col<width; col++){
+			int col = 0;
+			while(col<width){
 				//breaks up the line into chars
 				Tile t = new Tile(1,TileType.GRASSTILE);
-				char s = line.charAt(col);
+				
+				
+				char s = line.charAt(col*2);
+				
+				//first we need to read the height
+				//note that this increases the position of col by 1
+				char s2 = line.charAt((col*2)+1);
+				
+				
+				int blockHeight = Character.getNumericValue(s2);
 
 				//creates different tiles depending on the char
 				switch(s){
 				case 'g':
-					t=new Tile(1,TileType.GRASSTILE);
+					t=new Tile(blockHeight,TileType.GRASSTILE);
 					break;
 				case 's':
-					t=new Tile(1,TileType.STONETILE);
+					t=new Tile(blockHeight,TileType.STONETILE);
 					break;
 				case 'a':
-					t=new Tile(1,TileType.SANDTILE);
+					t=new Tile(blockHeight,TileType.SANDTILE);
 					break;
 				case 'd':
-					t=new Tile(1,TileType.DIRTTILE);
+					t=new Tile(blockHeight,TileType.DIRTTILE);
 					break;
 				case 'w':
-					t=new Tile(1,TileType.WATERTILE);
+					t=new Tile(blockHeight,TileType.WATERTILE);
 					break;
 				}
+				
 
 				tiles[row][col]=t;
+				
+				col++;
 			}
 
 		}

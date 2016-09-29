@@ -56,8 +56,8 @@ public class Slave extends Thread implements KeyListener{
 					//display.repaint();
 				}else{
 					String message = inputString("Type your message:");
-					byte[] encodedMessage = message.getBytes();
-					output.write(encodedMessage);
+					output.writeUTF(message);
+					//output.write(encodedMessage);
 					output.flush();
 				}
 			}

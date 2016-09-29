@@ -41,12 +41,9 @@ public class Master extends Thread{
 				try {
 
 					if(input.available() != 0) {
-						System.out.println("received a message from a client");
-						// read message from client.
-						String message = "message received";
-						// Now, broadcast the message back to the client
-						byte[] encodedMessage = message.getBytes();
-						output.write(encodedMessage);
+						// Print message from client.
+						System.out.println(input.readUTF());
+						// Send something back to the client
 						output.flush();
 						Thread.sleep(broadcastClock);
 					}
