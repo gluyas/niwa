@@ -39,6 +39,10 @@ public class Controller {
 		return false;
 	}
 
+	public boolean drop(PlayerEntity player,ObjectEntity item){
+		return false;
+	}
+
 	public boolean move(Entity e, Direction dir){
 
 		try {
@@ -60,9 +64,6 @@ public class Controller {
 		e.move(dir);
 		return true;
 	}
-
-
-
 
 
 

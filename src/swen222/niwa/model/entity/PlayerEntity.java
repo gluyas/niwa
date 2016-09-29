@@ -8,12 +8,15 @@ import swen222.niwa.model.world.Location;
 public class PlayerEntity extends Entity{
 
 	public String name;
+	public int points;
 	public ArrayList<Entity> inventory;
-	public int inventoryCapacity = 3;
+	public int inventoryCapacity;
 
 	public PlayerEntity(Location loc) {
 		super(loc);
 		inventory= new ArrayList<Entity>();
+		inventoryCapacity=3;
+		points=0;
 	}
 
 	@Override
@@ -26,12 +29,10 @@ public class PlayerEntity extends Entity{
 		inventory.add(item);
 	}
 
-
 	public boolean canPickUp(){
 		if(inventory.size()==inventoryCapacity){
 			return false;
 		}
 		return true;
-
 	}
 }
