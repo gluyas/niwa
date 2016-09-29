@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import swen222.niwa.model.world.Prop;
-import swen222.niwa.model.world.RoomParser;
+import swen222.niwa.file.RoomParser;
 import swen222.niwa.model.world.Tile;
 
 /**

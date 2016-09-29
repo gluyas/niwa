@@ -1,11 +1,5 @@
 package swen222.niwa.model.world;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.gui.Visible;
 import swen222.niwa.model.entity.Entity;
@@ -23,8 +17,8 @@ public class Tile implements Visible {
 		STONETILE,
 		SANDTILE,
 		DIRTTILE,
-		WATERTILE
-
+		WATERTILE,
+		KOITILE,
 	}
 
 	public TileType type;
@@ -83,6 +77,10 @@ public class Tile implements Visible {
 			this.canOccupy = false;
 			break;
 
+		case KOITILE:
+			texture = new DevTexture(DevTexture.waterBlock2);
+			this.canOccupy = false;
+
 		}
 
 
@@ -128,7 +126,7 @@ public class Tile implements Visible {
 	}
 
 	@Override
-	public Sprite sprite() {
+	public Sprite sprite(Direction facing) {
 		return this.texture.sprite(this.height); // using a Texture strategy
 	}
 

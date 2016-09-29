@@ -2,12 +2,7 @@ package swen222.niwa.model.world;
 
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.gui.Visible;
-import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.world.Tile.Texture;
-import swen222.niwa.model.world.Tile.TileType;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Interface for world objects which are fixed at the time of Room creation
@@ -32,6 +27,7 @@ public class Prop implements Visible {
 		BAMBOO,
 		BIGROCK,
 		BIGTREE,
+		BIGTREE2,
 		BUSH,
 		FENCE,
 		GRASS,
@@ -48,21 +44,25 @@ public class Prop implements Visible {
 	public void setPropVariables(PropType type){
 		switch(type){
 		case BAMBOO:
-			this.texture = new DevTexture(DevTexture.bamboo);
+			this.texture = new DevTexture(DevTexture.bamboo, 0.5, 0.79);
 			this.canOccupy = false;
 			break;
 
 		case BIGROCK:
-			texture = new DevTexture(DevTexture.bigRock1);
+			texture = new DevTexture(DevTexture.bigRock2, 0.5, 0.83);
 			this.canOccupy = false;
 			break;
 
 
 		case BIGTREE:
-			texture = new DevTexture(DevTexture.bigTree1);
+			texture = new DevTexture(DevTexture.bigTree1, 0.5, 0.87);
 			this.canOccupy = false;
 			break;
 
+		case BIGTREE2:
+			texture = new DevTexture(DevTexture.bigTree2, 0.47, 0.84);
+			this.canOccupy = false;
+			break;
 
 		case BUSH:
 			texture = new DevTexture(DevTexture.bush);
@@ -86,7 +86,7 @@ public class Prop implements Visible {
 			break;
 
 		case SMALLTREE:
-			texture = new DevTexture(DevTexture.smallTree1);
+			texture = new DevTexture(DevTexture.smallTree1, 0.5, 0.835);
 			this.canOccupy = false;
 			break;
 
@@ -113,9 +113,9 @@ public class Prop implements Visible {
 	}
 
 	@Override
-	public Sprite sprite() {
+	public Sprite sprite(Direction facing) {
 		// TODO Auto-generated method stub
-		return null;
+		return texture.sprite(0);
 	}
 
 }

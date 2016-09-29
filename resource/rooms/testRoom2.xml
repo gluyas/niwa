@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<class>
+<width>7</width> <height>5</height>
+
+<tiles>
+	<line>g1s1s1s1s1s1g1</line>
+	<line>s1g1w1w2w1g1s1</line>
+	<line>s1s1w1w2w1s1s1</line>
+	<line>s1g1w1w2w1g1s1</line>
+	<line>g1s1s1s1s1s1g1</line>
+</tiles>
+
+
+<prop type = "zen1" col = "1" row = "1"/>
+<prop type = "zen1" col = "5" row = "1"/>
+<entity type = "seed" col = "0" row = "4"/>
+<entity type = "seed" col = "1" row = "6"/>
+<entity type = "seed" col = "3" row = "4"/>
+</class>

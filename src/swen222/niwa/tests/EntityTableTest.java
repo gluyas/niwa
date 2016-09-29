@@ -3,7 +3,8 @@ package swen222.niwa.tests;
 import org.junit.Before;
 import org.junit.Test;
 import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.entity.EntityTable;
+import swen222.niwa.model.util.EntityTable;
+import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 
@@ -27,7 +28,7 @@ public class EntityTableTest {
 
 	@Before
 	public void setup() {
-		table = new EntityTable<>();
+		table = new HashEntityTable<Entity>();
 		r = Room.emptyRoom(2, 2);
 		loc1 = Location.at(r, 0, 0);
 		loc2 = Location.at(r, 1, 0);

@@ -1,0 +1,11 @@
+please separate into these sub folders:
+
+    prop
+
+    player (change to entity/player if we get more entities)
+
+    texture
+
+    icon
+
+give each series of image its own subfolder to, then just name the actual files whatever suffix they had before.
