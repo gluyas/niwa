@@ -62,19 +62,19 @@ public class DevTexture implements Texture {
 		static {
 			try {
 				bamboo = ImageIO.read(new File("resource/images/bamboo.png"));
-				bigRock1 = ImageIO.read(new File("resource/images/bigRock1.png"));
-				bigRock2 = ImageIO.read(new File("resource/images/bigRock2.png"));
-				bigTree1 = ImageIO.read(new File("resource/images/bigTree1.png"));
-				bigTree2 = ImageIO.read(new File("resource/images/bigTree2.png"));
-				bigTree3 = ImageIO.read(new File("resource/images/bigTree3.png"));
+				bigRock1 = ImageIO.read(new File("resource/images/bigrock1.png"));
+				bigRock2 = ImageIO.read(new File("resource/images/bigrock2.png"));
+				bigTree1 = ImageIO.read(new File("resource/images/bigtree1.png"));
+				bigTree2 = ImageIO.read(new File("resource/images/bigtree2.png"));
+				bigTree3 = ImageIO.read(new File("resource/images/bigtree3.png"));
 				bush = ImageIO.read(new File("resource/images/bush.png"));
-				dirtBlock = ImageIO.read(new File("resource/images/dirt-Block.png"));
+				dirtBlock = ImageIO.read(new File("resource/images/dirt-block.png"));
 				fenceFront = ImageIO.read(new File("resource/images/fence-front.png"));
 				fenceSide = ImageIO.read(new File("resource/images/fence-side.png"));
 				flower = ImageIO.read(new File("resource/images/flower.png"));
-				grassBlock1= ImageIO.read(new File("resource/images/grass-Block1.png"));
-				grassBlock2 = ImageIO.read(new File("resource/images/grass-Block2.png"));
-				grassBlock3 = ImageIO.read(new File("resource/images/grass-Block3.png"));
+				grassBlock1= ImageIO.read(new File("resource/images/grass-block1.png"));
+				grassBlock2 = ImageIO.read(new File("resource/images/grass-block2.png"));
+				grassBlock3 = ImageIO.read(new File("resource/images/grass-block3.png"));
 				path1Side = ImageIO.read(new File("resource/images/path1-side.png"));
 				path1Front = ImageIO.read(new File("resource/images/path1-front.png"));
 				path2Side = ImageIO.read(new File("resource/images/path2-side.png"));
@@ -89,19 +89,19 @@ public class DevTexture implements Texture {
 				playerGreenSide = ImageIO.read(new File("resource/images/player-green-side.png"));
 				playerWhiteFront = ImageIO.read(new File("resource/images/player-white-front.png"));
 				playerWhiteSide = ImageIO.read(new File("resource/images/player-white-side.png"));
-				sandBlock = ImageIO.read(new File("resource/images/sand-Block.png"));
+				sandBlock = ImageIO.read(new File("resource/images/sand-block.png"));
 				seed = ImageIO.read(new File("resource/images/seed.png"));
-				smallRock = ImageIO.read(new File("resource/images/smallRock.png"));
+				smallRock = ImageIO.read(new File("resource/images/smallrock.png"));
 				smallTree1 = ImageIO.read(new File("resource/images/smalltree1.png"));
 				smallTree2 = ImageIO.read(new File("resource/images/smalltree2.png"));
 				smallTree3 = ImageIO.read(new File("resource/images/smalltree3.png"));
 				soil = ImageIO.read(new File("resource/images/soil.png"));
-				stoneBlock = ImageIO.read(new File("resource/images/stone-Block.png"));
+				stoneBlock = ImageIO.read(new File("resource/images/stone-block.png"));
 				templateBlock = ImageIO.read(new File("resource/images/template-block.png"));
 				templateObject = ImageIO.read(new File("resource/images/template-object.png"));
-				waterBlock1 = ImageIO.read(new File("resource/images/water-Block1.png"));
-				waterBlock2 = ImageIO.read(new File("resource/images/water-Block2.png"));
-				waterBlock3 = ImageIO.read(new File("resource/images/water-Block3.png"));
+				waterBlock1 = ImageIO.read(new File("resource/images/water-block1.png"));
+				waterBlock2 = ImageIO.read(new File("resource/images/water-block2.png"));
+				waterBlock3 = ImageIO.read(new File("resource/images/water-block3.png"));
 				zen1 = ImageIO.read(new File("resource/images/zen1.png"));
 
 			} catch (IOException e) {
