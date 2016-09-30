@@ -32,6 +32,10 @@ public class Location {
 		}
 	}
 
+	public Tile tile(){
+		return room.tileAt(this);
+	}
+
 	/**
 	 * @return true if the given arguments will create a valid Position with Postion.at(...)
 	 */

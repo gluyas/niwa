@@ -29,6 +29,14 @@ public class PlayerEntity extends Entity{
 		inventory.add(item);
 	}
 
+	public void removeItem(Entity item){
+		inventory.remove(item);
+	}
+
+	public void addPoint(){
+		points++;
+	}
+
 	public boolean canPickUp(){
 		if(inventory.size()==inventoryCapacity){
 			return false;

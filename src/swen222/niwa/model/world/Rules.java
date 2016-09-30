@@ -6,16 +6,18 @@ import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.entity.EntityTable;
 import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.entity.PlayerEntity;
+import swen222.niwa.model.entity.Seed;
 import swen222.niwa.model.world.Location.InvalidLocationException;
+import swen222.niwa.model.world.Prop.PropType;
 
 /**
  * @author burnshami
  *
  */
-public class Controller {
+public class Rules {
 
 	public EntityTable<Entity> entities;
-	public Controller(EntityTable<Entity> table){
+	public Rules(EntityTable<Entity> table){
 		entities=table;
 	}
 
@@ -39,12 +41,34 @@ public class Controller {
 		return false;
 	}
 
+	/**
+	 * Removes an item from player inventory and adds it to the space on the ground of player
+	 *
+	 * @param player
+	 * @param item
+	 * @return
+	 */
 	public boolean drop(PlayerEntity player,ObjectEntity item){
-		return false;
+		Set<Entity> entitiesAtPosition = entities.get(player.getLocation()); // All entities at player location
+		for(Entity e: entitiesAtPosition){
+			if(e instanceof ObjectEntity){
+				return false;//if object already there
+			}
+		}
+		player.removeItem(item);
+		item.setLocation(player.getLocation()); //places item
+		return true;
 	}
 
-	public boolean move(Entity e, Direction dir){
 
+
+	/**
+	 * Moves an entity one space in a room, if there is no entity in the chosen direction nor impassable terrain
+	 * @param e
+	 * @param dir
+	 * @return
+	 */
+	public boolean move(Entity e, Direction dir){
 		try {
 			Location toGo =e.getLocation().move(dir);
 			Set<Entity> entitiesInDirection =entities.get(toGo);//check for players in direction
@@ -66,6 +90,24 @@ public class Controller {
 	}
 
 
-
+	/**
+	 *Takes a seed from a players inventory and adds a point if above soil
+	 *
+	 * @param player
+	 * @param seed
+	 * @return true if seed removed
+	 */
+	public boolean plant(PlayerEntity player, ObjectEntity seed){
+		Location toPlant = player.getLocation();
+		if(!(seed instanceof Seed)){
+			return false;
+		}
+		if(!toPlant.tile().getProp().getType().equals(PropType.SOIL)){
+			return false;
+		}
+		player.removeItem(seed);
+		player.addPoint();
+		return true;
+	}
 
 }
