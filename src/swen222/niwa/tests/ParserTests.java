@@ -23,8 +23,8 @@ public class ParserTests {
 	
 	@Before
 	public void setup(){
-		testRoom1 = new File("rooms/testRoom.xml");
-		testRoom2 = new File("rooms/testRoom2.xml");
+		testRoom1 = new File("resource/rooms/testRoom.xml");
+		testRoom2 = new File("resource/rooms/testRoom2.xml");
 		parser = new RoomParser(testRoom1);
 		parser2 = new RoomParser(testRoom2);
 		

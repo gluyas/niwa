@@ -22,11 +22,11 @@ public class DemoPlayer extends PlayerEntity {
 		sprites = new Sprite[4];
 		try {
 			sprites[Direction.NORTH.ordinal()] = new Sprite(
-					ImageIO.read(new File("resource/images/player-blue-side.png")), 0.5, 0.8
+					ImageIO.read(new File("resource/images/players/player-blue-side.png")), 0.5, 0.8
 			);
 			sprites[Direction.SOUTH.ordinal()] = sprites[Direction.NORTH.ordinal()];
 			sprites[Direction.WEST.ordinal()] = new Sprite(
-					ImageIO.read(new File("resource/images/player-blue-front.png")), 0.5, 0.8
+					ImageIO.read(new File("resource/images/players/player-blue-front.png")), 0.5, 0.8
 			);
 			sprites[Direction.EAST.ordinal()] = sprites[Direction.WEST.ordinal()];
 		} catch (IOException e) {
