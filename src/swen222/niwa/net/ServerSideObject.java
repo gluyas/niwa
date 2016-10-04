@@ -9,7 +9,9 @@ public class ServerSideObject {
 
 	public final int oid;
 
+
 	public ServerSideObject() {
+		System.out.println();
 		this.oid = 0;
 	}
 

@@ -9,18 +9,15 @@ import static java.awt.event.KeyEvent.VK_W;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 import java.nio.charset.Charset;
 
 import swen222.niwa.Controller;
 import swen222.niwa.demo.DemoFrame;
 import swen222.niwa.gui.NiwaFrame;
+import swen222.niwa.gui.RoomRenderer;
+import swen222.niwa.model.world.Room;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Room;
@@ -35,10 +32,18 @@ import swen222.niwa.model.world.Room;
 
 public class Slave extends Thread implements KeyListener{
 
-	private EntityTable et;
+	//TODO: fix this horrible non-encapsulation
+	public static EntityTable getEntityTable() {
+		return et;
+	}
+
+	private static EntityTable et;
+	private Room r;
+
 	private final Socket socket;
 	private DataOutputStream output;
 	private DataInputStream input;
+	private ObjectInputStream objin;
 	private DemoFrame gameWindow;
 
 	//TODO: Very much just a place holder at the moment, will obviously need further implementation
@@ -48,9 +53,12 @@ public class Slave extends Thread implements KeyListener{
 	}
 
 	public void run(){
+
 		try{
 			output = new DataOutputStream(socket.getOutputStream());
+
 			input = new DataInputStream(socket.getInputStream());
+			objin = new ObjectInputStream(socket.getInputStream());
 
 			// Open up the demo frame, will be the actual client window eventually
 			gameWindow = new DemoFrame(Room.newFromFile
@@ -61,12 +69,20 @@ public class Slave extends Thread implements KeyListener{
 				// read event
 				if(input.available() != 0){
 					System.out.println("Something is arriving from master");
-					int amount = input.readInt();
-					byte[] data = new byte[amount];
-					input.readFully(data);
+					byte action = input.readByte();
+					switch (action) {
+						case 'r': // room
+							gameWindow.rr = new RoomRenderer(Room.newFromFile(
+									new File(input.readUTF())));
+							gameWindow.repaint();
+							break;
+					}
+					//int amount = input.readInt();
+					//byte[] data = new byte[amount];
+					//input.readFully(data);
 					// at this point I am just testing sending strings from master to slave
 					// decode the string
-					System.out.println(new String(data, Charset.defaultCharset()));
+					//System.out.println(new String(data, Charset.defaultCharset()));
 					//game.fromByteArray(data);
 					//display.repaint();
 				}
@@ -75,6 +91,8 @@ public class Slave extends Thread implements KeyListener{
 
 
 		}catch(IOException e){
+
+		//} catch (ClassNotFoundException e) {
 
 		}
 	}

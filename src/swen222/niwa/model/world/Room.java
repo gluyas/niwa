@@ -23,7 +23,7 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 
 	private Tile[][] tiles; // each location l corresponds to tiles[l.row][l.col]
 
-	private EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
+	//private EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
 									// locations store the room they correspond to so it wouldn't complicate much to
 									// just have one big List of EVERY entity in the world - that would also simplify
 									// moving between rooms, only the entity's position would need to be updated,
@@ -41,24 +41,6 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 			assert tiles[loc.row][loc.col] != null : String.format("Tile at %s is null", loc.toString());
 			return tiles[loc.row][loc.col];
 		}
-	}
-
-	/**
-	 * @return an EntityTable containing all Entities that are currently in this Room.
-	 */
-	public EntityTable<? extends Entity> getEntityTable() {
-		// TODO: implement this - depends on design decisions regarding entity storage
-		//return null;
-		return this.entities;
-	}
-
-	//TODO: javadoc!
-	public boolean addEntity(Entity e) {
-		return entities.add(e);
-	}
-
-	public boolean removeEntity(Object o) {
-		return entities.remove(o);
 	}
 
 	/**
@@ -97,7 +79,7 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 		this.width = width;
 		this.height = height;
 		this.name = name;
-		this.entities = new HashEntityTable<>();
+		//this.entities = new HashEntityTable<>();
 	}
 
 }

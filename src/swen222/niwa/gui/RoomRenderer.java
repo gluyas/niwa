@@ -6,6 +6,7 @@ import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 import swen222.niwa.model.world.Tile;
+import swen222.niwa.net.Slave;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -57,7 +58,7 @@ public class RoomRenderer {
 		double blockSize = getBlockSize(width, height);
 		double scalar = blockSize/2.85;
 
-		EntityTable<? extends Entity> et = r.getEntityTable();
+		EntityTable<? extends Entity> et = Slave.getEntityTable();
 
 		for (Location loc : new BackToFrontIterator(r, facing)) {
 			Tile t = r.tileAt(loc);

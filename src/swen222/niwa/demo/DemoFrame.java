@@ -23,7 +23,7 @@ import static java.awt.event.KeyEvent.*;
 public class DemoFrame extends JFrame implements Observer{
 
 	JPanel panel;
-	RoomRenderer rr;
+	public RoomRenderer rr;
 	DemoPlayer p;
 
 	public DemoFrame(Room stage, KeyListener... keys) {
@@ -45,7 +45,7 @@ public class DemoFrame extends JFrame implements Observer{
 		}
 
 		p = new DemoPlayer(Location.at(stage, 2, 3));
-		if (!stage.addEntity(p)) throw new AssertionError();
+		//if (!stage.addEntity(p)) throw new AssertionError();
 		p.addObserver(this);
 
 		pack();
