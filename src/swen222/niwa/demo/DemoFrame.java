@@ -20,13 +20,13 @@ import static java.awt.event.KeyEvent.*;
  *
  * @author Marc
  */
-public class DemoFrame extends JFrame implements Observer, KeyListener {
+public class DemoFrame extends JFrame implements Observer{
 
 	JPanel panel;
 	RoomRenderer rr;
 	DemoPlayer p;
 
-	public DemoFrame(Room stage) {
+	public DemoFrame(Room stage, KeyListener... keys) {
 		super("Garden Demo");
 
 		rr = new RoomRenderer(stage);
@@ -36,7 +36,13 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		panel.setVisible(true);
 		panel.setPreferredSize(new Dimension(1280, 720));
 		panel.setSize(1280, 720);
-		addKeyListener(this);
+
+		// add the key listener passed from the slave class
+		// slave class has key listener so that key events
+		// are picked up by the master connection.
+		for(KeyListener k : keys){
+			addKeyListener(k);
+		}
 
 		p = new DemoPlayer(Location.at(stage, 2, 3));
 		if (!stage.addEntity(p)) throw new AssertionError();
@@ -47,12 +53,20 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
+	public DemoPlayer getPlayer(){
+		return p;
+	}
+
+	public RoomRenderer getRR(){
+		return rr;
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		repaint();
 	}
 
-	@Override
+	/*@Override
 	public void keyTyped(KeyEvent e) {
 
 	}
@@ -93,7 +107,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 
-	}
+	}*/
 
 	public static void main(String[] args) {
 		if (args.length == 0) {
