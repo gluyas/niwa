@@ -1,17 +1,29 @@
 package swen222.niwa.net;
 
+import static java.awt.event.KeyEvent.VK_A;
+import static java.awt.event.KeyEvent.VK_D;
+import static java.awt.event.KeyEvent.VK_E;
+import static java.awt.event.KeyEvent.VK_Q;
+import static java.awt.event.KeyEvent.VK_S;
+import static java.awt.event.KeyEvent.VK_W;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.Charset;
 
 import swen222.niwa.Controller;
+import swen222.niwa.demo.DemoFrame;
 import swen222.niwa.gui.NiwaFrame;
+import swen222.niwa.model.util.EntityTable;
+import swen222.niwa.model.world.Direction;
+import swen222.niwa.model.world.Room;
 
 /**
  * A slave connection receives information about the current state of the board
@@ -23,9 +35,11 @@ import swen222.niwa.gui.NiwaFrame;
 
 public class Slave extends Thread implements KeyListener{
 
+	private EntityTable et;
 	private final Socket socket;
 	private DataOutputStream output;
 	private DataInputStream input;
+	private DemoFrame gameWindow;
 
 	//TODO: Very much just a place holder at the moment, will obviously need further implementation
 
@@ -38,7 +52,9 @@ public class Slave extends Thread implements KeyListener{
 			output = new DataOutputStream(socket.getOutputStream());
 			input = new DataInputStream(socket.getInputStream());
 
-			NiwaFrame gameWindow = new NiwaFrame(new Controller());
+			// Open up the demo frame, will be the actual client window eventually
+			gameWindow = new DemoFrame(Room.newFromFile
+					(new File("/home/meiklehami1/git/GroupProjectT25/resource/rooms/testRoom.xml")), this);
 			boolean exit = false;
 
 			while(!exit) {
@@ -53,11 +69,6 @@ public class Slave extends Thread implements KeyListener{
 					System.out.println(new String(data, Charset.defaultCharset()));
 					//game.fromByteArray(data);
 					//display.repaint();
-				}else{
-					String message = inputString("Type your message:");
-					output.writeUTF(message);
-					//output.write(encodedMessage);
-					output.flush();
 				}
 			}
 			socket.close(); // release socket ... v.important!
@@ -88,21 +99,41 @@ public class Slave extends Thread implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		try {
+		try{
 			int code = e.getKeyCode();
-			if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
-				output.writeBytes("right");
-			} else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
-				output.writeBytes("left");
-			} else if(code == KeyEvent.VK_UP) {
-				output.writeBytes("up");
-			} else if(code == KeyEvent.VK_DOWN) {
-				output.writeBytes("down");
+			switch (code) {
+			case VK_W:
+				output.writeInt(1);
+				gameWindow.getPlayer().move(Direction.NORTH);
+				break;
+
+			case VK_A:
+				output.writeInt(3);
+				gameWindow.getPlayer().move(Direction.WEST);
+				break;
+
+			case VK_S:
+				output.writeInt(2);
+				gameWindow.getPlayer().move(Direction.SOUTH);
+				break;
+
+			case VK_D:
+				output.writeInt(4);
+				gameWindow.getPlayer().move(Direction.EAST);
+				break;
+
+			case VK_Q:
+				gameWindow.getRR().rotateCW();
+				gameWindow.repaint();
+				break;
+
+			case VK_E:
+				gameWindow.getRR().rotateCCW();
+				gameWindow.repaint();
+				break;
 			}
-			output.flush();
-		} catch(IOException ioe) {
-			// something went wrong trying to communicate the key press to the
-			// server.  So, we just ignore it.
+		}catch(IOException ee){
+
 		}
 	}
 
