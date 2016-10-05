@@ -10,28 +10,29 @@ import javax.swing.JTextArea;
 
 import swen222.niwa.Controller;
 
-public class MainAppPanel extends JPanel{
-	
+public class MainAppPanel extends JPanel {
+
 	private static final int HEIGHT = 550;
-	private static final int WIDTH = HEIGHT/2;
+	private static final int WIDTH = HEIGHT / 2;
 	private Controller control;
-	
+
 	private JTextArea textArea;
 	private JLabel score;
-	
-	public MainAppPanel(Controller control){
+
+	public MainAppPanel(Controller control) {
 		this.control = control;
-		
+
 		textArea = new JTextArea();
 		textArea.setEditable(false);
+		textArea.setPreferredSize(new Dimension(HEIGHT - (HEIGHT / 4), WIDTH / 3));
 		score = new JLabel("0");
-		
+
 		add(textArea);
 		add(actionButtons());
 		setBackground(Color.MAGENTA);// for testing, don't worry about it
 	}
-	
-	private JPanel actionButtons(){
+
+	private JPanel actionButtons() {
 		JPanel panel = new JPanel(new GridLayout(3, 1, 2, 2));
 		NiwaBtn drop = new NiwaBtn("Drop");
 		panel.add(drop);
@@ -39,15 +40,20 @@ public class MainAppPanel extends JPanel{
 		panel.add(action);
 		NiwaBtn inspect = new NiwaBtn("Inspect");
 		panel.add(inspect);
-		
+
 		return panel;
 	}
-	
-	public void updateText(String s){
+
+	private JPanel rotateButtons() {
+		JPanel panel = new JPanel(new GridLayout(1, 2, 2, 2));
+		return panel;
+	}
+
+	public void updateText(String s) {
 		textArea.setText(s);
 	}
-	
-	public void updateScore(String s){
+
+	public void updateScore(String s) {
 		score.setText(s);
 	}
 

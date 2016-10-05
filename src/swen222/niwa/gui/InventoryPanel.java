@@ -23,7 +23,7 @@ public class InventoryPanel extends JPanel{
 	private static final int WIDTH = HEIGHT/2;
 	// the below will change depending on how many items we let players hold
 	private static final int INV_WIDTH = 3;
-	private static final int INV_HEIGHT = 6;
+	private static final int INV_HEIGHT = 3;
 	private Controller control;
 
 	private InventoryBtn[] buttons;
