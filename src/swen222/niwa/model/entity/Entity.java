@@ -6,6 +6,7 @@ import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 
+import java.io.Serializable;
 import java.util.Observable;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Observable;
  *
  * @author Marc
  */
-public abstract class Entity extends Observable implements Visible {
+public abstract class Entity extends Observable implements Visible, Serializable {
 
 	private Location loc; // private so that notifyObservers in moveTo cannot be omitted
 

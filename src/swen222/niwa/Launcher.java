@@ -1,10 +1,12 @@
 
 package swen222.niwa;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import swen222.niwa.model.world.Room;
 import swen222.niwa.net.ClockThread;
 import swen222.niwa.net.Master;
 import swen222.niwa.net.Slave;
@@ -46,7 +48,8 @@ public class Launcher {
 		// Check what to do
 		if(server){
 			// Running in server mode
-			runServer(port, clockPeriod, broadcastClock, numOfPlayers);
+			Room game = Room.newFromFile(new File("resource/rooms/testRoom.xml"));
+			runServer(port, clockPeriod, broadcastClock, numOfPlayers, game);
 		}else if(host != null){
 			// Running in client mode
 			runClient(host, port);
@@ -64,7 +67,7 @@ public class Launcher {
 	 * Creates a server socket and listens for connections from client sockets,
 	 * once all clients have connected it starts a game.
 	 */
-	private static void runServer(int port, int gameClock, int broadcastClock, int numOfPlayers){
+	private static void runServer(int port, int gameClock, int broadcastClock, int numOfPlayers, Room game){
 		// Setup a clock thread
 		ClockThread clock = new ClockThread(gameClock);
 
@@ -79,9 +82,9 @@ public class Launcher {
 				// Listen for a socket
 				Socket client = server.accept();
 				System.out.println(client.getInetAddress() + " HAS CONNECTED.");
-				// TODO: need to create the user ID e.g. int uid = game.registerPlayer();
+				// TODO: need to create the user ID e.g. int uid = game.registerPlayer()
 				// then pass it into the Master object e.g. new Master(broadcastClock, uid, client)
-				connections[--numOfPlayers] = new Master(broadcastClock, 0, client);
+				connections[--numOfPlayers] = new Master(broadcastClock, 0, client, game);
 				connections[numOfPlayers].start();
 				// If all clients have connected
 				if(numOfPlayers == 0){

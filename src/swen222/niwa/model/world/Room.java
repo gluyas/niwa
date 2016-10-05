@@ -6,6 +6,7 @@ import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.HashEntityTable;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Observer;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ import java.util.Set;
  *
  * @author Marc
  */
-public class Room { // extends Observable if we make it mutable, but unlikely
+public class Room implements Serializable { // extends Observable if we make it mutable, but unlikely
 
 	public final String name; //each room needs a name, may display this on GUI possibly
 

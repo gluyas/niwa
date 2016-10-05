@@ -62,7 +62,7 @@ public class Slave extends Thread implements KeyListener{
 
 			// Open up the demo frame, will be the actual client window eventually
 			gameWindow = new DemoFrame(Room.newFromFile
-					(new File("/home/meiklehami1/git/GroupProjectT25/resource/rooms/testRoom.xml")), this);
+					(new File("resource/rooms/testRoom.xml")), this);
 			boolean exit = false;
 
 			while(!exit) {

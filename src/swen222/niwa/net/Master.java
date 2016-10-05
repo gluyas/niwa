@@ -3,7 +3,10 @@ package swen222.niwa.net;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+
+import swen222.niwa.model.world.Room;
 
 /**
  * A master connection receives events from a slave connection via a socket.
@@ -16,15 +19,17 @@ import java.net.Socket;
  */
 public class Master extends Thread{
 
-	// TODO: Need a reference to the game
+	// TODO: Need a reference to the game, for testing purposes will use a room
+	private static Room room;
 	private final int broadcastClock;
 	private final int uid; // a unique id
 	private final Socket socket;
 
-	public Master(int broadcastClock, int uid, Socket socket) {
+	public Master(int broadcastClock, int uid, Socket socket, Room room) {
 		this.broadcastClock = broadcastClock;
 		this.uid = uid;
 		this.socket = socket;
+		this.room = room;
 	}
 
 	public void run(){
@@ -34,6 +39,8 @@ public class Master extends Thread{
 		try {
 			DataInputStream input = new DataInputStream(socket.getInputStream());
 			DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+			
+			ObjectOutputStream objOut = new ObjectOutputStream(socket.getOutputStream());
 			boolean exit=false;
 
 			while(!exit) {
@@ -41,12 +48,28 @@ public class Master extends Thread{
 				try {
 
 					if(input.available() != 0) {
-						// Print message from client.
-						System.out.println(input.readUTF());
-						// Send something back to the client
-						output.flush();
-						Thread.sleep(broadcastClock);
+						// Player is attempting to move
+						int dir = input.readInt();
+						switch(dir){
+						case 1:
+							// get the reference to the player, then move them north
+							// e.g. room.getPlayer(uid).move(Direction.North)
+							break;
+						case 2: 
+							// get the reference to the player, then move them south
+							break;
+						case 3:
+							// get the reference to the player, then move them west
+							break;
+						case 4:
+							// get the reference to the player, then move them east
+							break;
+						}		
 					}
+					// Now broadcast updated room state to slave
+					objOut.writeObject(room);
+					output.flush();
+					Thread.sleep(broadcastClock);
 
 				} catch(InterruptedException e) {
 				}
