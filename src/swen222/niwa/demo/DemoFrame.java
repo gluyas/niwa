@@ -62,19 +62,19 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		int code = e.getKeyCode();
 		switch (code) {
 			case VK_W:
-				p.move(Direction.NORTH);
+				p.move(directionRelativeToMap(Direction.NORTH));
 				break;
 
 			case VK_A:
-				p.move(Direction.WEST);
+				p.move(directionRelativeToMap(Direction.WEST));
 				break;
 
 			case VK_S:
-				p.move(Direction.SOUTH);
+				p.move(directionRelativeToMap(Direction.SOUTH));
 				break;
 
 			case VK_D:
-				p.move(Direction.EAST);
+				p.move(directionRelativeToMap(Direction.EAST));
 				break;
 
 			case VK_Q:
@@ -92,6 +92,36 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+
+	}
+
+
+	/**
+	 * Returns the correct direction for the player to move, relative
+	 * to the map orientation.
+	 * @param d
+	 * @return
+	 */
+	public Direction directionRelativeToMap(Direction d){
+
+		Direction roomDirection = rr.getFacing();
+
+		switch(roomDirection){
+
+		case NORTH:
+			return d;
+
+		case WEST:
+			return d.turnCCW();
+
+		case SOUTH:
+			d=d.turnCW();
+			return d.turnCW();
+
+		case EAST:
+			return d.turnCW();
+		}
+		return d;
 
 	}
 
