@@ -22,12 +22,16 @@ import static java.awt.event.KeyEvent.*;
  */
 public class DemoFrame extends JFrame implements Observer, KeyListener {
 
-	JPanel panel;
+	DemoPanel panel;
 	RoomRenderer rr;
 	DemoPlayer p;
+	String stageName;
 
-	public DemoFrame(Room stage) {
+	public DemoFrame(String stageName) {
 		super("Garden Demo");
+
+		this.stageName = stageName;
+		Room stage = Room.newFromFile(new File(stageName));
 
 		rr = new RoomRenderer(stage);
 		panel = new DemoPanel(rr);
@@ -38,7 +42,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		panel.setSize(1280, 720);
 		addKeyListener(this);
 
-		p = new DemoPlayer(Location.at(stage, 2, 3));
+		p = new DemoPlayer(Location.at(stage, 0, 0));
 		if (!stage.addEntity(p)) throw new AssertionError();
 		p.addObserver(this);
 
@@ -86,8 +90,21 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 				rr.rotateCCW();
 				repaint();
 				break;
+
+			case VK_F5:
+				refresh();
 		}
 		//repaint();
+	}
+
+	private void refresh() {
+		rr.r.removeEntity(p);
+		Room stage = Room.newFromFile(new File(stageName));
+		rr = new RoomRenderer(stage);
+		panel.setRR(rr);
+		p.setLocation(Location.at(stage, 0, 0));
+		stage.addEntity(p);
+		repaint();
 	}
 
 	@Override
@@ -101,8 +118,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 			return;
 		}
 		try {
-			Room stage = Room.newFromFile(new File(args[0]));
-			new DemoFrame(stage);
+			new DemoFrame(args[0]);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

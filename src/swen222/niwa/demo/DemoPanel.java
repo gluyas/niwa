@@ -27,4 +27,8 @@ public class DemoPanel extends JPanel {
 		g.fillRect(0,0,getWidth(), getHeight());
 		rr.draw(g, this.getWidth(), this.getHeight());
 	}
+
+	public void setRR(RoomRenderer rr) {
+		this.rr = rr;
+	}
 }
