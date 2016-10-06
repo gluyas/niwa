@@ -128,11 +128,20 @@ public class RoomParser {
 				Tile t = new Tile(1,TileType.GRASSTILE);
 
 
-				char s = line.charAt(col*2);
+				char s = line.charAt(col*3);
 
 				//first we need to read the height
 				//note that this increases the position of col by 1
-				char s2 = line.charAt((col*2)+1);
+				char s2 = line.charAt((col*3)+1);
+
+
+				//additionally read the 'space' after the tile.
+				char s3 = line.charAt((col*3)+2);
+
+				//this needs to be a space - if its not throw an error
+				if(s3!=' '){
+				throw new Error ("There should be a space here");
+				}
 
 
 				int blockHeight = Character.getNumericValue(s2);

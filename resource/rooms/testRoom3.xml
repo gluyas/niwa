@@ -3,15 +3,15 @@
 <width>10</width> <height>9</height>
 
 <tiles>
-	<line>s1s1s1s1s1s1s1s1s1s1</line>
-	<line>s1a1a1a1a1a1a1a1a1s1</line>
-	<line>s1a1d2d2a1a1d2d2a1s1</line>
-	<line>s1a1d2d2a1a1d2d2a1s1</line>
-	<line>s1a1a1a1a1a1a1a1a1s1</line>
-	<line>s1a1d2d2a1a1d2d2a1s1</line>
-	<line>s1a1d2d2a1a1d2d2a1s1</line>
-	<line>s1a1a1a1a1a1a1a1a1s1</line>
-	<line>s1s1s1s1s1s1s1s1s1s1</line>
+	<line>s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 </line>
+	<line>s1 a1 a1 a1 a1 a1 a1 a1 a1 s1 </line>
+	<line>s1 a1 d2 d2 a1 a1 d2 d2 a1 s1 </line>
+	<line>s1 a1 d2 d2 a1 a1 d2 d2 a1 s1 </line>
+	<line>s1 a1 a1 a1 a1 a1 a1 a1 a1 s1 </line>
+	<line>s1 a1 d2 d2 a1 a1 d2 d2 a1 s1 </line>
+	<line>s1 a1 d2 d2 a1 a1 d2 d2 a1 s1 </line>
+	<line>s1 a1 a1 a1 a1 a1 a1 a1 a1 s1 </line>
+	<line>s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 </line>
 	
 	
 </tiles>
