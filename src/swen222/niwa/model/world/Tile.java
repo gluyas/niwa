@@ -1,5 +1,7 @@
 package swen222.niwa.model.world;
 
+import java.util.Random;
+
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.gui.Visible;
 import swen222.niwa.model.entity.Entity;
@@ -27,10 +29,14 @@ public class Tile implements Visible {
 	public Prop prop;
 	public boolean canOccupy;
 
+	private Random random;
+
 	public Tile(int height, TileType type) {
 		this.height = height;
 		this.type = type;
+		random = new Random();
 		setTileVariables(type);
+
 
 
 	}
@@ -39,6 +45,7 @@ public class Tile implements Visible {
 		this.height = height;
 		this.type = type;
 		this.prop = prop;
+		random = new Random();
 		setTileVariables(type);
 	}
 
@@ -48,9 +55,31 @@ public class Tile implements Visible {
 	 * @param type
 	 */
 	public void setTileVariables(TileType type){
+
+
+
 		switch(type){
 		case GRASSTILE:
-			this.texture = new DevTexture(DevTexture.grassBlock1);
+
+
+			int grassRandom = random.nextInt(3);
+
+			switch (grassRandom){
+			case 0:
+				this.texture = new DevTexture(DevTexture.grassBlock1);
+				break;
+			case 1:
+				this.texture = new DevTexture(DevTexture.grassBlock2);
+				break;
+			case 2:
+				this.texture = new DevTexture(DevTexture.grassBlock3);
+				break;
+
+			default:
+				this.texture = new DevTexture(DevTexture.grassBlock1);
+				break;
+			}
+
 			this.canOccupy = true;
 			break;
 
@@ -73,7 +102,22 @@ public class Tile implements Visible {
 
 
 		case WATERTILE:
-			texture = new DevTexture(DevTexture.waterBlock1);
+
+			int waterRandom = random.nextInt(2);
+
+			switch (waterRandom){
+			case 0:
+				this.texture = new DevTexture(DevTexture.waterBlock1);
+				break;
+			case 1:
+				this.texture = new DevTexture(DevTexture.waterBlock3);
+				break;
+			default:
+				this.texture = new DevTexture(DevTexture.waterBlock1);
+				break;
+			}
+
+
 			this.canOccupy = false;
 			break;
 
@@ -85,7 +129,7 @@ public class Tile implements Visible {
 
 
 	}
-	
+
 	/**
 	 * Returns the height of the tile
 	 * @return
@@ -102,7 +146,7 @@ public class Tile implements Visible {
 	public TileType getType(){
 		return this.type;
 	}
-	
+
 	/**
 	 * Adds a prop to the tile
 	 * @param p
@@ -110,7 +154,7 @@ public class Tile implements Visible {
 	public void addProp(Prop p){
 		this.prop=p;
 	}
-	
+
 
 	/**
 	 * Checks if a specified Entity may occupy the Location of this Tile

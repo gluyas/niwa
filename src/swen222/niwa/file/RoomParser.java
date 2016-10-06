@@ -115,26 +115,26 @@ public class RoomParser {
 		if(list.getLength()!=getHeight()){
 			throw new IndexOutOfBoundsException("The representation of the tiles is an incorrect size");
 		}
-		
-		
+
+
 
 		//goes through all of the lines from top to bottom
 		for(int row = 0; row<height; row++){
-			
+
 			String line = list.item(row).getTextContent();
 			int col = 0;
 			while(col<width){
 				//breaks up the line into chars
 				Tile t = new Tile(1,TileType.GRASSTILE);
-				
-				
+
+
 				char s = line.charAt(col*2);
-				
+
 				//first we need to read the height
 				//note that this increases the position of col by 1
 				char s2 = line.charAt((col*2)+1);
-				
-				
+
+
 				int blockHeight = Character.getNumericValue(s2);
 
 				//creates different tiles depending on the char
@@ -158,10 +158,10 @@ public class RoomParser {
 						t=new Tile(blockHeight,TileType.KOITILE);
 						break;
 				}
-				
+
 
 				tiles[row][col]=t;
-				
+
 				col++;
 			}
 
@@ -173,7 +173,7 @@ public class RoomParser {
 
 	/**
 	 * Gets the props from the xml, and returns a 2D array representation of them
-	 * on the map. 
+	 * on the map.
 	 * @return
 	 */
 	public Prop[][] getProps(){
@@ -194,15 +194,15 @@ public class RoomParser {
                 String type = el.getAttribute("type");
                 String stringCol = el.getAttribute("col");
                 String stringRow = el.getAttribute("row");
-                
+
                 //convert them to appropriate types
                 Prop.PropType propType = stringToEnumProp(type);
                 int col = Integer.valueOf(stringCol);
                 int row = Integer.valueOf(stringRow);
-                
+
                 //add the prop in the 2D array
                 props[row][col]=new Prop(propType);
-                
+
 
             }
 		}
@@ -210,13 +210,15 @@ public class RoomParser {
 		return props;
 
 		}
-	
-	
+
+
 	/**
 	 * Gets the entities from the xml, and returns a 2D array representation of them
 	 * on the map. *NOTE* In construction - Commented out for the moment
 	 * @return
 	 */
+
+
 	/*
 	public Entity[][] getEntities(){
 
@@ -236,15 +238,20 @@ public class RoomParser {
                 String type = el.getAttribute("type");
                 String stringCol = el.getAttribute("col");
                 String stringRow = el.getAttribute("row");
-                
-                //convert them to appropriate types
-                Prop.PropType propType = stringToEnum(type);
+
                 int col = Integer.valueOf(stringCol);
                 int row = Integer.valueOf(stringRow);
-                
+
+                //convert them to appropriate types
+                switch(type){
+
+
+                Prop.PropType propType = stringToEnum(type);
+
+
                 //add the prop in the 2D array
                 props[row][col]=new Prop(propType);
-                
+
 
             }
 		}
@@ -255,19 +262,20 @@ public class RoomParser {
 		*/
 
 
+
 	public Prop.PropType stringToEnumProp(String type){
-		
+
 		String capsString = type.toUpperCase();
 		return Enum.valueOf(Prop.PropType.class, capsString);
-		
+
 	}
-	
+
 
 	public Prop.PropType stringToEnumEntity(String type){
-		
+
 		String capsString = type.toUpperCase();
 		return Enum.valueOf(Prop.PropType.class, capsString);
-		
+
 	}
 
 

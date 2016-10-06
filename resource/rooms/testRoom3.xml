@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<class>
+<width>10</width> <height>9</height>
+
+<tiles>
+	<line>s1s1s1s1s1s1s1s1s1s1</line>
+	<line>s1a1a1a1a1a1a1a1a1s1</line>
+	<line>s1a1d2d2a1a1d2d2a1s1</line>
+	<line>s1a1d2d2a1a1d2d2a1s1</line>
+	<line>s1a1a1a1a1a1a1a1a1s1</line>
+	<line>s1a1d2d2a1a1d2d2a1s1</line>
+	<line>s1a1d2d2a1a1d2d2a1s1</line>
+	<line>s1a1a1a1a1a1a1a1a1s1</line>
+	<line>s1s1s1s1s1s1s1s1s1s1</line>
+	
+	
+</tiles>
+
+<entity type = "seed" col = "5" row = "3"/>
+<entity type = "seed" col = "5" row = "4"/>
+<entity type = "seed" col = "5" row = "5"/>
+<entity type = "seed" col = "6" row = "3"/>
+<entity type = "seed" col = "6" row = "4"/>
+<entity type = "seed" col = "6" row = "5"/>
+
+</class>
