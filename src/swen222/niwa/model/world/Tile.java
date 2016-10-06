@@ -113,6 +113,10 @@ public class Tile implements Visible {
 		this.prop=p;
 	}
 	
+	public Prop getProp(){
+		return prop;
+	}
+	
 
 	/**
 	 * Checks if a specified Entity may occupy the Location of this Tile
@@ -126,6 +130,8 @@ public class Tile implements Visible {
 		if (!canOccupy){return false;}
 		else return prop.canPassThrough();
 	}
+	
+	
 
 	@Override
 	public Sprite sprite() {

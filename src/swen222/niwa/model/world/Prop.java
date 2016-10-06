@@ -36,7 +36,8 @@ public class Prop implements Visible {
 		FENCE,
 		GRASS,
 		SMALLROCK,
-		SMALLTREE;
+		SMALLTREE,
+		SOIL;
 
 	}
 
@@ -89,7 +90,7 @@ public class Prop implements Visible {
 			texture = new DevTexture(DevTexture.smallTree1);
 			this.canOccupy = false;
 			break;
-
+		case SOIL:
 
 		}
 
