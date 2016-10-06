@@ -10,59 +10,57 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JButton;
 
-public class NiwaBtn extends JButton implements MouseListener{
-	
+public class NiwaBtn extends JButton implements MouseListener {
+
 	private boolean hover;
 	private boolean click;
 	private String label;
-	
-	public NiwaBtn(String label){
+
+	public NiwaBtn(String label) {
 		hover = false;
 		click = false;
 		this.label = label;
-		
+
 		setFocusable(true);
 		setContentAreaFilled(false);
 		setBorderPainted(false);
 		setVisible(true);
 		addMouseListener(this);
-		
+
 		setActionCommand(label);
 		setToolTipText(label);
 	}
-	
+
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(80, 40);
+		return new Dimension(90, 40);
 	}
-	
+
 	@Override
-	public void paintComponent(Graphics g){
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		if(click){
+
+		if (click) {
 			g.setColor(Color.RED);
-		}else if(hover){
+		} else if (hover) {
 			g.setColor(Color.BLUE);
-		}else{
+		} else {
 			g.setColor(Color.GREEN);
 		}
-		
+
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		
+
 		FontMetrics fm = g.getFontMetrics();
 		Rectangle2D r = fm.getStringBounds(label, g);
-		int x = (this.getWidth() - (int) r.getWidth())/2;
-		int y = this.getHeight() - (int) r.getHeight()/2 - fm.getAscent()/2 - fm.getDescent();
-		
+		int x = (this.getWidth() - (int) r.getWidth()) / 2;
+		int y = this.getHeight() - (int) r.getHeight() / 2 - fm.getAscent() / 2 - fm.getDescent();
+
 		g.setColor(Color.BLACK);
 		g.drawString(label, x, y);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

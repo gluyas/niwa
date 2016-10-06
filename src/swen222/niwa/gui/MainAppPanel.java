@@ -28,8 +28,8 @@ public class MainAppPanel extends JPanel {
 		score = new JLabel("0");
 
 		add(textArea);
+		add(rotateButtons());
 		add(actionButtons());
-		setBackground(Color.MAGENTA);// for testing, don't worry about it
 	}
 
 	private JPanel actionButtons() {
@@ -46,6 +46,10 @@ public class MainAppPanel extends JPanel {
 
 	private JPanel rotateButtons() {
 		JPanel panel = new JPanel(new GridLayout(1, 2, 2, 2));
+		NiwaBtn rotLeft = new NiwaBtn("Rotate Left(Q)");
+		panel.add(rotLeft);
+		NiwaBtn rotRight = new NiwaBtn("Rotate Right(E)");
+		panel.add(rotRight);
 		return panel;
 	}
 
