@@ -1,6 +1,7 @@
 package swen222.niwa.model.world;
 
 import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.entity.PlayerEntity;
 import swen222.niwa.model.world.Tile.Texture;
 import swen222.niwa.model.world.Tile.TileType;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 public class Room { // extends Observable if we make it mutable, but unlikely
 
 	public static String name; //each room needs a name, may display this on GUI possibly
-	
+
 	public static int width;  // keep these fields final if we go for Rooms being immutable
 	public static int height; // there doesn't seem like any good use case where these would need to change
 
@@ -33,15 +34,15 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	 * @return the newly created Room
 	 */
 	public static Room newFromFile(File f) {
-		
+
 		RoomParser parser = new RoomParser(f);
 		width=parser.width;
 		height=parser.height;
-		
+
 		Room room = new Room(width,height);
-		
+
 		room.tiles = parser.getTiles();
-		
+
 		Prop[][] props = parser.getProps();
 		for(int row = 0; row<width; row++){
 			for(int col = 0; col<width; col++){
@@ -50,18 +51,20 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 				}
 			}
 		}
-		
+
 		return room;
 	}
-	
-	
+
+
 
 	// TODO: remove this - exists for testing purposes
 	public static Room emptyRoom(int w, int h) {
 		return new Room(w, h);
 	}
 
-	
+	public static void addEntity(Location loc, Entity player){
+		player.setLocation(loc);
+	}
 
 	/**
 	 * Gets the Tile in this Room at a specified Location
@@ -80,7 +83,7 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	private Room(int width, int height) {
 		this.width = width;
 		this.height = height;
-		
+
 	}
 
 }

@@ -71,13 +71,23 @@ public class Rules {
 	public boolean move(Entity e, Direction dir){
 		try {
 			Location toGo =e.getLocation().move(dir);
+			Location from =e.getLocation();
+
 			Set<Entity> entitiesInDirection =entities.get(toGo);//check for players in direction
 			for(Entity entity: entitiesInDirection){
 				if (entity instanceof PlayerEntity){
 					return false;
 				}
 			}
-			if(!toGo.room.tileAt(toGo).canOccupy(e)){//check for physical props in direction
+
+			if(!toGo.tile().canOccupy(e)){//check for physical props in direction
+				return false;
+			}
+
+			if(from.tile().getHeight()-toGo.tile().getHeight()>1){//to go is two steps lower
+				return false;
+			}
+			if(from.tile().getHeight()-toGo.tile().getHeight()<-1){//togo is two steps higher
 				return false;
 			}
 		} catch (InvalidLocationException e1) {
