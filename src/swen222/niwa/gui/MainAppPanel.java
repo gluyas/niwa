@@ -10,6 +10,13 @@ import javax.swing.JTextArea;
 
 import swen222.niwa.Controller;
 
+/**
+ * The panel that creates and manages all the non-inventory components of the
+ * application window
+ * 
+ * @author Zoe
+ *
+ */
 public class MainAppPanel extends JPanel {
 
 	private static final int HEIGHT = 550;
@@ -32,6 +39,11 @@ public class MainAppPanel extends JPanel {
 		add(actionButtons());
 	}
 
+	/**
+	 * creates the game action buttons and the panel that contains them
+	 * 
+	 * @return
+	 */
 	private JPanel actionButtons() {
 		JPanel panel = new JPanel(new GridLayout(3, 1, 2, 2));
 		NiwaBtn drop = new NiwaBtn("Drop");
@@ -44,6 +56,11 @@ public class MainAppPanel extends JPanel {
 		return panel;
 	}
 
+	/**
+	 * creates the rotation buttons and the panel
+	 * 
+	 * @return
+	 */
 	private JPanel rotateButtons() {
 		JPanel panel = new JPanel(new GridLayout(1, 2, 2, 2));
 		NiwaBtn rotLeft = new NiwaBtn("Rotate Left(Q)");
@@ -53,10 +70,18 @@ public class MainAppPanel extends JPanel {
 		return panel;
 	}
 
+	/**
+	 * Updates the text area to display the given text
+	 * @param s - String to be displayed in the text area
+	 */
 	public void updateText(String s) {
 		textArea.setText(s);
 	}
 
+	/**
+	 * Updates the score label
+	 * @param s - String representation of the player's score
+	 */
 	public void updateScore(String s) {
 		score.setText(s);
 	}

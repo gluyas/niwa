@@ -14,13 +14,14 @@ import swen222.niwa.Controller;
 
 /**
  * Panel for displaying the inventory. Creates and manages the inventory buttons
+ * 
  * @author Zoe
  *
  */
-public class InventoryPanel extends JPanel{
+public class InventoryPanel extends JPanel {
 
 	private static final int HEIGHT = 550;
-	private static final int WIDTH = HEIGHT/2;
+	private static final int WIDTH = HEIGHT / 2;
 	// the below will change depending on how many items we let players hold
 	private static final int INV_WIDTH = 3;
 	private static final int INV_HEIGHT = 3;
@@ -29,12 +30,12 @@ public class InventoryPanel extends JPanel{
 	private InventoryBtn[] buttons;
 	private DeselectableButtonGroup group;
 
-	public InventoryPanel(Controller control){
+	public InventoryPanel(Controller control) {
 		this.control = control;
-		buttons = new InventoryBtn[INV_WIDTH*INV_HEIGHT];
+		buttons = new InventoryBtn[INV_WIDTH * INV_HEIGHT];
 		group = new DeselectableButtonGroup();
 
-		for(int i = 0; i < buttons.length; i++){
+		for (int i = 0; i < buttons.length; i++) {
 			buttons[i] = new InventoryBtn();
 			group.add(buttons[i]);
 			add(buttons[i]);
@@ -46,23 +47,29 @@ public class InventoryPanel extends JPanel{
 		updateInventory(getTestSet());
 	}
 
-	private void updateInventory(Map<String,Integer> items){
+	/**
+	 * Takes in a map of item names and counts, iterates through each item
+	 * updating inventory buttons accordingly
+	 * 
+	 * @param items
+	 */
+	private void updateInventory(Map<String, Integer> items) {
 		int i = 0;
-		for(String s : items.keySet()){
+		for (String s : items.keySet()) {
 			buttons[i].updateButton(s, items.get(s));
 			i++;
 		}
 	}
 
 	@Override
-	public Dimension getPreferredSize(){
+	public Dimension getPreferredSize() {
 		return new Dimension(WIDTH, HEIGHT);
 	}
 
-	//methods for testing concept
+	// methods for testing concept
 
-	private Map<String,Integer> getTestSet(){
-		Map<String,Integer> items = new HashMap<>();
+	private Map<String, Integer> getTestSet() {
+		Map<String, Integer> items = new HashMap<>();
 		items.put("red", 1);
 		items.put("blue", 2);
 		items.put("green", 3);
@@ -71,4 +78,3 @@ public class InventoryPanel extends JPanel{
 	}
 
 }
-

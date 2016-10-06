@@ -10,6 +10,11 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JButton;
 
+/**
+ * Creates all non-inventory buttons for the game
+ * @author Zoe
+ *
+ */
 public class NiwaBtn extends JButton implements MouseListener {
 
 	private boolean hover;
