@@ -101,20 +101,6 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 		player.setLocation(loc);
 	}
 
-	/**
-	 * Gets the Tile in this Room at a specified Location
-	 * @param loc the Location to find the Tile at
-	 * @throws IllegalArgumentException if the Location is a different Room
-	 * @return the Tile at that Location
-	 */
-	public Tile tileAt(Location loc) {
-		if (loc.room != this) throw new IllegalArgumentException("Location is a different Room");
-		else {
-			assert tiles[loc.row][loc.col] != null : String.format("Tile at %s is null", loc.toString());
-			return tiles[loc.row][loc.col];
-		}
-	}
-
 	private Room(String name, int width, int height) {
 		this.width = width;
 		this.height = height;

@@ -27,6 +27,7 @@ public class Prop implements Visible {
 		BAMBOO,
 		BIGROCK,
 		BIGTREE,
+		BIGTREE2,
 		BUSH,
 		FENCE,
 		GRASS,
@@ -42,62 +43,63 @@ public class Prop implements Visible {
 	 * props have different behaviours
 	 * @param type
 	 */
-	public void setPropVariables(PropType type){
-		switch(type){
-		case BAMBOO:
-			this.texture = new DevTexture(DevTexture.bamboo, 0.5, 0.79);
-			this.canOccupy = false;
-			break;
+	public void setPropVariables(PropType type) {
+		switch (type) {
+			case BAMBOO:
+				this.texture = new DevTexture(DevTexture.bamboo, 0.5, 0.79);
+				this.canOccupy = false;
+				break;
 
-		case BIGROCK:
-			texture = new DevTexture(DevTexture.bigRock2, 0.5, 0.83);
-			this.canOccupy = false;
-			break;
-
-
-		case BIGTREE:
-			texture = new DevTexture(DevTexture.bigTree1, 0.5, 0.87);
-			this.canOccupy = false;
-			break;
-
-		case BIGTREE2:
-			texture = new DevTexture(DevTexture.bigTree2, 0.47, 0.84);
-			this.canOccupy = false;
-			break;
-
-		case BUSH:
-			texture = new DevTexture(DevTexture.bush);
-			this.canOccupy = false;
-			break;
+			case BIGROCK:
+				texture = new DevTexture(DevTexture.bigRock2, 0.5, 0.83);
+				this.canOccupy = false;
+				break;
 
 
-		case FENCE:
-			texture = new DevTexture(DevTexture.fenceSide);
-			this.canOccupy = false;
-			break;
+			case BIGTREE:
+				texture = new DevTexture(DevTexture.bigTree1, 0.5, 0.87);
+				this.canOccupy = false;
+				break;
 
-		case GRASS:
-			texture = new DevTexture(DevTexture.flower);
-			this.canOccupy = true;
-			break;
+			case BIGTREE2:
+				texture = new DevTexture(DevTexture.bigTree2, 0.47, 0.84);
+				this.canOccupy = false;
+				break;
 
-		case SMALLTREE:
-			texture = new DevTexture(DevTexture.smallTree1, 0.5, 0.835);
-			this.canOccupy = false;
-			break;
+			case BUSH:
+				texture = new DevTexture(DevTexture.bush);
+				this.canOccupy = false;
+				break;
 
-		case ZEN1:
-			texture = new DevTexture(DevTexture.zen1,0.5,0.835);
-			this.canOccupy=false;
-			break;
 
-		case ZEN2:
-			texture = new DevTexture(DevTexture.zen2,0.5,0.835);
-			this.canOccupy=false;
-			break;
-		case SOIL:
+			case FENCE:
+				texture = new DevTexture(DevTexture.fenceSide);
+				this.canOccupy = false;
+				break;
+
+			case GRASS:
+				texture = new DevTexture(DevTexture.flower);
+				this.canOccupy = true;
+				break;
+
+			case SMALLTREE:
+				texture = new DevTexture(DevTexture.smallTree1, 0.5, 0.835);
+				this.canOccupy = false;
+				break;
+
+			case ZEN1:
+				texture = new DevTexture(DevTexture.zen1, 0.5, 0.835);
+				this.canOccupy = false;
+				break;
+
+			case ZEN2:
+				texture = new DevTexture(DevTexture.zen2, 0.5, 0.835);
+				this.canOccupy = false;
+				break;
+			case SOIL:
 
 		}
+	}
 
 
 	/**

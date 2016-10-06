@@ -8,8 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.entity.EntityTable;
+import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.entity.PlayerEntity;
+import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
@@ -30,7 +31,7 @@ public class LogicTest {
 
 	@Before
 	public void setup() {
-		table = new EntityTable<>();
+		table = new HashEntityTable<>();
 		File testRoom1 = new File("rooms/testRoom.xml");
 		r= Room.newFromFile(testRoom1);
 		r.addEntity(Location.at(r, 0, 0), ent1);

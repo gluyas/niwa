@@ -3,7 +3,7 @@ package swen222.niwa.model.world;
 import java.util.Set;
 
 import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.entity.EntityTable;
+import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.entity.PlayerEntity;
 import swen222.niwa.model.entity.Seed;
