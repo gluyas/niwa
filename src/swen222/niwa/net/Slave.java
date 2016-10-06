@@ -61,8 +61,7 @@ public class Slave extends Thread implements KeyListener{
 			objin = new ObjectInputStream(socket.getInputStream());
 
 			// Open up the demo frame, will be the actual client window eventually
-			gameWindow = new DemoFrame(Room.newFromFile
-					(new File("resource/rooms/testRoom.xml")), this);
+			
 			boolean exit = false;
 
 			while(!exit) {
@@ -72,19 +71,16 @@ public class Slave extends Thread implements KeyListener{
 					byte action = input.readByte();
 					switch (action) {
 						case 'r': // room
-							gameWindow.rr = new RoomRenderer(Room.newFromFile(
-									new File(input.readUTF())));
-							gameWindow.repaint();
+							// TODO: initial room state, should only be sent once
+							// and then the remaining mutable objects will be sent
+							// over e.g. entities
 							break;
+						case 'p':
+							// TODO: updated player state
+							break;
+						case 's':
+							// TODO: updated seed state
 					}
-					//int amount = input.readInt();
-					//byte[] data = new byte[amount];
-					//input.readFully(data);
-					// at this point I am just testing sending strings from master to slave
-					// decode the string
-					//System.out.println(new String(data, Charset.defaultCharset()));
-					//game.fromByteArray(data);
-					//display.repaint();
 				}
 			}
 			socket.close(); // release socket ... v.important!

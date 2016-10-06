@@ -2,6 +2,7 @@ package swen222.niwa.net;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -39,8 +40,16 @@ public class Master extends Thread{
 		try {
 			DataInputStream input = new DataInputStream(socket.getInputStream());
 			DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-			
+
 			ObjectOutputStream objOut = new ObjectOutputStream(socket.getOutputStream());
+
+			// start by sending the initial state of a room
+
+			room = Room.newFromFile(new File("/home/meiklehami1/resource/rooms/testRoom.xml"));
+			output.writeByte('c');
+			objOut.writeObject(room);
+
+
 			boolean exit=false;
 
 			while(!exit) {
@@ -55,7 +64,7 @@ public class Master extends Thread{
 							// get the reference to the player, then move them north
 							// e.g. room.getPlayer(uid).move(Direction.North)
 							break;
-						case 2: 
+						case 2:
 							// get the reference to the player, then move them south
 							break;
 						case 3:
@@ -64,7 +73,7 @@ public class Master extends Thread{
 						case 4:
 							// get the reference to the player, then move them east
 							break;
-						}		
+						}
 					}
 					// Now broadcast updated room state to slave
 					objOut.writeObject(room);
