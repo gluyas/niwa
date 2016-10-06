@@ -3,11 +3,11 @@
 <width>5</width> <height>5</height>
 
 <tiles>
-	<line>g1g1g1g1g1</line>
-	<line>g1g2g2g2g1</line>
-	<line>g1g2g2g2g1</line>
-	<line>g1g2g2g2g1</line>
-	<line>g1g1g1g1g1</line>
+	<line>g1 g1 g1 g1 g1 </line>
+	<line>g1 g2 g2 g2 g1 </line>
+	<line>g1 g2 g2 g2 g1 </line>
+	<line>g1 g2 g2 g2 g1 </line>
+	<line>g1 g1 g1 g1 g1 </line>
 </tiles>
 
 <prop type = "bigTree" col = "1" row = "0" />

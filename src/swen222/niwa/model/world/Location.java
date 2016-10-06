@@ -37,13 +37,6 @@ public class Location {
 	}
 
 	/**
-	 * @return true if the given arguments will create a valid Position with Postion.at(...)
-	 */
-	public static boolean isValidPosition(Room room, int col, int row) {
-		return !((col < 0 || col >= room.width  || row < 0 || row >= room.height));
-	}
-
-	/**
 	 * Get the Location (in the same Room) adjacent to this one, in a specified Direction
 	 *
 	 * @param d Direction to move in
@@ -54,8 +47,15 @@ public class Location {
 		if (d == null) throw new IllegalArgumentException("Cannot move in null direction");
 		int newCol = col + d.relativeX();
 		int newRow = row + d.relativeY();
-		checkPos(room, col, row);
+		checkPos(room, newCol, newRow);
 		return new Location(room, newCol, newRow);
+	}
+
+	/**
+	 * @return true if the given arguments will create a valid Position with Postion.at(...)
+	 */
+	public static boolean isValidPosition(Room room, int col, int row) {
+		return col >= 0 && col < room.width && row >= 0 && row < room.height;
 	}
 
 	/**

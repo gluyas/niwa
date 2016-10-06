@@ -3,12 +3,10 @@ package swen222.niwa.tests;
 import org.junit.Before;
 import org.junit.Test;
 import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 
-import java.util.Collection;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -16,9 +14,9 @@ import static org.junit.Assert.*;
 /**
  * @author Marc
  */
-public class EntityTableTest {
+public class HashEntityTableTest {
 
-	EntityTable<Entity> table;
+	HashEntityTable<Entity> table;
 	Room r;
 	Location loc1;
 	Location loc2;
@@ -28,7 +26,7 @@ public class EntityTableTest {
 
 	@Before
 	public void setup() {
-		table = new HashEntityTable<Entity>();
+		table = new HashEntityTable<>();
 		r = Room.emptyRoom(2, 2);
 		loc1 = Location.at(r, 0, 0);
 		loc2 = Location.at(r, 1, 0);
@@ -51,10 +49,10 @@ public class EntityTableTest {
 		assertTrue(table.add(ent1));
 		assertTrue(table.add(ent2));
 
-		ent1.setLocation(loc2);
+		ent1.moveTo(loc2);
 		assertFalse(table.add(ent1));
 
-		ent2.setLocation(loc3);
+		ent2.moveTo(loc3);
 		assertFalse(table.add(ent2));
 	}
 
@@ -75,9 +73,9 @@ public class EntityTableTest {
 	public void remove02() throws Exception {
 		table.add(ent1);
 
-		ent1.setLocation(loc2);
+		ent1.moveTo(loc2);
 		assertTrue(table.remove(ent1));
-		ent1.setLocation(loc3);
+		ent1.moveTo(loc3);
 		assertFalse(table.remove(ent1));
 	}
 
@@ -113,11 +111,11 @@ public class EntityTableTest {
 	public void size03() throws Exception {
 		table.add(ent1);
 		table.add(ent2);
-		ent1.setLocation(loc2);
+		ent1.moveTo(loc2);
 		assertEquals(2, table.size());
 		table.remove(ent1);
 		assertEquals(1, table.size());
-		ent1.setLocation(loc3);
+		ent1.moveTo(loc3);
 		assertEquals(1, table.size());
 	}
 
@@ -134,7 +132,7 @@ public class EntityTableTest {
 		assertTrue(table.contains(ent1));
 		assertFalse(table.contains(ent2));
 
-		ent1.setLocation(loc2);
+		ent1.moveTo(loc2);
 		assertTrue(table.contains(ent1));
 	}
 
@@ -145,7 +143,7 @@ public class EntityTableTest {
 		assertTrue(bucket.contains(ent1));
 		assertFalse(bucket.contains(ent2));
 		table.add(ent2);
-		// NB: this was removed as there is no quick way to fix. See EntityTable.contains() javadoc.
+		// NB: this was removed as there is no quick way to fix. See HashEntityTable.contains() javadoc.
 		// assertFalse(bucket.contains(ent2));
 		bucket = table.get(loc1);
 		assertTrue(bucket.contains(ent1));
@@ -156,7 +154,7 @@ public class EntityTableTest {
 	public void get02() throws Exception {
 		table.add(ent1);
 		table.add(ent2);
-		ent2.setLocation(loc2);
+		ent2.moveTo(loc2);
 		Set<Entity> bucket = table.get(loc1);
 		assertTrue(bucket.contains(ent1));
 		assertFalse(bucket.contains(ent2));
@@ -173,7 +171,7 @@ public class EntityTableTest {
 		Set<Entity> bucket = table.get(loc1);
 		assertFalse(bucket.contains(ent1));
 		assertTrue(bucket.contains(ent2));
-		ent1.setLocation(loc2);
+		ent1.moveTo(loc2);
 		bucket = table.get(loc2);
 		assertFalse(bucket.contains(ent1));
 	}

@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 import swen222.niwa.Controller;
 import swen222.niwa.gui.NiwaFrame;

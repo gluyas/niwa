@@ -1,10 +1,6 @@
 package swen222.niwa.model.world;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.util.Random;
 
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.gui.Visible;
@@ -23,8 +19,8 @@ public class Tile implements Visible {
 		STONETILE,
 		SANDTILE,
 		DIRTTILE,
-		WATERTILE
-
+		WATERTILE,
+		KOITILE,
 	}
 
 	public TileType type;
@@ -33,10 +29,14 @@ public class Tile implements Visible {
 	public Prop prop;
 	public boolean canOccupy;
 
+	private Random random;
+
 	public Tile(int height, TileType type) {
 		this.height = height;
 		this.type = type;
+		random = new Random();
 		setTileVariables(type);
+
 
 
 	}
@@ -45,6 +45,7 @@ public class Tile implements Visible {
 		this.height = height;
 		this.type = type;
 		this.prop = prop;
+		random = new Random();
 		setTileVariables(type);
 	}
 
@@ -54,9 +55,29 @@ public class Tile implements Visible {
 	 * @param type
 	 */
 	public void setTileVariables(TileType type){
+
 		switch(type){
 		case GRASSTILE:
-			this.texture = new DevTexture(DevTexture.grassBlock1);
+
+
+			int grassRandom = random.nextInt(3);
+
+			switch (grassRandom){
+			case 0:
+				this.texture = new DevTexture(DevTexture.grassBlock1);
+				break;
+			case 1:
+				this.texture = new DevTexture(DevTexture.grassBlock2);
+				break;
+			case 2:
+				this.texture = new DevTexture(DevTexture.grassBlock3);
+				break;
+
+			default:
+				this.texture = new DevTexture(DevTexture.grassBlock1);
+				break;
+			}
+
 			this.canOccupy = true;
 			break;
 
@@ -79,9 +100,28 @@ public class Tile implements Visible {
 
 
 		case WATERTILE:
-			texture = new DevTexture(DevTexture.waterBlock1);
+
+			int waterRandom = random.nextInt(2);
+
+			switch (waterRandom){
+			case 0:
+				this.texture = new DevTexture(DevTexture.waterBlock1);
+				break;
+			case 1:
+				this.texture = new DevTexture(DevTexture.waterBlock3);
+				break;
+			default:
+				this.texture = new DevTexture(DevTexture.waterBlock1);
+				break;
+			}
+
+
 			this.canOccupy = false;
 			break;
+
+		case KOITILE:
+			texture = new DevTexture(DevTexture.waterBlock2);
+			this.canOccupy = false;
 
 		}
 
@@ -112,11 +152,11 @@ public class Tile implements Visible {
 	public void addProp(Prop p){
 		this.prop=p;
 	}
-	
+
 	public Prop getProp(){
 		return prop;
 	}
-	
+
 
 	/**
 	 * Checks if a specified Entity may occupy the Location of this Tile
@@ -130,11 +170,9 @@ public class Tile implements Visible {
 		if (!canOccupy){return false;}
 		else return prop.canPassThrough();
 	}
-	
-	
 
 	@Override
-	public Sprite sprite() {
+	public Sprite sprite(Direction facing) {
 		return this.texture.sprite(this.height); // using a Texture strategy
 	}
 

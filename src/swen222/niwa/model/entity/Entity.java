@@ -1,8 +1,10 @@
 package swen222.niwa.model.entity;
 
+import swen222.niwa.gui.RoomRenderer;
 import swen222.niwa.gui.Visible;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
+import swen222.niwa.model.world.Room;
 
 import java.util.Observable;
 
@@ -14,7 +16,7 @@ import java.util.Observable;
  */
 public abstract class Entity extends Observable implements Visible {
 
-	private Location loc; // private so that notifyObservers in setLocation cannot be omitted
+	private Location loc; // private so that notifyObservers in moveTo cannot be omitted
 
 	/**
 	 * Create a new Entity at the given Location
@@ -37,7 +39,7 @@ public abstract class Entity extends Observable implements Visible {
 		Location oldLoc = loc;
 		this.loc = newLoc;
 		setChanged();
-		notifyObservers(oldLoc); // this is tightly coupled with EntityTable. please be careful about making changes
+		notifyObservers(oldLoc); // this is tightly coupled with HashEntityTable. please be careful about making changes
 		return oldLoc;
 	}
 
@@ -59,11 +61,11 @@ public abstract class Entity extends Observable implements Visible {
 	// this method is not sensitive to game rules - could be fine, but maybe move this method somewhere than can enforce
 	public boolean move(Direction d) {
 		try {
-			setLocation(loc.move(d)); // this method will notify observers for us
+			Location newLoc = loc.move(d);
+			setLocation(newLoc); // this method will notify observers for us
 			return true;
 		} catch (Location.InvalidLocationException invalidMove) {
 			return false;
 		}
 	}
-
 }

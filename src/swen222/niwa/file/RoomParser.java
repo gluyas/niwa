@@ -1,8 +1,10 @@
-package swen222.niwa.model.world;
+package swen222.niwa.file;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
+import swen222.niwa.model.world.Prop;
+import swen222.niwa.model.world.Tile;
 import swen222.niwa.model.world.Tile.TileType;
 
 import javax.xml.parsers.*;
@@ -113,50 +115,62 @@ public class RoomParser {
 		if(list.getLength()!=getHeight()){
 			throw new IndexOutOfBoundsException("The representation of the tiles is an incorrect size");
 		}
-		
-		
+
+
 
 		//goes through all of the lines from top to bottom
 		for(int row = 0; row<height; row++){
-			
+
 			String line = list.item(row).getTextContent();
 			int col = 0;
 			while(col<width){
 				//breaks up the line into chars
 				Tile t = new Tile(1,TileType.GRASSTILE);
-				
-				
-				char s = line.charAt(col*2);
-				
+
+
+				char s = line.charAt(col*3);
+
 				//first we need to read the height
 				//note that this increases the position of col by 1
-				char s2 = line.charAt((col*2)+1);
-				
-				
+				char s2 = line.charAt((col*3)+1);
+
+
+				//additionally read the 'space' after the tile.
+				char s3 = line.charAt((col*3)+2);
+
+				//this needs to be a space - if its not throw an error
+				if(s3!=' '){
+				throw new Error ("There should be a space here");
+				}
+
+
 				int blockHeight = Character.getNumericValue(s2);
 
 				//creates different tiles depending on the char
 				switch(s){
-				case 'g':
-					t=new Tile(blockHeight,TileType.GRASSTILE);
-					break;
-				case 's':
-					t=new Tile(blockHeight,TileType.STONETILE);
-					break;
-				case 'a':
-					t=new Tile(blockHeight,TileType.SANDTILE);
-					break;
-				case 'd':
-					t=new Tile(blockHeight,TileType.DIRTTILE);
-					break;
-				case 'w':
-					t=new Tile(blockHeight,TileType.WATERTILE);
-					break;
+					case 'g':
+						t=new Tile(blockHeight,TileType.GRASSTILE);
+						break;
+					case 's':
+						t=new Tile(blockHeight,TileType.STONETILE);
+						break;
+					case 'a':
+						t=new Tile(blockHeight,TileType.SANDTILE);
+						break;
+					case 'd':
+						t=new Tile(blockHeight,TileType.DIRTTILE);
+						break;
+					case 'w':
+						t=new Tile(blockHeight,TileType.WATERTILE);
+						break;
+					case 'q':
+						t=new Tile(blockHeight,TileType.KOITILE);
+						break;
 				}
-				
+
 
 				tiles[row][col]=t;
-				
+
 				col++;
 			}
 
@@ -168,7 +182,7 @@ public class RoomParser {
 
 	/**
 	 * Gets the props from the xml, and returns a 2D array representation of them
-	 * on the map. 
+	 * on the map.
 	 * @return
 	 */
 	public Prop[][] getProps(){
@@ -189,15 +203,15 @@ public class RoomParser {
                 String type = el.getAttribute("type");
                 String stringCol = el.getAttribute("col");
                 String stringRow = el.getAttribute("row");
-                
+
                 //convert them to appropriate types
                 Prop.PropType propType = stringToEnumProp(type);
                 int col = Integer.valueOf(stringCol);
                 int row = Integer.valueOf(stringRow);
-                
+
                 //add the prop in the 2D array
                 props[row][col]=new Prop(propType);
-                
+
 
             }
 		}
@@ -205,13 +219,15 @@ public class RoomParser {
 		return props;
 
 		}
-	
-	
+
+
 	/**
 	 * Gets the entities from the xml, and returns a 2D array representation of them
 	 * on the map. *NOTE* In construction - Commented out for the moment
 	 * @return
 	 */
+
+
 	/*
 	public Entity[][] getEntities(){
 
@@ -231,15 +247,20 @@ public class RoomParser {
                 String type = el.getAttribute("type");
                 String stringCol = el.getAttribute("col");
                 String stringRow = el.getAttribute("row");
-                
-                //convert them to appropriate types
-                Prop.PropType propType = stringToEnum(type);
+
                 int col = Integer.valueOf(stringCol);
                 int row = Integer.valueOf(stringRow);
-                
+
+                //convert them to appropriate types
+                switch(type){
+
+
+                Prop.PropType propType = stringToEnum(type);
+
+
                 //add the prop in the 2D array
                 props[row][col]=new Prop(propType);
-                
+
 
             }
 		}
@@ -250,19 +271,20 @@ public class RoomParser {
 		*/
 
 
+
 	public Prop.PropType stringToEnumProp(String type){
-		
+
 		String capsString = type.toUpperCase();
 		return Enum.valueOf(Prop.PropType.class, capsString);
-		
+
 	}
-	
+
 
 	public Prop.PropType stringToEnumEntity(String type){
-		
+
 		String capsString = type.toUpperCase();
 		return Enum.valueOf(Prop.PropType.class, capsString);
-		
+
 	}
 
 

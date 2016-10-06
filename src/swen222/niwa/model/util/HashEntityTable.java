@@ -1,19 +1,22 @@
-package swen222.niwa.model.entity;
+package swen222.niwa.model.util;
 
+import com.sun.javafx.collections.UnmodifiableListSet;
+import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.world.Location;
 
 import java.util.*;
 
 /**
  * Set implementation that allows for easy lookup of Entities by their Location; formally, Entity.getLocation()
- * Will remain updated with Entities inside it, as long as Entity.setLocation() is not bypassed.
+ * Will remain updated with Entities inside it, as long as Entity.moveTo() is not bypassed. Uses Hashed Collections
+ * internally.
  *
  * @author Marc
  */
-public class EntityTable<T extends Entity> extends AbstractSet<T> implements Observer {
+public class HashEntityTable<T extends Entity> extends AbstractSet<T> implements EntityTable<T>, Observer {
 
 	private HashMap<Location, Set<T>> locMap = new HashMap<>();
-	private HashSet<T> entries = new HashSet<T>();
+	private HashSet<T> entries = new HashSet<>();
 
 	/**
 	 * Get all Entities stored in this table at a specified location. Note that the members of this Collection
@@ -50,14 +53,14 @@ public class EntityTable<T extends Entity> extends AbstractSet<T> implements Obs
 				Location newLoc = ent.getLocation();
 				if (oldLoc.equals(newLoc)) return; // don't need to do anything
 				if (!removeFromBuckets(ent, oldLoc, locMap)) { // probably getting trolled - but could mean table bad
-					System.err.printf("Lost %s from EntityTable %s under %s", ent, this, oldLoc);
+					System.err.printf("Lost %s from HashEntityTable %s under %s", ent, this, oldLoc);
 				} else if (!addToBuckets(ent, newLoc, locMap)) { // not as bad
-					System.err.printf("%s already in EntityTable %s under %s", ent, this, newLoc);
+					System.err.printf("%s already in HashEntityTable %s under %s", ent, this, newLoc);
 				}
 			} // to track another kind of update, put logic here
 		} catch (ClassCastException castFailed) {
-			assert false : "EntityTable updated by non-type object: " + o;        // for debugging with -ea
-			System.err.println("EntityTable updated by wrong type object: " + o); // we probably want to know about it
+			assert false : "HashEntityTable updated by non-type object: " + o;        // for debugging with -ea
+			System.err.println("HashEntityTable updated by wrong type object: " + o); // we probably want to know about it
 			o.deleteObserver(this); // might as well try
 		}
 	}
@@ -142,5 +145,7 @@ public class EntityTable<T extends Entity> extends AbstractSet<T> implements Obs
 		if (bucket.isEmpty()) map.remove(key);
 		return true;
 	}
+
+
 
 }

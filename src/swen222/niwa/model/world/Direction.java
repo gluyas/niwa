@@ -67,6 +67,16 @@ public enum Direction {
 	}
 
 	/**
+	 * Return the relative Direction of this one to another. In other words, if looking in the given Direction
+	 * as North, get the Direction of this one relative to that.
+	 * @param to the Direction this is being viewed from
+	 * @return this Direction rotated by the bearing of the other
+	 */
+	public Direction relativeTo(Direction to) {
+		return Direction.values()[Math.abs(this.ordinal()-to.ordinal())%4];
+	}
+
+	/**
 	 * Get this Directions' modifier for a west-to-east-ascending numeric position
 	 * @return -1, 0, or 1
 	 */
