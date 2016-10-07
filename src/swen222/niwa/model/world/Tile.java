@@ -127,7 +127,7 @@ public class Tile implements Visible {
 
 
 	}
-	
+
 	/**
 	 * Returns the height of the tile
 	 * @return
@@ -144,7 +144,7 @@ public class Tile implements Visible {
 	public TileType getType(){
 		return this.type;
 	}
-	
+
 	/**
 	 * Adds a prop to the tile
 	 * @param p

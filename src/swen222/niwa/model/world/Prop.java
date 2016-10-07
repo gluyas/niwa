@@ -1,5 +1,7 @@
 package swen222.niwa.model.world;
 
+import java.util.Random;
+
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.gui.Visible;
 import swen222.niwa.model.world.Tile.Texture;
@@ -16,9 +18,13 @@ public class Prop implements Visible {
 	public boolean canOccupy;
 	private Texture texture;
 
+	private Random random;
+
 	public Prop(PropType type){
+		random = new Random();
 		this.type=type;
 		setPropVariables(type);
+
 	}
 
 
@@ -29,9 +35,14 @@ public class Prop implements Visible {
 		BIGTREE,
 		BIGTREE2,
 		BUSH,
-		FENCE,
+		FENCESIDE,
+		FENCEFRONT,
 		GRASS,
-		SMALLTREE,
+		PATH1,
+		PATH2,
+		SMALLTREE1,
+		SMALLTREE2,
+		SMALLTREE3,
 		SOIL,
 		ZEN1,
 		ZEN2;
@@ -51,7 +62,16 @@ public class Prop implements Visible {
 				break;
 
 			case BIGROCK:
-				texture = new DevTexture(DevTexture.bigRock2, 0.5, 0.83);
+
+				int rockRandom = random.nextInt(2);
+
+				if(rockRandom == 0){
+					texture = new DevTexture(DevTexture.bigRock1, 0.5, 0.83);
+				}
+				else{
+					texture = new DevTexture(DevTexture.bigRock2, 0.5, 0.83);
+				}
+
 				this.canOccupy = false;
 				break;
 
@@ -72,18 +92,44 @@ public class Prop implements Visible {
 				break;
 
 
-			case FENCE:
-				texture = new DevTexture(DevTexture.fenceSide);
+			case FENCESIDE:
+				texture = new DevTexture(DevTexture.fenceSide,0.5,0.82);
+				this.canOccupy = false;
+				break;
+
+			case FENCEFRONT:
+				texture = new DevTexture(DevTexture.fenceFront,0.5,0.82);
 				this.canOccupy = false;
 				break;
 
 			case GRASS:
-				texture = new DevTexture(DevTexture.flower);
+				texture = new DevTexture(DevTexture.grass,0.5,0.82);
 				this.canOccupy = true;
 				break;
 
-			case SMALLTREE:
+			case PATH1:
+				texture = new DevTexture(DevTexture.path1Side,0.5,0.82);
+				this.canOccupy = true;
+				break;
+
+			case PATH2:
+				texture = new DevTexture(DevTexture.path2Side,0.5,0.82);
+				this.canOccupy = true;
+				break;
+
+
+			case SMALLTREE1:
 				texture = new DevTexture(DevTexture.smallTree1, 0.5, 0.835);
+				this.canOccupy = false;
+				break;
+
+			case SMALLTREE2:
+				texture = new DevTexture(DevTexture.smallTree2, 0.5, 0.835);
+				this.canOccupy = false;
+				break;
+
+			case SMALLTREE3:
+				texture = new DevTexture(DevTexture.smallTree3, 0.5, 0.835);
 				this.canOccupy = false;
 				break;
 

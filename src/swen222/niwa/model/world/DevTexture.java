@@ -75,6 +75,7 @@ public class DevTexture implements Texture {
 				grassBlock1= ImageIO.read(new File("resource/images/tiles/grass-block1.png"));
 				grassBlock2 = ImageIO.read(new File("resource/images/tiles/grass-block2.png"));
 				grassBlock3 = ImageIO.read(new File("resource/images/tiles/grass-block3.png"));
+				grass = ImageIO.read(new File("resource/images/props/grass.png"));
 				path1Side = ImageIO.read(new File("resource/images/props/path1-side.png"));
 				path1Front = ImageIO.read(new File("resource/images/props/path1-front.png"));
 				path2Side = ImageIO.read(new File("resource/images/props/path2-side.png"));
