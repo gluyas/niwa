@@ -90,6 +90,11 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 				rr.rotateCCW();
 				repaint();
 				break;
+
+			case VK_R:
+			case VK_F5:
+				refresh();
+				break;
 		}
 		//repaint();
 	}
@@ -108,7 +113,6 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 	public void keyReleased(KeyEvent e) {
 
 	}
-
 
 	/**
 	 * Returns the correct direction for the player to move, relative
