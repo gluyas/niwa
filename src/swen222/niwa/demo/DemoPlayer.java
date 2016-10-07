@@ -22,13 +22,17 @@ public class DemoPlayer extends PlayerEntity {
 		sprites = new Sprite[4];
 		try {
 			sprites[Direction.NORTH.ordinal()] = new Sprite(
-					ImageIO.read(new File("resource/images/players/player-blue-side.png")), 0.5, 0.8
+					ImageIO.read(new File("resource/images/players/ghost-blue-side2.png")), 0.5, 0.8
 			);
-			sprites[Direction.SOUTH.ordinal()] = sprites[Direction.NORTH.ordinal()];
+			sprites[Direction.EAST.ordinal()] = new Sprite(
+					ImageIO.read(new File("resource/images/players/ghost-blue-side.png")), 0.5, 0.8
+			);		
 			sprites[Direction.WEST.ordinal()] = new Sprite(
-					ImageIO.read(new File("resource/images/players/player-blue-front.png")), 0.5, 0.8
+					ImageIO.read(new File("resource/images/players/ghost-blue-back.png")), 0.5, 0.8
 			);
-			sprites[Direction.EAST.ordinal()] = sprites[Direction.WEST.ordinal()];
+			sprites[Direction.SOUTH.ordinal()] = new Sprite(
+					ImageIO.read(new File("resource/images/players/ghost-blue-front.png")), 0.5, 0.8
+			);	
 		} catch (IOException e) {
 			throw new Error("Couldn't load Image: ", e);
 		}
