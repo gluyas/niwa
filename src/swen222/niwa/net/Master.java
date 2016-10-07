@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import swen222.niwa.demo.DemoPlayer;
+import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 
 /**
@@ -21,6 +23,7 @@ import swen222.niwa.model.world.Room;
 public class Master extends Thread{
 
 	// TODO: Need a reference to the game, for testing purposes will use a room
+	// private Server server;
 	private static Room room;
 	private final int broadcastClock;
 	private final int uid; // a unique id
@@ -41,13 +44,24 @@ public class Master extends Thread{
 			DataInputStream input = new DataInputStream(socket.getInputStream());
 			DataOutputStream output = new DataOutputStream(socket.getOutputStream());
 
+			Room r = Room.newFromFile(new File("resource/rooms/testRoom.xml"));
+			DemoPlayer p = new DemoPlayer(Location.at(r, 0, 0));
 			ObjectOutputStream objOut = new ObjectOutputStream(socket.getOutputStream());
-
-			// start by sending the initial state of a room
-
-			room = Room.newFromFile(new File("/home/meiklehami1/resource/rooms/testRoom.xml"));
-			output.writeByte('c');
-			objOut.writeObject(room);
+			objOut.writeByte('r');
+			objOut.writeObject(r);
+			//objOut.flush();
+			objOut.writeByte('p');
+			objOut.writeObject(p);
+			// second room
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			objOut.writeByte('r');
+			r = Room.newFromFile(new File("resource/rooms/testRoom2.xml"));
+			objOut.writeObject(r);
 
 
 			boolean exit=false;
@@ -76,7 +90,6 @@ public class Master extends Thread{
 						}
 					}
 					// Now broadcast updated room state to slave
-					objOut.writeObject(room);
 					output.flush();
 					Thread.sleep(broadcastClock);
 

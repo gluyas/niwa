@@ -5,6 +5,7 @@ import com.sun.istack.internal.Nullable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -16,7 +17,7 @@ import java.util.Observable;
  *
  * @author Marc
  */
-public class GameObject extends Observable {
+public class GameObject extends Observable implements Serializable {
 
 	private static final Map<Integer, GameObject> map = new HashMap<>();
 	private static int count = Integer.MIN_VALUE;

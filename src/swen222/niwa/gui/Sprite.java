@@ -2,20 +2,27 @@ package swen222.niwa.gui;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.awt.image.RescaleOp;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+import javax.imageio.ImageIO;
 
 /**
  * Simple class containing an Image with an anchor point. Used by the Visible interface and GUI.
  *
  * @author Marc
  */
-public class Sprite {
+public class Sprite implements Serializable{
 
-	public final Image img; //
-	public final double width;
-	public final double aX;
-	public final double aY;
-	
+	private transient Image img; // need to make transient + custom encoding/decoding methods
+	private final double width;
+	private final double aX;
+	private final double aY;
+
 
 	/**
 	 * Create a new Sprite from a given Image, with an anchor point relative to it.
@@ -62,8 +69,20 @@ public class Sprite {
 
 		int pixelAX = (int) (aX*pixelWidth);
 		int pixelAY = (int) (aY*pixelHeight);
-		
+
 		g.drawImage(img, x - pixelAX, y - pixelAY, pixelWidth, pixelHeight, null);
+	}
+
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		ImageIO.write((RenderedImage)img, "png", out); // png is lossless
+
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		img = ImageIO.read(in);
+
 	}
 
 }

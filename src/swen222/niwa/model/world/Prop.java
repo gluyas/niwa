@@ -1,5 +1,7 @@
 package swen222.niwa.model.world;
 
+import java.io.Serializable;
+
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.gui.Visible;
 import swen222.niwa.model.world.Tile.Texture;
@@ -10,7 +12,7 @@ import swen222.niwa.model.world.Tile.Texture;
  * @author Marc
  * @author Jack
  */
-public class Prop implements Visible {
+public class Prop implements Visible, Serializable {
 
 	public PropType type;
 	public boolean canOccupy;
@@ -85,16 +87,16 @@ public class Prop implements Visible {
 			texture = new DevTexture(DevTexture.smallTree1, 0.5, 0.835);
 			this.canOccupy = false;
 			break;
-		
+
 		case ZEN1:
 			texture = new DevTexture(DevTexture.zen1,0.5,0.835);
 			this.canOccupy=false;
 			break;
-			
+
 		case ZEN2:
 			texture = new DevTexture(DevTexture.zen2,0.5,0.835);
 			this.canOccupy=false;
-			break;	
+			break;
 
 		}
 

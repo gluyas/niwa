@@ -15,7 +15,7 @@ import java.util.Observable;
  *
  * @author Marc
  */
-public abstract class Entity extends Observable implements Visible, Serializable {
+public abstract class Entity extends Observable implements Visible, Serializable{
 
 	private Location loc; // private so that notifyObservers in moveTo cannot be omitted
 

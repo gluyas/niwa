@@ -1,12 +1,14 @@
 package swen222.niwa.model.world;
 
+import java.io.Serializable;
+
 /**
  * Tuple class for storing a Location. All Location instances must correspond to a valid Tile co-ordinate in a
  * specific Room. Co-ordinates are stored in row/col format to make it coherent with a 2D array.
  *
  * @author Marc
  */
-public class Location {
+public class Location implements Serializable {
 
 	public final Room room;
 	public final int row;

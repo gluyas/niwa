@@ -3,6 +3,7 @@ package swen222.niwa.model.util;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.world.Location;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;

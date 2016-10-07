@@ -15,10 +15,13 @@ import java.nio.charset.Charset;
 
 import swen222.niwa.Controller;
 import swen222.niwa.demo.DemoFrame;
+import swen222.niwa.demo.DemoPlayer;
 import swen222.niwa.gui.NiwaFrame;
 import swen222.niwa.gui.RoomRenderer;
 import swen222.niwa.model.world.Room;
+import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.util.EntityTable;
+import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Room;
 
@@ -32,18 +35,12 @@ import swen222.niwa.model.world.Room;
 
 public class Slave extends Thread implements KeyListener{
 
-	//TODO: fix this horrible non-encapsulation
-	public static EntityTable getEntityTable() {
-		return et;
-	}
-
-	private static EntityTable et;
+	private static EntityTable<Entity> et = new HashEntityTable<>();
 	private Room r;
-
 	private final Socket socket;
 	private DataOutputStream output;
 	private DataInputStream input;
-	private ObjectInputStream objin;
+	private ObjectInputStream objIn;
 	private DemoFrame gameWindow;
 
 	//TODO: Very much just a place holder at the moment, will obviously need further implementation
@@ -56,27 +53,34 @@ public class Slave extends Thread implements KeyListener{
 
 		try{
 			output = new DataOutputStream(socket.getOutputStream());
-
 			input = new DataInputStream(socket.getInputStream());
-			objin = new ObjectInputStream(socket.getInputStream());
 
-			// Open up the demo frame, will be the actual client window eventually
-			
+			objIn = new ObjectInputStream(socket.getInputStream());
+
 			boolean exit = false;
 
 			while(!exit) {
 				// read event
-				if(input.available() != 0){
+				if(objIn.available() != 0){
 					System.out.println("Something is arriving from master");
-					byte action = input.readByte();
+					byte action = objIn.readByte();
 					switch (action) {
-						case 'r': // room
+						case 'r': // rooms
+							System.out.println("master sent me a room");
 							// TODO: initial room state, should only be sent once
 							// and then the remaining mutable objects will be sent
 							// over e.g. entities
+							r = (Room)objIn.readObject();
+							gameWindow = new DemoFrame(r, this);
 							break;
 						case 'p':
 							// TODO: updated player state
+							System.out.println("received a player");
+							DemoPlayer p = (DemoPlayer) objIn.readObject();;
+							System.out.println(p);
+							et.add(p);
+							for (Entity e : et) System.out.println(e.toString());
+							gameWindow.repaint();
 							break;
 						case 's':
 							// TODO: updated seed state
@@ -86,10 +90,8 @@ public class Slave extends Thread implements KeyListener{
 			socket.close(); // release socket ... v.important!
 
 
-		}catch(IOException e){
-
-		//} catch (ClassNotFoundException e) {
-
+		}catch(Exception e) {
+			throw new Error(e);
 		}
 	}
 
@@ -105,6 +107,12 @@ public class Slave extends Thread implements KeyListener{
 		}
 	}
 
+	//TODO: fix this horrible non-encapsulation
+	public static EntityTable getEntityTable() {
+		return et;
+	}
+
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -116,34 +124,26 @@ public class Slave extends Thread implements KeyListener{
 		try{
 			int code = e.getKeyCode();
 			switch (code) {
-			case VK_W:
+			case VK_W: // north
 				output.writeInt(1);
-				gameWindow.getPlayer().move(Direction.NORTH);
 				break;
 
-			case VK_A:
+			case VK_A: // west
 				output.writeInt(3);
-				gameWindow.getPlayer().move(Direction.WEST);
 				break;
 
-			case VK_S:
+			case VK_S: // south
 				output.writeInt(2);
-				gameWindow.getPlayer().move(Direction.SOUTH);
 				break;
 
-			case VK_D:
+			case VK_D: // east
 				output.writeInt(4);
-				gameWindow.getPlayer().move(Direction.EAST);
 				break;
 
-			case VK_Q:
-				gameWindow.getRR().rotateCW();
-				gameWindow.repaint();
+			case VK_Q: // rotate cw
 				break;
 
-			case VK_E:
-				gameWindow.getRR().rotateCCW();
-				gameWindow.repaint();
+			case VK_E: // rotate ccw
 				break;
 			}
 		}catch(IOException ee){

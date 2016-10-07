@@ -1,5 +1,7 @@
 package swen222.niwa.model.world;
 
+import java.io.Serializable;
+
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.gui.Visible;
 import swen222.niwa.model.entity.Entity;
@@ -10,7 +12,7 @@ import swen222.niwa.model.entity.Entity;
  * @author Marc
  * @author Jack U
  */
-public class Tile implements Visible {
+public class Tile implements Visible, Serializable{
 
 	public enum TileType{
 		GRASSTILE,
@@ -85,7 +87,7 @@ public class Tile implements Visible {
 
 
 	}
-	
+
 	/**
 	 * Returns the height of the tile
 	 * @return
@@ -102,7 +104,7 @@ public class Tile implements Visible {
 	public TileType getType(){
 		return this.type;
 	}
-	
+
 	/**
 	 * Adds a prop to the tile
 	 * @param p
@@ -110,7 +112,7 @@ public class Tile implements Visible {
 	public void addProp(Prop p){
 		this.prop=p;
 	}
-	
+
 
 	/**
 	 * Checks if a specified Entity may occupy the Location of this Tile
@@ -135,7 +137,7 @@ public class Tile implements Visible {
 	 * affect game play in some way, eg: slippery ice. Probably follows a STRATEGY pattern.
 	 */
 	//TODO: design a standardised texture format for tiles
-	public interface Texture {
+	public interface Texture extends Serializable{
 		// nothing for now, may be of use though due to complex process of drawing tiles, esp. for things like
 		// grass on top of dirt compared to just dirt on all 3 sides
 

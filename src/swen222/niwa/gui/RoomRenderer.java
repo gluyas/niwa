@@ -71,6 +71,7 @@ public class RoomRenderer {
 			if (t.prop != null) t.prop.drawSprite(g, facing, pos[0], pos[1], blockSize);
 
 			for (Entity e : et.get(loc)) {
+				System.out.println(e);
 				e.sprite(facing).draw(g, pos[0], pos[1], blockSize);
 			}
 

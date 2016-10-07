@@ -13,10 +13,10 @@ import java.util.*;
  *
  * @author Marc
  */
-public class HashEntityTable<T extends Entity> extends AbstractSet<T> implements EntityTable<T>, Observer {
+public class HashEntityTable<E extends Entity> extends AbstractSet<E> implements EntityTable<E>, Observer {
 
-	private HashMap<Location, Set<T>> locMap = new HashMap<>();
-	private HashSet<T> entries = new HashSet<>();
+	private HashMap<Location, Set<E>> locMap = new HashMap<>();
+	private HashSet<E> entries = new HashSet<>();
 
 	/**
 	 * Get all Entities stored in this table at a specified location. Note that the members of this Collection
@@ -27,8 +27,8 @@ public class HashEntityTable<T extends Entity> extends AbstractSet<T> implements
 	 * @param loc the Location to find Entities from
 	 * @return a Collection view of the entities with Location loc
 	 */
-	public Set<T> get(Location loc) {
-		Set<T> bucket = locMap.get(loc);
+	public Set<E> get(Location loc) {
+		Set<E> bucket = locMap.get(loc);
 		if (bucket == null) return Collections.EMPTY_SET;
 		else return Collections.unmodifiableSet(bucket);
 	}
@@ -41,7 +41,7 @@ public class HashEntityTable<T extends Entity> extends AbstractSet<T> implements
 
 		if (o == null || arg == null) return;
 		try {
-			T ent = (T) o; // we can't safely cast o to T, so we have to just try, and catch if it fails
+			E ent = (E) o; // we can't safely cast o to T, so we have to just try, and catch if it fails
 			if (!entries.contains(ent)) {
 				ent.deleteObserver(this);
 				return;
@@ -66,7 +66,7 @@ public class HashEntityTable<T extends Entity> extends AbstractSet<T> implements
 	}
 
 	@Override
-	public boolean add(T t) {
+	public boolean add(E t) {
 		if (entries.add(t)) {
 			t.addObserver(this);
 			return addToBuckets(t, t.getLocation(), locMap);
@@ -78,7 +78,7 @@ public class HashEntityTable<T extends Entity> extends AbstractSet<T> implements
 	public boolean remove(Object o) {
 		if (entries.remove(o)) {
 			try {
-				T t = (T) o;
+				E t = (E) o;
 				t.deleteObserver(this);
 				return removeFromBuckets(t, t.getLocation(), locMap);
 			} catch (ClassCastException castFailed) {
@@ -99,13 +99,13 @@ public class HashEntityTable<T extends Entity> extends AbstractSet<T> implements
 
 	@Override
 	public void clear() {
-		for (T t : entries) {
+		for (E t : entries) {
 			t.deleteObserver(this);
 		}
 	}
 
 	@Override
-	public Iterator<T> iterator() {
+	public Iterator<E> iterator() {
 		return entries.iterator();
 	}
 
