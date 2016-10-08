@@ -168,6 +168,9 @@ public class Tile implements Visible {
 
 	public boolean canOccupy(Entity e) {
 		if (!canOccupy){return false;}
+		if (getProp()==null){ // no prop
+			return true;
+		}
 		else return prop.canPassThrough();
 	}
 

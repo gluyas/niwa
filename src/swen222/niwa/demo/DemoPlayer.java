@@ -1,7 +1,7 @@
 package swen222.niwa.demo;
 
 import swen222.niwa.gui.Sprite;
-import swen222.niwa.model.entity.PlayerEntity;
+import swen222.niwa.model.entity.entities.PlayerEntity;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 

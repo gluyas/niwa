@@ -5,8 +5,11 @@ import java.util.Set;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.entity.ObjectEntity;
-import swen222.niwa.model.entity.PlayerEntity;
-import swen222.niwa.model.entity.Seed;
+import swen222.niwa.model.entity.StaticEntity;
+import swen222.niwa.model.entity.entities.PlayerEntity;
+import swen222.niwa.model.entity.entities.Rune;
+import swen222.niwa.model.entity.entities.RuneStone;
+import swen222.niwa.model.entity.entities.Seed;
 import swen222.niwa.model.world.Location.InvalidLocationException;
 import swen222.niwa.model.world.Prop.PropType;
 
@@ -17,6 +20,7 @@ import swen222.niwa.model.world.Prop.PropType;
 public class Rules {
 
 	public EntityTable<Entity> entities;
+
 	public Rules(EntityTable<Entity> table){
 		entities=table;
 	}
@@ -68,7 +72,7 @@ public class Rules {
 	 * @param dir
 	 * @return
 	 */
-	public boolean move(Entity e, Direction dir){
+	public boolean move(PlayerEntity e, Direction dir){
 		try {
 			Location toGo =e.getLocation().move(dir);
 			Location from =e.getLocation();
@@ -76,7 +80,7 @@ public class Rules {
 			Set<Entity> entitiesInDirection =entities.get(toGo);//check for players in direction
 			for(Entity entity: entitiesInDirection){
 				if (entity instanceof PlayerEntity){
-					return false;
+						return false;
 				}
 			}
 
@@ -96,6 +100,7 @@ public class Rules {
 		}
 
 		e.move(dir);
+		e.updateFacing(dir);
 		return true;
 	}
 
@@ -104,14 +109,36 @@ public class Rules {
 	 *Takes a seed from a players inventory and adds a point if above soil
 	 *
 	 * @param player
-	 * @param seed
+	 * @param item
 	 * @return true if seed removed
 	 */
-	public boolean plant(PlayerEntity player, ObjectEntity seed){
-		Location toPlant = player.getLocation();
-		if(!(seed instanceof Seed)){
+	public boolean action(PlayerEntity player, ObjectEntity item){
+
+		if(item instanceof Seed){//Planting a seed
+			return plantSeed(player,(Seed)item);
+		}
+
+		if (item instanceof Rune){//Using a rune
+			return triggerRuneStone(player,(Rune)item);
+		}
+		return false;
+	}
+
+	public boolean triggerRuneStone(PlayerEntity player, Rune rune){
+		if(!sameRuneType(player,rune)){
 			return false;
 		}
+		player.removeItem(rune);
+		player.addPoint();
+		transformRuneStone(player);
+		return true;
+	}
+
+
+
+	public boolean plantSeed(PlayerEntity player, Seed seed){
+		Location toPlant = player.getLocation();
+
 		if(!toPlant.tile().getProp().getType().equals(PropType.SOIL)){
 			return false;
 		}
@@ -119,5 +146,48 @@ public class Rules {
 		player.addPoint();
 		return true;
 	}
+
+	public boolean sameRuneType(PlayerEntity player, Rune rune){
+		RuneStone stone =getRuneStone(player);
+		if(stone==null){
+			return false;
+		}
+		if(!stone.getType().equals(rune.getType())){
+			return false;
+		}
+		return true;
+	}
+
+	public void transformRuneStone(PlayerEntity player){
+		RuneStone stone =getRuneStone(player);//will never be null otherwise sameRuneType would return false above.
+		addEntity(new Seed(stone.getLocation()));
+		removeEntity(stone);
+	}
+
+	public RuneStone getRuneStone(PlayerEntity player){
+		Set<Entity> entitiesAtPosition;
+			try {
+				entitiesAtPosition = entities.get(player.getLocation().move(player.getFacing()));// All entities in front of player
+				for(Entity e: entitiesAtPosition){
+					if(e instanceof StaticEntity){
+						if((StaticEntity)e instanceof RuneStone){
+							return (RuneStone)e;
+							}
+						}
+					}
+			} catch (InvalidLocationException e1) {
+				e1.printStackTrace();
+			}
+			return null;
+
+	}
+
+	public void removeEntity(Entity e){
+		entities.remove(e);
+	}
+	public void addEntity(Entity e){
+		entities.add(e);
+	}
+
 
 }

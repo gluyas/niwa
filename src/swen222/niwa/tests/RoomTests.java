@@ -15,7 +15,7 @@ import swen222.niwa.model.world.Tile;
  */
 public class RoomTests {
 	
-	File testRoom1 = new File("rooms/testRoom.xml");
+	File testRoom1 = new File("resource/rooms/testRoom.xml");
 	File testRoom2 = new File("rooms/testRoom2.xml");
 	
 	

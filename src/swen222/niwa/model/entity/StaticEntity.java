@@ -1,5 +1,12 @@
 package swen222.niwa.model.entity;
 
-public class StaticEntity {
+import swen222.niwa.model.world.Location;
+
+public abstract class StaticEntity extends Entity{
+
+	public StaticEntity(Location loc) {
+		super(loc);
+		// TODO Auto-generated constructor stub
+	}
 
 }
