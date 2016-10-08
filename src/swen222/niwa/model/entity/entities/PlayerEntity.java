@@ -1,17 +1,23 @@
-package swen222.niwa.model.entity;
+package swen222.niwa.model.entity.entities;
 
 import java.util.ArrayList;
 
 import swen222.niwa.gui.Sprite;
+import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
+/**
+ * @author burnshami
+ *
+ */
 public class PlayerEntity extends Entity{
 
 	public String name;
 	public int points;
 	public ArrayList<Entity> inventory;
 	public int inventoryCapacity;
+	public Direction facing;
 
 	public PlayerEntity(Location loc) {
 		super(loc);
@@ -31,7 +37,17 @@ public class PlayerEntity extends Entity{
 	}
 
 	public void removeItem(Entity item){
-		inventory.remove(item);
+		if (inventory.remove(item)) {
+			setChanged();
+			//notifyObservers()
+		}
+	}
+	public Direction getFacing(){
+		return facing;
+	}
+
+	public void updateFacing(Direction dir){
+		facing=dir;
 	}
 
 	public void addPoint(){

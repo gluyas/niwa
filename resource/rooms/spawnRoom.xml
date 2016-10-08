@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<class>
+<width>8</width> <height>9</height>
+
+<tiles>
+	<line>a1 a1 g0 a0 g0 g0 a1 a1 </line>
+	<line>a1 a1 g0 a0 g0 g0 a1 a1 </line>
+	<line>a0 a0 g0 a1 g0 g0 g0 g0 </line>
+	<line>g0 a0 g0 s2 s2 g0 g0 g0 </line>
+	<line>g0 a0 g0 s2 s2 g0 a0 a0 </line>
+	<line>g0 a0 a1 s2 s2 g0 a0 g0 </line>
+	<line>g0 g0 g0 g0 a1 a0 a0 g0 </line>
+	<line>a1 a1 g0 a0 a0 g0 a1 a1 </line>
+	<line>a1 a1 g0 a0 g0 g0 a1 a1 </line>
+</tiles>
+
+
+<prop type = "bigrock" col = "0" row = "0"/>
+<prop type = "fenceside" col = "1" row = "0"/>
+<prop type = "fenceside" col = "2" row = "0"/>
+<prop type = "path1" col = "3" row = "0"/>
+<prop type = "fenceside" col = "4" row = "0"/>
+<prop type = "fenceside" col = "5" row = "0"/>
+
+<prop type = "fencefront" col = "0" row = "1"/>
+<prop type = "path1" col = "3" row = "1"/>
+<prop type = "bigrock" col = "6" row = "1"/>
+<prop type = "smalltree1" col = "7" row = "1"/>
+
+<prop type = "path1" col = "0" row = "2"/>
+<prop type = "path1" col = "1" row = "2"/>
+<prop type = "grass" col = "2" row = "2"/>
+<prop type = "path1" col = "3" row = "2"/>
+<prop type = "grass" col = "5" row = "2"/>
+<prop type = "fencefront" col = "7" row = "2"/>
+
+<prop type = "fencefront" col = "0" row = "3"/>
+<prop type = "path1" col = "1" row = "3"/>
+<prop type = "grass" col = "6" row = "3"/>
+<prop type = "fencefront" col = "7" row = "3"/>
+
+<prop type = "fencefront" col = "0" row = "4"/>
+<prop type = "path1" col = "1" row = "4"/>
+<prop type = "grass" col = "5" row = "4"/>
+<prop type = "path1" col = "6" row = "4"/>
+<prop type = "path1" col = "7" row = "4"/>
+
+<prop type = "fencefront" col = "0" row = "4"/>
+<prop type = "path1" col = "1" row = "4"/>
+<prop type = "path1" col = "6" row = "4"/>
+<prop type = "path1" col = "7" row = "4"/>
+
+<prop type = "fencefront" col = "0" row = "5"/>
+<prop type = "path1" col = "1" row = "5"/>
+<prop type = "path1" col = "2" row = "5"/>
+<prop type = "path1" col = "6" row = "5"/>
+<prop type = "fencefront" col = "7" row = "5"/>
+
+<prop type = "fencefront" col = "0" row = "6"/>
+<prop type = "grass" col = "2" row = "6"/>
+<prop type = "path1" col = "4" row = "6"/>
+<prop type = "path1" col = "5" row = "6"/>
+<prop type = "path1" col = "6" row = "6"/>
+<prop type = "fencefront" col = "7" row = "6"/>
+
+<prop type = "bigrock" col = "1" row = "7"/>
+<prop type = "path1" col = "3" row = "7"/>
+<prop type = "path1" col = "4" row = "7"/>
+<prop type = "smalltree3" col = "6" row = "7"/>
+<prop type = "bigrock" col = "7" row = "7"/>
+
+<prop type = "smallTree2" col = "0" row = "8"/>
+<prop type = "bigRock" col = "1" row = "8"/>
+<prop type = "fenceSide" col = "2" row = "8"/>
+<prop type = "path1" col = "3" row = "8"/>
+<prop type = "fenceSide" col = "4" row = "8"/>
+<prop type = "fenceSide" col = "5" row = "8"/>
+
+
+</class>

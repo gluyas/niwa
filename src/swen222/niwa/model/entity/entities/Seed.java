@@ -1,4 +1,4 @@
-package swen222.niwa.model.entity;
+package swen222.niwa.model.entity.entities;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import swen222.niwa.gui.Sprite;
+import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
