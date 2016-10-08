@@ -61,8 +61,6 @@ public class NiwaFrame extends JFrame implements Observer {
 
 		pack();
 		setVisible(true); // make sure we are visible!
-		
-		System.out.println(this.getWidth() + ", " + this.getHeight());
 	}
 
 	@Override
