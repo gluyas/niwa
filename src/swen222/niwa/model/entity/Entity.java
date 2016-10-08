@@ -40,7 +40,7 @@ public abstract class Entity extends Observable implements Visible, Serializable
 		Location oldLoc = loc;
 		this.loc = newLoc;
 		setChanged();
-		notifyObservers(oldLoc); // this is tightly coupled with HashEntityTable. please be careful about making changes
+		notifyObservers(new LocationUpdate(oldLoc, newLoc)); // this is tightly coupled with HashEntityTable. please be careful about making changes
 		return oldLoc;
 	}
 
@@ -69,4 +69,21 @@ public abstract class Entity extends Observable implements Visible, Serializable
 			return false;
 		}
 	}
+
+	private class LocationUpdate implements EntityUpdate {
+
+		public final Location from;
+		public final Location to;
+
+		public LocationUpdate(Location from, Location to) {
+			this.from = from;
+			this.to = to;
+		}
+
+		@Override
+		public void apply() {
+			Entity.this.setLocation(to);
+		}
+	}
+
 }
