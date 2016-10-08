@@ -3,17 +3,21 @@ package swen222.niwa.file;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
+import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Prop;
 import swen222.niwa.model.world.Tile;
 import swen222.niwa.model.world.Tile.TileType;
 
 import javax.xml.parsers.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 /**
  * Parses in a specified file and adds the tiles
  * and objects at the specified positions.
+ * Provides methods that get important information about the
+ * room.
  * @author Jack U
  *
  */
@@ -95,6 +99,56 @@ public class RoomParser {
 		 }
 		 String height = list.item(0).getTextContent();
 		 return Integer.parseInt(height);
+
+	}
+
+	/**
+	 * Gets the spawn locations for the room.
+	 * @return
+	 */
+	public int[][] getSpawns(){
+
+		 int[][] spawns = new int[4][2];
+
+		 int numSpawns = 0;
+		 NodeList list= null;
+
+		 for (int i = 0; i < 4; i++){
+
+			 switch(i){
+			 case 0:
+				 list = rootElement.getElementsByTagName("spawnNorth");
+				 break;
+			 case 1:
+				 list = rootElement.getElementsByTagName("spawnEast");
+				 break;
+			 case 2:
+				 list = rootElement.getElementsByTagName("spawnSouth");
+				 break;
+			 case 3:
+				 list = rootElement.getElementsByTagName("spawnWest");
+				 break;
+			 }
+
+			 if(list.getLength()!=0){
+				 Element el = (Element) list.item(0);
+				 int[] coords = getCoordsFromElement(el);
+				 spawns[i]=coords;
+				 numSpawns++;
+
+			 }
+		 }
+
+
+		 if(numSpawns==0){
+			 throw new Error("There must be at least one spawn location!");
+		 }
+
+		 return spawns;
+
+
+
+
 
 	}
 
@@ -284,6 +338,22 @@ public class RoomParser {
 
 		String capsString = type.toUpperCase();
 		return Enum.valueOf(Prop.PropType.class, capsString);
+
+	}
+
+	private int [] getCoordsFromElement(Element el){
+
+		int [] coords= new int [2];
+
+		  //get the type, col, and row as strings
+        String stringCol = el.getAttribute("col");
+        String stringRow = el.getAttribute("row");
+
+        coords[0] = Integer.valueOf(stringCol);
+		coords[1] =  Integer.valueOf(stringRow);
+
+		return coords;
+
 
 	}
 

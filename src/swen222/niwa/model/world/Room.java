@@ -8,6 +8,7 @@ import swen222.niwa.model.world.Tile.Texture;
 import swen222.niwa.model.world.Tile.TileType;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Set;
 
@@ -24,6 +25,8 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	public final int height; // there doesn't seem like any good use case where these would need to change
 
 	private Tile[][] tiles; // each location l corresponds to tiles[l.row][l.col]
+
+	public static Location[] spawnLocs;
 
 	private EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
 									// locations store the room they correspond to so it wouldn't complicate much to
@@ -74,6 +77,7 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 		int width = parser.width;
 		int height = parser.height;
 
+
 		Room room = new Room("Default", width,height); //TODO: add name to the Room schema
 
 		room.tiles = parser.getTiles();
@@ -85,6 +89,15 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 					room.tiles[row][col].addProp(props[row][col]);
 				}
 			}
+		}
+
+		spawnLocs = new Location [4];
+
+		//needs to read through spawns and convert them into locations
+		int[][] spawns = parser.getSpawns();
+		for(int i = 0; i< 4; i++){
+			int[] coord = spawns[i];
+			spawnLocs[i]= Location.at(room,coord[0],coord[1]);
 		}
 
 		return room;
