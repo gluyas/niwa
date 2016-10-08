@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 
 import swen222.niwa.Controller;
