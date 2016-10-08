@@ -21,7 +21,7 @@ public class RenderPanel extends JPanel{
 		setDoubleBuffered(true);
 		this.rr = rr;
 		
-		setPreferredSize(new Dimension(640, 360));
+		setPreferredSize(new Dimension(360, 550));
 	}
 	
 	@Override

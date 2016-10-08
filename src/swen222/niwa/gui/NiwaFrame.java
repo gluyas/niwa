@@ -2,6 +2,7 @@
 package swen222.niwa.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -55,10 +56,13 @@ public class NiwaFrame extends JFrame implements Observer {
 		add(renderPanel, BorderLayout.CENTER);
 		add(gamePanel, BorderLayout.SOUTH);
 
+		setMinimumSize(new Dimension(710,200));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		pack();
 		setVisible(true); // make sure we are visible!
+		
+		System.out.println(this.getWidth() + ", " + this.getHeight());
 	}
 
 	@Override

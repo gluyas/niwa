@@ -20,8 +20,8 @@ import swen222.niwa.Controller;
  */
 public class MainAppPanel extends JPanel {
 
-	private static final int HEIGHT = 50;
-	private static final int WIDTH = 360;
+	private static final int HEIGHT = 70;
+	private static final int WIDTH = 500;
 	private Controller control;
 
 	private JTextArea textArea;
@@ -29,51 +29,39 @@ public class MainAppPanel extends JPanel {
 
 	public MainAppPanel(Controller control) {
 		this.control = control;
+		
+		setBackground(new Color(0xffdab9));
 
 		textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setPreferredSize(new Dimension(WIDTH/2, HEIGHT - (HEIGHT / 10)));
+		textArea.setPreferredSize(new Dimension(300, 40));
 		score = new JLabel("0");
 
-		JPanel textThings = new JPanel(new BorderLayout());
-		textThings.add(textArea, BorderLayout.SOUTH);
-		textThings.add(score, BorderLayout.NORTH);
-		add(textThings, BorderLayout.WEST);
-		add(rotateButtons(), BorderLayout.CENTER);
-		add(actionButtons(), BorderLayout.EAST);
+		add(textArea);
+		add(buttons());
+		add(score);
 	}
 	
-	@Override
-	public Dimension getPreferredSize(){
-		return new Dimension(WIDTH, HEIGHT);
-	}
-
+//	@Override
+//	public Dimension getPreferredSize(){
+//		return new Dimension(WIDTH, HEIGHT);
+//	}
+	
 	/**
-	 * creates the game action buttons and the panel that contains them
-	 * 
-	 * @return
+	 * creates the rotate, action, and inspect buttons and the panel that contains them
+	 * @return the panel containing the buttons
 	 */
-	private JPanel actionButtons() {
-		JPanel panel = new JPanel(new GridLayout(1, 3, 2, 2));
+	private JPanel buttons(){
+		JPanel panel = new JPanel(new GridLayout(1, 4, 2, 2));
+		panel.setOpaque(false);
+		NiwaBtn rotLeft = new NiwaBtn("Rotate CW (Q)");
+		panel.add(rotLeft);
+		NiwaBtn rotRight = new NiwaBtn("Rotate CCW (E)");
+		panel.add(rotRight);
 		NiwaBtn action = new NiwaBtn("Action");
 		panel.add(action);
 		NiwaBtn inspect = new NiwaBtn("Inspect");
 		panel.add(inspect);
-
-		return panel;
-	}
-
-	/**
-	 * creates the rotation buttons and the panel
-	 * 
-	 * @return
-	 */
-	private JPanel rotateButtons() {
-		JPanel panel = new JPanel(new GridLayout(1, 2, 2, 2));
-		NiwaBtn rotLeft = new NiwaBtn("Rotate CW(Q)");
-		panel.add(rotLeft);
-		NiwaBtn rotRight = new NiwaBtn("Rotate CCW(E)");
-		panel.add(rotRight);
 		return panel;
 	}
 

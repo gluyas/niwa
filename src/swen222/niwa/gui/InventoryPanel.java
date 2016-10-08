@@ -41,7 +41,7 @@ public class InventoryPanel extends JPanel {
 		}
 
 		setLayout(new GridLayout(1, INV_SIZE, 2, 2));
-		setBackground(Color.DARK_GRAY);// for testing, don't worry about it
+		setBackground(new Color(0xfff0f5));// for testing, don't worry about it
 
 		updateInventory(getTestSet());
 	}
