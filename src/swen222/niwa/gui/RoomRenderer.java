@@ -19,16 +19,13 @@ import java.util.Random;
  */
 public class RoomRenderer {
 
-	public static final double JITTER = 0.1;
+	public static final double JITTER = 0.12;
 	public static final double X_Y = Math.sqrt(3)/2; // 3D X to 2D Y
 	//public static final double X_Y = 0.5; // 3D X to 2D Y
 	public static final double Y_Y = X_Y; // 3D Y to 2D Y
 	public static final double Z_Y = 2*X_Y/3; //2X_Y/2
 
 	public final Room r;
-
-	int width;
-	int height;
 
 	private Direction facing = Direction.NORTH; // the world direction that is northeast from the user's perspective
 
@@ -56,12 +53,14 @@ public class RoomRenderer {
 	 */
 	public void draw(Graphics g, int width, int height) {
 
-
 		g.translate(width/2, height/2);
 		double blockSize = getBlockSize(width, height);
 		double scalar = blockSize/2.85;
 
 		EntityTable<? extends Entity> et = r.getEntityTable();
+
+		//use same seed every time to ensure consistent random offsets
+		Random rng = new Random(r.hashCode()*getFacing().ordinal());
 
 		for (Location loc : new BackToFrontIterator(r, facing)) {
 			Tile t = r.tileAt(loc);
@@ -69,7 +68,9 @@ public class RoomRenderer {
 				System.err.println("null at "+loc.toString());
 				continue;
 			}
-			int[] pos = project(loc.col, loc.row, t.height, scalar);
+
+			double[] jitter = getJitter(rng);
+			int[] pos = project(loc.col+jitter[0], loc.row+jitter[1], t.height+jitter[2], scalar);
 			t.drawSprite(g, facing, pos[0], pos[1], blockSize);
 			if (t.prop != null) t.prop.drawSprite(g, facing, pos[0], pos[1], blockSize);
 
@@ -78,6 +79,14 @@ public class RoomRenderer {
 			}
 
 		}
+	}
+
+	private double[] getJitter(Random rng) {
+		double[] out = new double[3];
+		out[0] = rng.nextDouble() * JITTER;
+		out[1] = rng.nextDouble() * JITTER;
+		out[2] = rng.nextDouble() * JITTER;
+		return out;
 	}
 
 	public double getBlockSize(int width, int height) {
@@ -94,10 +103,6 @@ public class RoomRenderer {
 	 * @return 2-length array: [0] = x, [1] = y
 	 */
 	public int[] project(double x, double y, double z, double scale) {
-
-		x += JITTER/2 - Math.random()*JITTER;
-		y += JITTER/2 - Math.random()*JITTER;
-		z += JITTER/2 - Math.random()*JITTER;
 
 		// first, translate x and y into co-ordinates that are more useful to us:
 		int[] out = new int[2];
