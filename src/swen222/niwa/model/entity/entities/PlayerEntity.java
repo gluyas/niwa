@@ -50,8 +50,11 @@ public class PlayerEntity extends Entity{
 		facing=dir;
 	}
 
-	public void addPoint(){
-		points++;
+	public void addPoints(int number){
+		while(number!=0){
+			points++;
+			number--;
+		}
 	}
 
 	public boolean canPickUp(){

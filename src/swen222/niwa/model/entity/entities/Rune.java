@@ -5,6 +5,10 @@ import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
+/**
+ * @author burnshami
+ *
+ */
 public class Rune extends ObjectEntity {
 
 	public runeType image;

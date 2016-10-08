@@ -25,6 +25,53 @@ public class Rules {
 		entities=table;
 	}
 
+//----------------------------------------------------------------------------------------------------------------
+
+	//MOVE LOGIC
+
+//----------------------------------------------------------------------------------------------------------------
+
+
+	/**
+	 * Moves an entity one space in a room, if there is no entity in the chosen direction nor impassable terrain
+	 * Also picks up anyitems in their path
+	 * @param e
+	 * @param dir
+	 * @return
+	 */
+	public boolean move(PlayerEntity e, Direction dir){
+		try {
+			Location toGo =e.getLocation().move(dir);
+			Location from =e.getLocation();
+
+			Set<Entity> entitiesInDirection =entities.get(toGo);//check for players in direction
+			for(Entity entity: entitiesInDirection){
+				if (entity instanceof PlayerEntity){
+						return false;
+				}
+			}
+
+			if(!toGo.tile().canOccupy(e)){//check for physical props in direction
+				return false;
+			}
+
+			if(from.tile().getHeight()-toGo.tile().getHeight()>1){//to go is two steps lower
+				return false;
+			}
+			if(from.tile().getHeight()-toGo.tile().getHeight()<-1){//togo is two steps higher
+				return false;
+			}
+		} catch (InvalidLocationException e1) {
+			e1.printStackTrace();
+			return false;
+		}
+
+		e.move(dir);
+		pickUp(e);
+		e.updateFacing(dir);
+		return true;
+	}
+
 	/**
 	 * relies on only one object entity per location
 	 * @param player
@@ -66,47 +113,14 @@ public class Rules {
 
 
 
-	/**
-	 * Moves an entity one space in a room, if there is no entity in the chosen direction nor impassable terrain
-	 * @param e
-	 * @param dir
-	 * @return
-	 */
-	public boolean move(PlayerEntity e, Direction dir){
-		try {
-			Location toGo =e.getLocation().move(dir);
-			Location from =e.getLocation();
+//----------------------------------------------------------------------------------------------------------------
 
-			Set<Entity> entitiesInDirection =entities.get(toGo);//check for players in direction
-			for(Entity entity: entitiesInDirection){
-				if (entity instanceof PlayerEntity){
-						return false;
-				}
-			}
+	//ACTION LOGIC
 
-			if(!toGo.tile().canOccupy(e)){//check for physical props in direction
-				return false;
-			}
-
-			if(from.tile().getHeight()-toGo.tile().getHeight()>1){//to go is two steps lower
-				return false;
-			}
-			if(from.tile().getHeight()-toGo.tile().getHeight()<-1){//togo is two steps higher
-				return false;
-			}
-		} catch (InvalidLocationException e1) {
-			e1.printStackTrace();
-			return false;
-		}
-
-		e.move(dir);
-		e.updateFacing(dir);
-		return true;
-	}
-
+//----------------------------------------------------------------------------------------------------------------
 
 	/**
-	 *Takes a seed from a players inventory and adds a point if above soil
+	 *Performs an action depending on whether the item selected is a seed or a rune
 	 *
 	 * @param player
 	 * @param item
@@ -117,25 +131,36 @@ public class Rules {
 		if(item instanceof Seed){//Planting a seed
 			return plantSeed(player,(Seed)item);
 		}
-
 		if (item instanceof Rune){//Using a rune
 			return triggerRuneStone(player,(Rune)item);
 		}
 		return false;
 	}
 
+	/**
+	 * Checks whether the rune and runestone are the same, if so runestone turns into a seed and player gets a point
+	 * @param player
+	 * @param rune
+	 * @return
+	 */
 	public boolean triggerRuneStone(PlayerEntity player, Rune rune){
 		if(!sameRuneType(player,rune)){
 			return false;
 		}
 		player.removeItem(rune);
-		player.addPoint();
+		addPoints(player,3);
 		transformRuneStone(player);
 		return true;
 	}
 
 
 
+	/**
+	 * Checks whether the player is on soil, if they are the player loses the seed and gets a point
+	 * @param player
+	 * @param seed
+	 * @return
+	 */
 	public boolean plantSeed(PlayerEntity player, Seed seed){
 		Location toPlant = player.getLocation();
 
@@ -143,10 +168,16 @@ public class Rules {
 			return false;
 		}
 		player.removeItem(seed);
-		player.addPoint();
+		addPoints(player,1);
 		return true;
 	}
 
+	/**
+	 * Checks if rune is same as runestone in front of player
+	 * @param player
+	 * @param rune
+	 * @return
+	 */
 	public boolean sameRuneType(PlayerEntity player, Rune rune){
 		RuneStone stone =getRuneStone(player);
 		if(stone==null){
@@ -158,12 +189,21 @@ public class Rules {
 		return true;
 	}
 
+	/**
+	 * Turns runestone into seed
+	 * @param player
+	 */
 	public void transformRuneStone(PlayerEntity player){
 		RuneStone stone =getRuneStone(player);//will never be null otherwise sameRuneType would return false above.
 		addEntity(new Seed(stone.getLocation()));
 		removeEntity(stone);
 	}
 
+	/**
+	 * Gets rune stone in front of player
+	 * @param player
+	 * @return
+	 */
 	public RuneStone getRuneStone(PlayerEntity player){
 		Set<Entity> entitiesAtPosition;
 			try {
@@ -189,5 +229,14 @@ public class Rules {
 		entities.add(e);
 	}
 
+//----------------------------------------------------------------------------------------------------------------
+
+	//Updating entity helper methods
+
+//----------------------------------------------------------------------------------------------------------------
+
+	public void addPoints(PlayerEntity player,int number){
+		player.addPoints(number);
+	}
 
 }

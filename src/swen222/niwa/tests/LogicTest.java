@@ -24,8 +24,7 @@ public class LogicTest {
 	Location loc2;
 	Location loc3;
 	Location loc4;
-	TestEntity ent1;
-	TestEntity ent2;
+	PlayerEntity ent1;
 	Rules logic;
 
 
@@ -35,7 +34,7 @@ public class LogicTest {
 		table = new HashEntityTable<>();
 		File testRoom1 = new File("resource/rooms/testRoom.xml");
 		r= Room.newFromFile(testRoom1);
-		ent1 = new TestEntity(Location.at(r,0,0));
+		ent1 = new PlayerEntity(Location.at(r,0,0));
 		table.add(ent1);
 		logic = new Rules(table);
 	}
