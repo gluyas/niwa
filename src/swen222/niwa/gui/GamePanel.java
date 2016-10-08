@@ -1,5 +1,6 @@
 package swen222.niwa.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -20,13 +21,17 @@ import swen222.niwa.Controller;
 public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	
 	//using a 16:9 aspect ratio
-	private static final int HEIGHT = 550;
+	private static final int HEIGHT = 50;
 	private static final int WIDTH = (HEIGHT/9)*16;
 	final Controller control;
 	
+	final MainAppPanel mainPanel;
+	
 	public GamePanel(Controller control){
 		this.control=control;
-		add(new MainAppPanel(control));
+		mainPanel = new MainAppPanel(control);
+		
+		add(mainPanel);
 	}
 
 	

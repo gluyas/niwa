@@ -1,5 +1,6 @@
 package swen222.niwa.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -19,8 +20,8 @@ import swen222.niwa.Controller;
  */
 public class MainAppPanel extends JPanel {
 
-	private static final int HEIGHT = 550;
-	private static final int WIDTH = HEIGHT / 2;
+	private static final int HEIGHT = 50;
+	private static final int WIDTH = 360;
 	private Controller control;
 
 	private JTextArea textArea;
@@ -31,12 +32,20 @@ public class MainAppPanel extends JPanel {
 
 		textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setPreferredSize(new Dimension(HEIGHT - (HEIGHT / 4), WIDTH / 3));
+		textArea.setPreferredSize(new Dimension(WIDTH/2, HEIGHT - (HEIGHT / 10)));
 		score = new JLabel("0");
 
-		add(textArea);
-		add(rotateButtons());
-		add(actionButtons());
+		JPanel textThings = new JPanel(new BorderLayout());
+		textThings.add(textArea, BorderLayout.SOUTH);
+		textThings.add(score, BorderLayout.NORTH);
+		add(textThings, BorderLayout.WEST);
+		add(rotateButtons(), BorderLayout.CENTER);
+		add(actionButtons(), BorderLayout.EAST);
+	}
+	
+	@Override
+	public Dimension getPreferredSize(){
+		return new Dimension(WIDTH, HEIGHT);
 	}
 
 	/**
@@ -45,9 +54,7 @@ public class MainAppPanel extends JPanel {
 	 * @return
 	 */
 	private JPanel actionButtons() {
-		JPanel panel = new JPanel(new GridLayout(3, 1, 2, 2));
-		NiwaBtn drop = new NiwaBtn("Drop");
-		panel.add(drop);
+		JPanel panel = new JPanel(new GridLayout(1, 3, 2, 2));
 		NiwaBtn action = new NiwaBtn("Action");
 		panel.add(action);
 		NiwaBtn inspect = new NiwaBtn("Inspect");
@@ -63,9 +70,9 @@ public class MainAppPanel extends JPanel {
 	 */
 	private JPanel rotateButtons() {
 		JPanel panel = new JPanel(new GridLayout(1, 2, 2, 2));
-		NiwaBtn rotLeft = new NiwaBtn("Rotate Left(Q)");
+		NiwaBtn rotLeft = new NiwaBtn("Rotate CW(Q)");
 		panel.add(rotLeft);
-		NiwaBtn rotRight = new NiwaBtn("Rotate Right(E)");
+		NiwaBtn rotRight = new NiwaBtn("Rotate CCW(E)");
 		panel.add(rotRight);
 		return panel;
 	}

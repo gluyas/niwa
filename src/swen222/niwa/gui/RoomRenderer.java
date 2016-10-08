@@ -77,7 +77,11 @@ public class RoomRenderer {
 	}
 
 	public double getBlockSize(int width, int height) {
-		return (width*0.9)/(r.width*1.2);
+		if (height <= width) {
+			return (height)/(r.height*1);
+		} else {
+			return (width)/(r.width*1.3);
+		}
 		//return 50;
 	}
 

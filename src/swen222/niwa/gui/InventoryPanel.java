@@ -20,11 +20,10 @@ import swen222.niwa.Controller;
  */
 public class InventoryPanel extends JPanel {
 
-	private static final int HEIGHT = 550;
-	private static final int WIDTH = HEIGHT / 2;
+	private static final int HEIGHT = 50;
+	private static final int WIDTH = HEIGHT;
 	// the below will change depending on how many items we let players hold
-	private static final int INV_WIDTH = 3;
-	private static final int INV_HEIGHT = 3;
+	private static final int INV_SIZE = 9;
 	private Controller control;
 
 	private InventoryBtn[] buttons;
@@ -32,7 +31,7 @@ public class InventoryPanel extends JPanel {
 
 	public InventoryPanel(Controller control) {
 		this.control = control;
-		buttons = new InventoryBtn[INV_WIDTH * INV_HEIGHT];
+		buttons = new InventoryBtn[INV_SIZE];
 		group = new DeselectableButtonGroup();
 
 		for (int i = 0; i < buttons.length; i++) {
@@ -41,7 +40,7 @@ public class InventoryPanel extends JPanel {
 			add(buttons[i]);
 		}
 
-		setLayout(new GridLayout(INV_HEIGHT, INV_WIDTH, 2, 2));
+		setLayout(new GridLayout(1, INV_SIZE, 2, 2));
 		setBackground(Color.DARK_GRAY);// for testing, don't worry about it
 
 		updateInventory(getTestSet());
