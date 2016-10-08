@@ -15,6 +15,8 @@ import swen222.niwa.model.world.Location;
  *
  */
 public class Seed extends ObjectEntity {
+	
+
 
 	static final Sprite sprite ;
 

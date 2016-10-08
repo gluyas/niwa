@@ -12,6 +12,12 @@ import swen222.niwa.model.world.Location;
 public class Rune extends ObjectEntity {
 
 	public runeType image;
+	
+	public Rune (Location loc){
+		super(loc);
+	}
+	
+	
 	public Rune (Location loc, runeType type){
 		super(loc);
 		image=type;

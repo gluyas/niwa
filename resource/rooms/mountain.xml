@@ -2,6 +2,10 @@
 <class>
 <width>10</width> <height>10</height>
 
+<name> Mountain </name>
+
+<spawnNorth col = "4" row = "0" />
+
 <tiles>
 	<line>s9 s9 s8 g7 s5 s3 g1 g0 s0 s0 </line>
 	<line>s9 w8 w8 g6 g4 g3 g1 g0 g0 s0 </line>

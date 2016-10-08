@@ -2,6 +2,10 @@
 <class>
 <width>5</width> <height>5</height>
 
+<name> LogicTestRoom </name>
+
+<spawnNorth col = "4" row = "0" />
+
 <tiles>
 	<line>g1 g1 g1 g1 g1 </line>
 	<line>g1 g3 g2 g2 g1 </line>
