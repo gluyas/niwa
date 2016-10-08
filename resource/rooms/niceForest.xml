@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<class>
+<width>8</width> <height>7</height>
+
+<tiles>
+	<line>g0 g0 g1 g0 g0 g1 g0 g0 </line>
+	<line>g0 d0 g0 g0 g0 d0 g0 g0 </line>
+	<line>g0 g0 d0 d0 g0 s0 g1 g0 </line>
+	<line>g0 g0 d0 d0 g0 g0 s0 s0 </line>
+	<line>g0 g1 s0 g0 g0 d0 s0 g0 </line>
+	<line>g0 g0 g0 s0 s0 g0 g0 g0 </line>
+	<line>g0 s0 g0 s0 g0 g0 g0 g0 </line>
+	
+</tiles>
+
+
+<prop type = "bigTree" col = "1" row = "0"/>
+<prop type = "bigTree" col = "2" row = "0"/>
+<entity type = "runeStone" col = "3" row = "0"/>
+<prop type = "grass" col = "4" row = "0"/>
+<prop type = "bigTree" col = "5" row = "0"/>
+<prop type = "zen1" col = "7" row = "0"/>
+
+<prop type = "bigTree" col = "0" row = "1"/>
+<prop type = "bush" col = "2" row = "1"/>
+<prop type = "bush" col = "4" row = "1"/>
+<prop type = "grass" col = "5" row = "1"/>
+<prop type = "grass" col = "6" row = "1"/>
+
+<prop type = "grass" col = "0" row = "2"/>
+<prop type = "grass" col = "4" row = "2"/>
+
+<prop type = "bush" col = "0" row = "3"/>
+<prop type = "bigtree" col = "1" row = "3"/>
+<prop type = "bamboo" col = "5" row = "3"/>
+
+
+<prop type = "zen1" col = "1" row = "4"/>
+<prop type = "bamboo" col = "0" row = "4"/>
+
+
+<prop type = "bigtree" col = "0" row = "5"/>
+<prop type = "grass" col = "2" row = "5"/>
+<prop type = "grass" col = "6" row = "5"/>
+
+<prop type = "bamboo" col = "5" row = "6"/>
+<prop type = "bush" col = "7" row = "6"/>
+
+
+
+
+</class>

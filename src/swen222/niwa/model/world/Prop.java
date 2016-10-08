@@ -33,7 +33,6 @@ public class Prop implements Visible {
 		BAMBOO,
 		BIGROCK,
 		BIGTREE,
-		BIGTREE2,
 		BUSH,
 		FENCESIDE,
 		FENCEFRONT,
@@ -77,17 +76,25 @@ public class Prop implements Visible {
 
 
 			case BIGTREE:
-				texture = new DevTexture(DevTexture.bigTree1, 0.5, 0.87);
+
+				int treeRandom = random.nextInt(3);
+
+				if(treeRandom == 0){
+					texture = new DevTexture(DevTexture.bigTree1, 0.5, 0.83);
+				}
+				else if (treeRandom == 1){
+					texture = new DevTexture(DevTexture.bigTree2, 0.5, 0.83);
+				}
+				else {
+					texture = new DevTexture(DevTexture.bigTree3, 0.5, 0.83);
+				}
+
 				this.canOccupy = false;
 				break;
 
-			case BIGTREE2:
-				texture = new DevTexture(DevTexture.bigTree2, 0.47, 0.84);
-				this.canOccupy = false;
-				break;
 
 			case BUSH:
-				texture = new DevTexture(DevTexture.bush);
+				texture = new DevTexture(DevTexture.bush, 0.47, 0.84);
 				this.canOccupy = false;
 				break;
 

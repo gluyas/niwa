@@ -69,15 +69,15 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	 * @return the newly created Room
 	 */
 	public static Room newFromFile(File f) {
-		
+
 		RoomParser parser = new RoomParser(f);
 		int width = parser.width;
 		int height = parser.height;
 
 		Room room = new Room("Default", width,height); //TODO: add name to the Room schema
-		
+
 		room.tiles = parser.getTiles();
-		
+
 		Prop[][] props = parser.getProps();
 		for(int row = 0; row<height; row++){
 			for(int col = 0; col<width; col++){
@@ -86,11 +86,11 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 				}
 			}
 		}
-		
+
 		return room;
 	}
-	
-	
+
+
 
 	// TODO: remove this - exists for testing purposes
 	public static Room emptyRoom(int w, int h) {
