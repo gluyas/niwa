@@ -1,6 +1,5 @@
 package swen222.niwa.model.util;
 
-import com.sun.javafx.collections.UnmodifiableListSet;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.world.Location;
 
@@ -13,7 +12,7 @@ import java.util.*;
  *
  * @author Marc
  */
-public class HashEntityTable<E extends Entity> extends AbstractSet<E> implements EntityTable<E>, Observer {
+public class HashEntityTable<E extends Entity> extends ObservableEntityTable<E> {
 
 	private HashMap<Location, Set<E>> locMap = new HashMap<>();
 	private HashSet<E> entries = new HashSet<>();
@@ -35,13 +34,13 @@ public class HashEntityTable<E extends Entity> extends AbstractSet<E> implements
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void update(Observable o, Object arg) {
+	public void updateImpl(Observable o, Object arg) {
 		// this method has been coded very defensively, and will throw exceptions at the slightest hint that it is
 		// out of sync with its contents
 
 		if (o == null || arg == null) return;
 		try {
-			E ent = (E) o; // we can't safely cast o to T, so we have to just try, and catch if it fails
+			E ent = (E) o; // we can't safely cast o to E, so we have to just try, and catch if it fails
 			if (!entries.contains(ent)) {
 				ent.deleteObserver(this);
 				return;
@@ -60,53 +59,31 @@ public class HashEntityTable<E extends Entity> extends AbstractSet<E> implements
 			} // to track another kind of update, put logic here
 		} catch (ClassCastException castFailed) {
 			assert false : "HashEntityTable updated by non-type object: " + o;        // for debugging with -ea
-			System.err.println("HashEntityTable updated by wrong type object: " + o); // we probably want to know about it
+			System.err.println("HashEntityTable updated by wrong type object: " + o); // we probably want to know
 			o.deleteObserver(this); // might as well try
 		}
 	}
 
 	@Override
-	public boolean add(E t) {
-		if (entries.add(t)) {
-			t.addObserver(this);
-			return addToBuckets(t, t.getLocation(), locMap);
+	public boolean addImpl(E e) {
+		if (entries.add(e)) {
+			if (!addToBuckets(e, e.getLocation(), locMap)) {
+				System.err.println(String.format("%s already existed in buckets of %s", e, this));
+			}
+			return true;
 		} else return false;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public boolean remove(Object o) {
+	public boolean removeImpl(Object o) {
 		if (entries.remove(o)) {
-			try {
-				E t = (E) o;
-				t.deleteObserver(this);
-				return removeFromBuckets(t, t.getLocation(), locMap);
-			} catch (ClassCastException castFailed) {
-				return false;
+			E e = (E) o; // remove won't return true unless o instanceof E
+			if (!removeFromBuckets(e, e.getLocation(), locMap)) {
+				System.err.println(String.format("%s could not be removed from buckets of %s", e, this));
 			}
+			return true;
 		} else return false;
-	}
-
-	@Override
-	public int size() {
-		return entries.size();
-	}
-
-	@Override
-	public boolean contains(Object o) {
-		return entries.contains(o);
-	}
-
-	@Override
-	public void clear() {
-		for (E t : entries) {
-			t.deleteObserver(this);
-		}
-	}
-
-	@Override
-	public Iterator<E> iterator() {
-		return entries.iterator();
 	}
 
 	// generic helper methods - can easily be used if we wish to track another property
@@ -120,7 +97,7 @@ public class HashEntityTable<E extends Entity> extends AbstractSet<E> implements
 	 * @param <V> value type of the buckets
 	 * @return false if the map already contained the item
 	 */
-	static <K, V> boolean addToBuckets(V item, K key, Map<K, Set<V>> map) {
+	protected static <K, V> boolean addToBuckets(V item, K key, Map<K, Set<V>> map) {
 		Set<V> bucket = map.get(key);
 		if (bucket == null) {
 			bucket = new HashSet<>();
@@ -138,7 +115,7 @@ public class HashEntityTable<E extends Entity> extends AbstractSet<E> implements
 	 * @param <V> value type of the buckets
 	 * @return false if the bucket did not exist, or item was not in it
 	 */
-	static <K, V> boolean removeFromBuckets(V item, K key, Map<K, Set<V>> map) {
+	protected static <K, V> boolean removeFromBuckets(V item, K key, Map<K, Set<V>> map) {
 		Set<?> bucket = map.get(key);
 		if (bucket == null) return false;
 		if (!bucket.remove(item)) return false;
@@ -146,6 +123,76 @@ public class HashEntityTable<E extends Entity> extends AbstractSet<E> implements
 		return true;
 	}
 
+	// trivial Set implementation
+
+	@Override
+	public int size() {
+		return entries.size();
+	}
+
+	@Override
+	public boolean contains(Object o) {
+		return entries.contains(o);
+	}
+
+	@Override
+	public void clear() {
+		for (E e : entries) {
+			e.deleteObserver(this);
+		}
+	}
+
+	@Override
+	public Iterator<E> iterator() {
+		return entries.iterator();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return entries.isEmpty();
+	}
+
+	@Override
+	public Object[] toArray() {
+		return entries.toArray();
+	}
+
+	@Override
+	public <T> T[] toArray(T[] a) {
+		return entries.toArray(a);
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		return entries.containsAll(c);
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends E> c) {
+		boolean changed = false;
+		for (E e : c) {
+			if (add(e)) changed = true;
+		}
+		return changed;
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		boolean changed = false;
+		for (Object o : c) {
+			if (!contains(o) && remove(o)) changed = true;
+		}
+		return changed;
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		boolean changed = false;
+		for (Object o : c) {
+			if (remove(o)) changed = true;
+		}
+		return changed;
+	}
 
 
 }
