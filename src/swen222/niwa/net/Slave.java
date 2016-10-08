@@ -1,11 +1,6 @@
 package swen222.niwa.net;
 
-import static java.awt.event.KeyEvent.VK_A;
-import static java.awt.event.KeyEvent.VK_D;
-import static java.awt.event.KeyEvent.VK_E;
-import static java.awt.event.KeyEvent.VK_Q;
-import static java.awt.event.KeyEvent.VK_S;
-import static java.awt.event.KeyEvent.VK_W;
+import static java.awt.event.KeyEvent.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -34,6 +29,16 @@ import swen222.niwa.model.world.Room;
  */
 
 public class Slave extends Thread implements KeyListener{
+
+	// MOVEMENT DIRECTIONS
+	public static final int MOVE_UP = 1;
+	public static final int MOVE_DOWN = 2;
+	public static final int MOVE_LEFT = 3;
+	public static final int MOVE_RIGHT = 4;
+	// INTERACTIONS
+	public static final int PLAYER_ACTION = 5;
+
+
 
 	private static EntityTable<Entity> et = new HashEntityTable<>();
 	private Room r;
@@ -65,25 +70,32 @@ public class Slave extends Thread implements KeyListener{
 					System.out.println("Something is arriving from master");
 					byte action = objIn.readByte();
 					switch (action) {
-						case 'r': // rooms
-							System.out.println("master sent me a room");
-							// TODO: initial room state, should only be sent once
-							// and then the remaining mutable objects will be sent
-							// over e.g. entities
-							r = (Room)objIn.readObject();
+					case 'r': // rooms
+						System.out.println("master sent me a room");
+						// TODO: initial room state, should only be sent once
+						// and then the remaining mutable objects will be sent
+						// over e.g. entities
+						r = (Room)objIn.readObject();
+						// no current room
+						if(gameWindow == null){
 							gameWindow = new DemoFrame(r, this);
-							break;
-						case 'p':
-							// TODO: updated player state
-							System.out.println("received a player");
-							DemoPlayer p = (DemoPlayer) objIn.readObject();;
-							System.out.println(p);
-							et.add(p);
-							for (Entity e : et) System.out.println(e.toString());
-							gameWindow.repaint();
-							break;
-						case 's':
-							// TODO: updated seed state
+						}else{ // update the room to render
+							gameWindow.panel.rr = new RoomRenderer(r);
+						}
+						gameWindow.repaint();
+						break;
+					case 'p':
+						// TODO: updated player state
+						System.out.println("received a player");
+						DemoPlayer p = (DemoPlayer) objIn.readObject();;
+						System.out.println(p);
+						et.add(p);
+						for (Entity e : et) System.out.println(e.toString());
+						gameWindow.repaint();
+						break;
+					case 's':
+						// TODO: updated seed state
+						break;
 					}
 				}
 			}
@@ -124,26 +136,30 @@ public class Slave extends Thread implements KeyListener{
 		try{
 			int code = e.getKeyCode();
 			switch (code) {
-			case VK_W: // north
-				output.writeInt(1);
+			case VK_W: // move up
+				output.writeInt(MOVE_UP);
 				break;
 
-			case VK_A: // west
-				output.writeInt(3);
+			case VK_A: // move left
+				output.writeInt(MOVE_LEFT);
 				break;
 
-			case VK_S: // south
-				output.writeInt(2);
+			case VK_S: // move down
+				output.writeInt(MOVE_DOWN);
 				break;
 
-			case VK_D: // east
-				output.writeInt(4);
+			case VK_D: // move right
+				output.writeInt(MOVE_RIGHT);
 				break;
 
 			case VK_Q: // rotate cw
 				break;
 
 			case VK_E: // rotate ccw
+				break;
+
+			case VK_F: // interaction
+
 				break;
 			}
 		}catch(IOException ee){

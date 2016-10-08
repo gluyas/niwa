@@ -22,7 +22,7 @@ import static java.awt.event.KeyEvent.*;
  */
 public class DemoFrame extends JFrame implements Observer{
 
-	JPanel panel;
+	public DemoPanel panel;
 	public RoomRenderer rr;
 	DemoPlayer p;
 

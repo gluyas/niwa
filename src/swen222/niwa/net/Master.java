@@ -8,6 +8,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import swen222.niwa.demo.DemoPlayer;
+import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.util.EntityTable;
+import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 
@@ -25,12 +28,11 @@ public class Master extends Thread{
 	// TODO: Need a reference to the game, for testing purposes will use a room
 	// private Server server;
 	private static Room room;
-	private final int broadcastClock;
+	private EntityTable<Entity> et = new HashEntityTable<>();
 	private final int uid; // a unique id
 	private final Socket socket;
 
-	public Master(int broadcastClock, int uid, Socket socket, Room room) {
-		this.broadcastClock = broadcastClock;
+	public Master(int uid, Socket socket, Room room) {
 		this.uid = uid;
 		this.socket = socket;
 		this.room = room;
@@ -54,7 +56,7 @@ public class Master extends Thread{
 			objOut.writeObject(p);
 			// second room
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(500);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -68,33 +70,32 @@ public class Master extends Thread{
 
 			while(!exit) {
 
-				try {
-
-					if(input.available() != 0) {
-						// Player is attempting to move
-						int dir = input.readInt();
-						switch(dir){
-						case 1:
-							// get the reference to the player, then move them north
-							// e.g. room.getPlayer(uid).move(Direction.North)
-							break;
-						case 2:
-							// get the reference to the player, then move them south
-							break;
-						case 3:
-							// get the reference to the player, then move them west
-							break;
-						case 4:
-							// get the reference to the player, then move them east
-							break;
-						}
+				if(input.available() != 0) {
+					int event = input.readInt();
+					switch(event){
+					case Slave.MOVE_UP:
+						//
+						System.out.println("Player trying to move up");
+						break;
+					case Slave.MOVE_DOWN:
+						//
+						System.out.println("Player trying to move down");
+						break;
+					case Slave.MOVE_LEFT:
+						//
+						System.out.println("Player trying to move left");
+						break;
+					case Slave.MOVE_RIGHT:
+						//
+						System.out.println("Player trying to move right");
+						break;
+					case Slave.PLAYER_ACTION:
+						//
+						System.out.println("Player trying to interact with something");
 					}
-					// Now broadcast updated room state to slave
-					output.flush();
-					Thread.sleep(broadcastClock);
-
-				} catch(InterruptedException e) {
 				}
+				// Now broadcast updated room state to slave
+				output.flush();
 			}
 			socket.close(); // release socket ... v.important!
 		} catch (IOException e) {
