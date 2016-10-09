@@ -15,10 +15,12 @@ import swen222.niwa.model.world.Location;
  *
  */
 public class Statue extends ObjectEntity {
-	
 
 
-	static final Sprite sprite ;
+
+	static final Sprite sprite;
+	private boolean triggered;
+
 
 	static {
 		try {
@@ -33,10 +35,18 @@ public class Statue extends ObjectEntity {
 
 	public Statue(Location loc){
 		super(loc);
+		triggered=false;
 	}
 	@Override
 	public Sprite sprite(Direction facing) {
 		return sprite;
+	}
+
+	public boolean isTriggered() {
+		return triggered;
+	}
+	public void setTriggered(boolean triggered) {
+		this.triggered = triggered;
 	}
 
 

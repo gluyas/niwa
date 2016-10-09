@@ -4,6 +4,7 @@ import swen222.niwa.gui.RoomRenderer;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
+import swen222.niwa.model.world.Rules;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +27,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 	RoomRenderer rr;
 	DemoPlayer p;
 	String stageName;
+	Rules control;
 
 	public DemoFrame(String stageName) {
 		super("Garden Demo");
@@ -33,6 +35,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		this.stageName = stageName;
 		Room stage = Room.newFromFile(new File(stageName));
 
+		control = new Rules(stage);
 		rr = new RoomRenderer(stage);
 		panel = new DemoPanel(rr);
 		add(panel);
@@ -66,19 +69,23 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		int code = e.getKeyCode();
 		switch (code) {
 			case VK_W:
-				p.move(directionRelativeToMap(Direction.NORTH));
+				control.move(p,directionRelativeToMap(Direction.NORTH));
+				//p.move(directionRelativeToMap(Direction.NORTH));
 				break;
 
 			case VK_A:
-				p.move(directionRelativeToMap(Direction.WEST));
+				control.move(p,directionRelativeToMap(Direction.WEST));
+				//p.move(directionRelativeToMap(Direction.WEST));
 				break;
 
 			case VK_S:
-				p.move(directionRelativeToMap(Direction.SOUTH));
+				control.move(p,directionRelativeToMap(Direction.SOUTH));
+				//p.move(directionRelativeToMap(Direction.SOUTH));
 				break;
 
 			case VK_D:
-				p.move(directionRelativeToMap(Direction.EAST));
+				control.move(p,directionRelativeToMap(Direction.EAST));
+				//p.move(directionRelativeToMap(Direction.EAST));
 				break;
 
 			case VK_Q:

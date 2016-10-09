@@ -2,6 +2,7 @@ package swen222.niwa.model.entity.entities;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -15,10 +16,13 @@ import swen222.niwa.model.world.Location;
  *
  */
 public class Door extends ObjectEntity {
-	
+
 
 
 	static final Sprite sprite ;
+	private ArrayList<Statue> statues;
+
+	private boolean open;
 
 	static {
 		try {
@@ -31,12 +35,34 @@ public class Door extends ObjectEntity {
 
 	}
 
-	public Door(Location loc){
+	public Door(Location loc, ArrayList<Statue> triggers){
 		super(loc);
+		this.statues = triggers;
+		open=false;
 	}
 	@Override
 	public Sprite sprite(Direction facing) {
 		return sprite;
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+	public void setOpen(boolean open) {
+		this.open = open;
+	}
+
+	public ArrayList<Statue> getStatues(){
+		return statues;
+	}
+
+	public boolean checkStatues(){
+		for(Statue statue: statues){
+			if(!statue.isTriggered()){
+				return false;
+			}
+		}
+		return true;
 	}
 
 

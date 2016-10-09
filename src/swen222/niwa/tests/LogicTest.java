@@ -36,7 +36,7 @@ public class LogicTest {
 		r= Room.newFromFile(testRoom1);
 		ent1 = new PlayerEntity(Location.at(r,0,0));
 		table.add(ent1);
-		logic = new Rules(table);
+		logic = new Rules(r);
 	}
 
 	@Test
