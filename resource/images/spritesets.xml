@@ -1,0 +1,20 @@
+<?xml version="1.0"?> 
+
+<manifest>
+  <spriteset name="dirt">
+    <sprite img="resource/images/tiles/dirt-block.png"/>
+  </spriteset>
+  
+  <group name="fences">
+    <sprite id="front" img="resource/images/props/fence-front.png" ay="0.82"/>
+    <sprite id="side" img="resource/images/props/fence-front.png" ay="0.82"/>
+    
+    <spriteset name="fencefront">
+      <faces n="front" e="side" s="front" w="side" />
+    </spriteset>
+    
+    <spriteset name="fenceSide">
+      <faces n="side" e="front" s="side" w="front" />
+    </spriteset>	
+  </group>  
+</manifest>
