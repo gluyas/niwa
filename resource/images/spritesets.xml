@@ -16,5 +16,14 @@
     <spriteset name="fenceSide">
       <faces n="side" e="front" s="side" w="front" />
     </spriteset>	
-  </group>  
+  </group>
+
+  <spriteset name="ghost-blue">
+    <sprite id="lf" img="resource\images\players\ghost\blue\left-front.png" ay="0.8" />
+    <sprite id="lb" img="resource\images\players\ghost\blue\left-back.png" ay="0.8" />
+    <sprite id="rf" img="resource\images\players\ghost\blue\right-front.png" ay="0.8" />
+    <sprite id="rb" img="resource\images\players\ghost\blue\right-back.png" ay="0.8" />
+    <faces n="rb" e="lf" s="rf" w="lb" />
+  </spriteset>
+
 </manifest>

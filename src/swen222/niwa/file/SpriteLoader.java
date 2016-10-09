@@ -10,9 +10,9 @@ import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import com.sun.istack.internal.Nullable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import swen222.niwa.gui.Sprite;
@@ -28,22 +28,60 @@ import swen222.niwa.model.world.Direction;
  */
 public class SpriteLoader {
 
-	public static final String manifest = "resource/images/spritesets.xml";
+	public static final String MANIFEST = "resource/images/spritesets.xml";
 
 	private static final Map<String, SpriteSet> SPRITESETS = new HashMap<>();
+
+	/**
+	 * Get the SpriteSet associated with the given String. These are outlined in a manifest file
+	 * @param name The name of the SpriteSet
+	 * @return the SpriteSet associated with that name, or null if not found
+	 */
+	@Nullable
+	public static SpriteSet get(String name) {
+		return SPRITESETS.get(name);
+	}
+
+	/**
+	 * A SpriteSet holds images for an entity/prop. It stores an image
+	 * for each facing direction; north, east, south, west.
+	 *
+	 * @author Hamish M
+	 *
+	 */
+	public static class SpriteSet implements Visible {
+		private Sprite[] sprites = new Sprite[4];
+
+		public SpriteSet() {}
+
+		public SpriteSet(Sprite sprite) {
+			for (int i = 0; i < 4; i++) sprites[i] = sprite;
+		}
+
+		public void setSprite(Direction face, Sprite sprite){
+			sprites[face.ordinal()] = sprite;
+		}
+
+		@Override
+		public Sprite sprite(Direction facing) {
+			return sprites[facing.ordinal()];
+		}
+	}
+
+	// PARSING
 
 	static {
 		try {
 			// initial set up
-			File file = new File(manifest);
+			File file = new File(MANIFEST);
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 
 			doc.getDocumentElement().normalize();
 
-			// get the manifest node and its children
-			NodeList manifestNode = doc.getElementsByTagName("manifest");
+			// get the MANIFEST node and its children
+			NodeList manifestNode = doc.getElementsByTagName("MANIFEST");
 			NodeList nodeList = manifestNode.item(0).getChildNodes();
 
 			// iterate over each node and start parsing
@@ -188,8 +226,6 @@ public class SpriteLoader {
 		
 		return ss;
 	}
-	
-
 
 	/**
 	 * Contains returns whether or not a NodeList contains a type of Node.
@@ -224,34 +260,8 @@ public class SpriteLoader {
 	}
 	
 	// method is here for debugging purposes
-	public Map<String, SpriteSet> getMap(){
+	private Map<String, SpriteSet> getMap(){
 		return SPRITESETS;
-	}
-
-	/**
-	 * A SpriteSet holds images for an entity/prop. It stores an image
-	 * for each facing direction; north, east, south, west. 
-	 * 
-	 * @author Hamish M
-	 *
-	 */
-	static class SpriteSet implements Visible {
-		private Sprite[] sprites = new Sprite[4];
-
-		public SpriteSet() {}
-
-		public SpriteSet(Sprite sprite) {
-			for (int i = 0; i < 4; i++) sprites[i] = sprite;
-		}
-		
-		public void setSprite(Direction face, Sprite sprite){
-			sprites[face.ordinal()] = sprite;
-		}
-		
-		@Override
-		public Sprite sprite(Direction facing) {
-			return sprites[facing.ordinal()];
-		}
 	}
 
 	public static void main(String[] args){

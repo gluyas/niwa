@@ -7,11 +7,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.sun.xml.internal.messaging.saaj.util.FinalArrayList;
 import swen222.niwa.gui.Sprite;
-import swen222.niwa.model.world.Tile.Texture;
-
-public class DevTexture implements Texture {
+/**
+ * This class was used during development. RIP in pasta; may the flying spaghetti monster have mercy on your soul.
+ */
+public class DevTexture {
 
 		static Image bamboo;
 		static Image bigRock1;
