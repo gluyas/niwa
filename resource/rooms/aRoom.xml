@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<class>
+<width>7</width> <height>9</height>
+
+<name> TestRoom2 </name>
+<spawnNorth col = "4" row = "0" />
+
+<tiles>
+	<line>g1 g2 g2 g2 g2 g2 g1 </line>
+	<line>g1 g2 s1 s1 g1 g1 s1 </line>
+	<line>g2 s1 w0 w0 s0 s1 s1 </line>
+	<line>g2 s1 w0 w0 w0 g1 s1 </line>
+	<line>g1 s0 w0 s0 s1 s1 g1 </line>
+	<line>g2 s1 s0 s1 g1 g2 g2 </line>
+	<line>g2 g2 g1 g2 g2 g2 g2 </line>
+	<line>g3 g2 g2 g2 g3 g3 g4 </line>
+	<line>g3 g2 g3 g3 g2 g3 g4 </line>
+</tiles>
+
+
+</class>

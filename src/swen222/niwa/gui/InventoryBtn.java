@@ -26,7 +26,7 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 		item = "Empty";
 		count = 0;
 		hover = false;
-		color = Color.CYAN;
+		color = Color.BLACK;
 
 		setFocusable(true);
 		setContentAreaFilled(false);
@@ -69,11 +69,11 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 		int y = this.getHeight() / 2 - SIZE / 2;
 
 		if (this.isSelected()) {
-			g.setColor(Color.RED);
+			g.setColor(new Color(255,238,145));
 		} else if (this.hover){
-			g.setColor(Color.BLUE);
+			g.setColor(new Color(255,96,82));
 		} else {
-			g.setColor(Color.GREEN);
+			g.setColor(new Color(255,165,94));
 		}
 		g.fillRect(x, y, SIZE, SIZE);
 
