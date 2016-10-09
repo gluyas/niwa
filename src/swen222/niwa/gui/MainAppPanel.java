@@ -52,6 +52,11 @@ public class MainAppPanel extends JPanel {
 		NiwaBtn rotCCW = new NiwaBtn("Rotate CCW (E)");
 		NiwaBtn action = new NiwaBtn("Action");
 		NiwaBtn inspect = new NiwaBtn("Inspect");
+		
+		rotCW.addActionListener(control);
+		rotCCW.addActionListener(control);
+		action.addActionListener(control);
+		inspect.addActionListener(control);
 
 		panel.add(rotCW);
 		panel.add(rotCCW);

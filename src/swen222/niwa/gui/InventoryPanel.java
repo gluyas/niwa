@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ButtonModel;
 import javax.swing.JPanel;
 
 import swen222.niwa.Controller;
@@ -24,21 +25,21 @@ public class InventoryPanel extends JPanel {
 	private Controller control;
 
 	private InventoryBtn[] buttons;
-	private DeselectableButtonGroup group;
+	private DeselectableButtonGroup btnGroup;
 
 	public InventoryPanel(Controller control) {
 		this.control = control;
 		buttons = new InventoryBtn[INV_SIZE];
-		group = new DeselectableButtonGroup();
+		btnGroup = new DeselectableButtonGroup();
 
 		for (int i = 0; i < buttons.length; i++) {
 			buttons[i] = new InventoryBtn();
-			group.add(buttons[i]);
+			btnGroup.add(buttons[i]);
 			add(buttons[i]);
 		}
 
 		setLayout(new GridLayout(1, INV_SIZE, 2, 2));
-		setBackground(new Color(0xfff0f5));// for testing, don't worry about it
+		setBackground(new Color(0xfff0f5));
 
 		updateInventory(getTestSet());
 	}
@@ -54,6 +55,15 @@ public class InventoryPanel extends JPanel {
 		for (String s : items.keySet()) {
 			buttons[i].updateButton(s, items.get(s));
 			i++;
+		}
+	}
+	
+	public String getSelectedItem(){
+		ButtonModel bMod = btnGroup.getSelection();
+		if(bMod == null){
+			return "null";
+		}else{
+			return bMod.getActionCommand();
 		}
 	}
 

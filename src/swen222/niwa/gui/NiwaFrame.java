@@ -23,10 +23,10 @@ public class NiwaFrame extends JFrame implements Observer {
 
 	final Controller control;
 
-	final MenuBar menuBar;
-	final RenderPanel renderPanel;
-	final MainAppPanel gamePanel;
-	final InventoryPanel invPanel;
+	public final MenuBar menuBar;
+	public final RenderPanel renderPanel;
+	public final MainAppPanel gamePanel;
+	public final InventoryPanel invPanel;
 	
 
 	public NiwaFrame(Controller control) throws HeadlessException {
@@ -39,11 +39,9 @@ public class NiwaFrame extends JFrame implements Observer {
 		menuBar = new MenuBar(control);
 		renderPanel = new RenderPanel(new RoomRenderer(stage));
 		gamePanel = new MainAppPanel(control);
-		
-
-		this.setJMenuBar(menuBar);
-		
 		invPanel = new InventoryPanel(control);
+		
+		this.setJMenuBar(menuBar);
 		
 		add(invPanel, BorderLayout.NORTH);
 		add(renderPanel, BorderLayout.CENTER);
@@ -53,6 +51,7 @@ public class NiwaFrame extends JFrame implements Observer {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		pack();
+		setLocationRelativeTo(null);
 		setVisible(true); // make sure we are visible!
 	}
 

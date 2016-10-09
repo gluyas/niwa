@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  */
 public class RenderPanel extends JPanel{
 	
-	RoomRenderer rr;
+	private RoomRenderer rr;
 	
 	public RenderPanel (RoomRenderer rr){
 		setDoubleBuffered(true);
@@ -33,6 +33,10 @@ public class RenderPanel extends JPanel{
 		((Graphics2D) g).setPaint(grad);
 		g.fillRect(0,0,getWidth(), getHeight());
 		rr.draw(g, this.getWidth(), this.getHeight());
+	}
+	
+	public RoomRenderer getRR(){
+		return rr;
 	}
 	
 	public void setRR(RoomRenderer rr) {
