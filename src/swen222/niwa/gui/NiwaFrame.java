@@ -33,8 +33,8 @@ public class NiwaFrame extends JFrame implements Observer {
 		super("Title");
 
 		this.control = control;
-		// not sure if works, resolve later
-		Room stage = Room.newFromFile(new File("resource/rooms/testRoom.xml"));
+		// for testing
+		Room stage = Room.newFromFile(new File("resource/rooms/testRoom2.xml"));
 
 		menuBar = new MenuBar(control);
 		renderPanel = new RenderPanel(new RoomRenderer(stage));

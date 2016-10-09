@@ -19,8 +19,6 @@ import swen222.niwa.Controller;
  */
 public class InventoryPanel extends JPanel {
 
-	private static final int HEIGHT = 50;
-	private static final int WIDTH = HEIGHT;
 	// the below will change depending on how many items we let players hold
 	private static final int INV_SIZE = 9;
 	private Controller control;
@@ -57,11 +55,6 @@ public class InventoryPanel extends JPanel {
 			buttons[i].updateButton(s, items.get(s));
 			i++;
 		}
-	}
-
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension(WIDTH, HEIGHT);
 	}
 
 	// methods for testing concept

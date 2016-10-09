@@ -1,6 +1,8 @@
 package swen222.niwa;
 
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,7 +13,7 @@ import swen222.niwa.gui.NiwaFrame;
  * @author Jack U
  *
  */
-public class Controller implements Observer{
+public class Controller implements Observer, ActionListener{
 
 	private final NiwaFrame view;
 	
@@ -27,6 +29,12 @@ public class Controller implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
