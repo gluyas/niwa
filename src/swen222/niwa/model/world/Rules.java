@@ -6,10 +6,12 @@ import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.entity.StaticEntity;
+import swen222.niwa.model.entity.entities.Door;
 import swen222.niwa.model.entity.entities.PlayerEntity;
 import swen222.niwa.model.entity.entities.Rune;
 import swen222.niwa.model.entity.entities.RuneStone;
 import swen222.niwa.model.entity.entities.Seed;
+import swen222.niwa.model.entity.entities.Statue;
 import swen222.niwa.model.world.Location.InvalidLocationException;
 import swen222.niwa.model.world.Prop.PropType;
 
@@ -20,9 +22,10 @@ import swen222.niwa.model.world.Prop.PropType;
 public class Rules {
 
 	public EntityTable<Entity> entities;
-
-	public Rules(EntityTable<Entity> table){
-		entities=table;
+	public Room room;
+	public Rules(Room room){
+		this.room = room;
+		entities=room.entities;//accessing through public access because getter wasn't working
 	}
 
 //----------------------------------------------------------------------------------------------------------------
@@ -35,14 +38,60 @@ public class Rules {
 	/**
 	 * Moves an entity one space in a room, if there is no entity in the chosen direction nor impassable terrain
 	 * Also picks up anyitems in their path
-	 * @param e
+	 * @param player
 	 * @param dir
 	 * @return
 	 */
-	public boolean move(PlayerEntity e, Direction dir){
+	public boolean move(PlayerEntity player, Direction dir){
+		if(!canMove(player,dir)){
+			return false;
+		}
+		player.move(dir);
+		pickUp(player);//pick up anything player is on
+		player.updateFacing(dir);
+		checkStatues();//Update statue states and opens door
+		return true;
+	}
+
+	private void checkStatues() {
+		for(Entity e: entities){
+			if(e instanceof Statue){
+				if(playerOn(e)){
+					((Statue) e).setTriggered(true);
+				}
+				else{
+					((Statue) e).setTriggered(false);
+				}
+			}
+		}
+		checkDoors();
+	}
+
+	private void checkDoors(){
+		for(Entity e: entities){
+			if(e instanceof Door){
+				if(((Door) e).checkStatues()){//if all the statues connected to this door are triggered
+					((Door) e).setOpen(true);//set the door to open
+				}
+			}
+		}
+	}
+
+	private boolean playerOn(Entity statue) {
+		for(Entity e: entities.get(statue.getLocation())){
+			if(e instanceof PlayerEntity){
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+
+	public boolean canMove(PlayerEntity player, Direction dir){
 		try {
-			Location toGo =e.getLocation().move(dir);
-			Location from =e.getLocation();
+			Location toGo =player.getLocation().move(dir);
+			Location from =player.getLocation();
 
 			Set<Entity> entitiesInDirection =entities.get(toGo);//check for players in direction
 			for(Entity entity: entitiesInDirection){
@@ -51,7 +100,7 @@ public class Rules {
 				}
 			}
 
-			if(!toGo.tile().canOccupy(e)){//check for physical props in direction
+			if(!toGo.tile().canOccupy(player)){//check for physical props in direction
 				return false;
 			}
 
@@ -65,10 +114,6 @@ public class Rules {
 			e1.printStackTrace();
 			return false;
 		}
-
-		e.move(dir);
-		pickUp(e);
-		e.updateFacing(dir);
 		return true;
 	}
 
@@ -110,6 +155,7 @@ public class Rules {
 		item.setLocation(player.getLocation()); //places item
 		return true;
 	}
+
 
 
 

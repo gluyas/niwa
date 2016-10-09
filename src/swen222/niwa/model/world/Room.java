@@ -35,7 +35,7 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 
 	public static Location[] spawnLocs; // the locations of the areas the player can enter from
 
-	private EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
+	public EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
 									// locations store the room they correspond to so it wouldn't complicate much to
 									// just have one big List of EVERY entity in the world - that would also simplify
 									// moving between rooms, only the entity's position would need to be updated,
@@ -56,6 +56,7 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	}
 
 	/**
+	 *
 	 * @return an EntityTable containing all Entities that are currently in this Room.
 	 */
 	public EntityTable<? extends Entity> getEntityTable() {
@@ -79,7 +80,7 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	 * @return the newly created Room
 	 */
 	public static Room newFromFile(File f) {
-		
+
 		RoomParser parser = new RoomParser(f);
 		Room room = RoomBuilder.buildRoom(parser);
 
@@ -103,18 +104,18 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 		this.name = name;
 		this.entities = new HashEntityTable<>();
 	}
-	
+
 	public static class RoomBuilder{
-		
-		
+
+
 		private static Room buildRoom(RoomParser parser){
-			
+
 			int width = parser.width;
 			int height = parser.height;
-			
+
 			String name = parser.getName();
-			
-			Room room = new Room(name, width,height); 
+
+			Room room = new Room(name, width,height);
 
 			room.tiles = parser.getTiles();
 
@@ -126,10 +127,10 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 					}
 				}
 			}
-			
+
 			//creating entities - currently represented by a set
 			Collection<Entity> entities = new HashSet<Entity>();
-			
+
 			//needs to convert string into entities
 			String[][] strings = parser.getEntities();
 			for(int row = 0; row<height; row++){
@@ -149,43 +150,43 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 				spawnLocs[i]= Location.at(room,coord[0],coord[1]);
 			}
 
-			
+
 			return room;
 		}
-		
-		
+
+
 		//TODO: Make these able to take in different facing sprites and construct them
 		//appropriately
 		private static Entity stringToEntity(String s, int row, int col, Room r){
-			
+
 			Location loc = Location.at(r, col, row);
-			
+
 			switch(s){
-				
+
 			case "seed":
 				return new Seed(loc);
-			
+
 			case "door":
-				return new Door(loc);
-			
+				return null;
+
 			case "rune":
 				return new Rune(loc);
-			
+
 			case "runeStone":
 				return new RuneStone(loc);
-			
+
 			case "statue":
 				return new Statue(loc);
-			
+
 			default:
-				throw new Error("Could not find an entity of the name" + s + ", please " + 
+				throw new Error("Could not find an entity of the name" + s + ", please " +
 			    "double check the naming convention in the 'Room' class");
-				
-						
+
+
 			}
-			
+
 		}
-		
+
 	}
 
 }
