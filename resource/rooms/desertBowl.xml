@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<class>
+<width>5</width> <height>9</height>
+
+<name> DesertBowl </name>
+
+<spawnNorth col = "2" row = "0" />
+<spawnEast col = "4" row = "4" />
+<spawnSouth col = "4" row = "8" />
+<spawnWest col = "0" row = "4" />
+
+<tiles>
+	<line>s3 s2 s2 s2 s3 </line>
+	<line>s2 a0 s1 a0 s2  </line>
+	<line>s2 a0 a0 a0 s2  </line>
+	<line>s2 a0 a0 a0 s2  </line>
+	<line>s2 s1 a0 s1 s2  </line>
+	<line>s2 a0 a0 a0 s2  </line>
+	<line>s2 a0 a0 a0 s2  </line>
+	<line>s2 a0 s1 a0 s2  </line>
+	<line>s3 s2 s2 s2 s3  </line>
+	
+	
+</tiles>
+
+
+<prop type = "path2" col = "2" row = "0" />
+<prop type = "bigrock" col = "3" row = "0" />
+
+<prop type = "bigrock" col = "0" row = "1" />
+<prop type = "path2" col = "2" row = "1" />
+
+<prop type = "bigrock" col = "4" row = "3" />
+
+<prop type = "path2" col = "0" row = "4" />
+<prop type = "path2" col = "1" row = "4" />
+<prop type = "path2" col = "3" row = "4" />
+<prop type = "path2" col = "4" row = "4" />
+
+<prop type = "path2" col = "2" row = "7" />
+
+<prop type = "bigrock" col = "0" row = "8" />
+<prop type = "path2" col = "2" row = "8" />
+<prop type = "bigrock" col = "3" row = "8" />
+
+</class>
