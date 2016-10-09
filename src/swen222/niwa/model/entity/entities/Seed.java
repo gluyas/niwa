@@ -10,7 +10,13 @@ import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
+/**
+ * @author burnshami
+ *
+ */
 public class Seed extends ObjectEntity {
+	
+
 
 	static final Sprite sprite ;
 

@@ -17,6 +17,11 @@ public class RuneStone extends StaticEntity{
 		super(loc);
 		this.type=type;
 	}
+	
+	public RuneStone(Location loc) {
+		super(loc);
+	
+	}
 
 	public runeType getType(){
 		return type;

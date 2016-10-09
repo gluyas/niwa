@@ -3,17 +3,26 @@ package swen222.niwa.file;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
+import swen222.niwa.model.entity.entities.Seed;
+import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Prop;
 import swen222.niwa.model.world.Tile;
 import swen222.niwa.model.world.Tile.TileType;
 
 import javax.xml.parsers.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 /**
  * Parses in a specified file and adds the tiles
  * and objects at the specified positions.
+ * Provides methods that get important information about the
+ * room.
  * @author Jack U
  *
  */
@@ -95,6 +104,70 @@ public class RoomParser {
 		 }
 		 String height = list.item(0).getTextContent();
 		 return Integer.parseInt(height);
+
+	}
+	
+	/**
+	 * Gets the name of the room
+	 * @return
+	 */
+	public String getName(){
+		 NodeList list = rootElement.getElementsByTagName("name");
+		 if(list.getLength()!=1){
+			 throw new NoSuchElementException("There is no name in this room!");
+		 }
+		 String name = list.item(0).getTextContent();
+		 return name;
+
+	}
+
+	/**
+	 * Gets the spawn locations for the room.
+	 * @return
+	 */
+	public int[][] getSpawns(){
+
+		 int[][] spawns = new int[4][2];
+
+		 int numSpawns = 0;
+		 NodeList list= null;
+
+		 for (int i = 0; i < 4; i++){
+
+			 switch(i){
+			 case 0:
+				 list = rootElement.getElementsByTagName("spawnNorth");
+				 break;
+			 case 1:
+				 list = rootElement.getElementsByTagName("spawnEast");
+				 break;
+			 case 2:
+				 list = rootElement.getElementsByTagName("spawnSouth");
+				 break;
+			 case 3:
+				 list = rootElement.getElementsByTagName("spawnWest");
+				 break;
+			 }
+
+			 if(list.getLength()!=0){
+				 Element el = (Element) list.item(0);
+				 int[] coords = getCoordsFromElement(el);
+				 spawns[i]=coords;
+				 numSpawns++;
+
+			 }
+		 }
+
+
+		 if(numSpawns==0){
+			 throw new Error("There must be at least one spawn location!");
+		 }
+
+		 return spawns;
+
+
+
+
 
 	}
 
@@ -222,16 +295,15 @@ public class RoomParser {
 
 
 	/**
-	 * Gets the entities from the xml, and returns a 2D array representation of them
-	 * on the map. *NOTE* In construction - Commented out for the moment
+	 * Gets the entities from the xml for this room, and returns a 2D string array
+	 * of entities so that they can be converted into entities in the 
+	 * roomparser. If there are no entities, returns an empty list.
 	 * @return
 	 */
 
+	public String[][] getEntities(){
 
-	/*
-	public Entity[][] getEntities(){
-
-		Entity[][] entities = new Entity[height][width];
+		String[][] entities = new String[height][width];
 
 		NodeList list = rootElement.getElementsByTagName("entity");
 		if(list.getLength()==0){
@@ -251,24 +323,17 @@ public class RoomParser {
                 int col = Integer.valueOf(stringCol);
                 int row = Integer.valueOf(stringRow);
 
-                //convert them to appropriate types
-                switch(type){
-
-
-                Prop.PropType propType = stringToEnum(type);
-
-
-                //add the prop in the 2D array
-                props[row][col]=new Prop(propType);
+                //add the string in the 2D array
+                entities[col][row]=type;
 
 
             }
 		}
 
-		return props;
+		return entities;
 
 		}
-		*/
+		
 
 
 
@@ -284,6 +349,22 @@ public class RoomParser {
 
 		String capsString = type.toUpperCase();
 		return Enum.valueOf(Prop.PropType.class, capsString);
+
+	}
+
+	private int [] getCoordsFromElement(Element el){
+
+		int [] coords= new int [2];
+
+		  //get the type, col, and row as strings
+        String stringCol = el.getAttribute("col");
+        String stringRow = el.getAttribute("row");
+
+        coords[0] = Integer.valueOf(stringCol);
+		coords[1] =  Integer.valueOf(stringRow);
+
+		return coords;
+
 
 	}
 

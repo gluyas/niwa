@@ -2,6 +2,13 @@
 <class>
 <width>8</width> <height>7</height>
 
+<name> NiceForest </name>
+
+<spawnNorth col = "4" row = "0" />
+<spawnEast col = "0" row = "3" />
+<spawnSouth col = "6" row = "4" />
+<spawnWest col = "0" row = "4" />
+
 <tiles>
 	<line>g0 g0 g1 g0 g0 g1 g0 g0 </line>
 	<line>g0 d0 g0 g0 g0 d0 g0 g0 </line>
@@ -45,7 +52,6 @@
 
 <prop type = "bamboo" col = "5" row = "6"/>
 <prop type = "bush" col = "7" row = "6"/>
-
 
 
 

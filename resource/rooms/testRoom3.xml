@@ -2,6 +2,10 @@
 <class>
 <width>10</width> <height>9</height>
 
+<name> TestRoom3 </name>
+
+<spawnNorth col = "4" row = "0" />
+
 <tiles>
 	<line>s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 </line>
 	<line>s1 a1 a1 a1 a1 a1 a1 a1 a1 s1 </line>
@@ -12,7 +16,6 @@
 	<line>s1 a1 d2 d2 a1 a1 d2 d2 a1 s1 </line>
 	<line>s1 a1 a1 a1 a1 a1 a1 a1 a1 s1 </line>
 	<line>s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 </line>
-	
 	
 </tiles>
 

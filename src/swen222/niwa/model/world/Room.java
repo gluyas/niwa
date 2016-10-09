@@ -2,12 +2,20 @@ package swen222.niwa.model.world;
 
 import swen222.niwa.file.RoomParser;
 import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.entity.entities.Door;
+import swen222.niwa.model.entity.entities.Rune;
+import swen222.niwa.model.entity.entities.RuneStone;
+import swen222.niwa.model.entity.entities.Seed;
+import swen222.niwa.model.entity.entities.Statue;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Tile.Texture;
 import swen222.niwa.model.world.Tile.TileType;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Observer;
 import java.util.Set;
 
@@ -24,6 +32,8 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	public final int height; // there doesn't seem like any good use case where these would need to change
 
 	private Tile[][] tiles; // each location l corresponds to tiles[l.row][l.col]
+
+	public static Location[] spawnLocs; // the locations of the areas the player can enter from
 
 	private EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
 									// locations store the room they correspond to so it wouldn't complicate much to
@@ -69,23 +79,9 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	 * @return the newly created Room
 	 */
 	public static Room newFromFile(File f) {
-
+		
 		RoomParser parser = new RoomParser(f);
-		int width = parser.width;
-		int height = parser.height;
-
-		Room room = new Room("Default", width,height); //TODO: add name to the Room schema
-
-		room.tiles = parser.getTiles();
-
-		Prop[][] props = parser.getProps();
-		for(int row = 0; row<height; row++){
-			for(int col = 0; col<width; col++){
-				if(props[row][col]!=null){
-					room.tiles[row][col].addProp(props[row][col]);
-				}
-			}
-		}
+		Room room = RoomBuilder.buildRoom(parser);
 
 		return room;
 	}
@@ -106,6 +102,90 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 		this.height = height;
 		this.name = name;
 		this.entities = new HashEntityTable<>();
+	}
+	
+	public static class RoomBuilder{
+		
+		
+		private static Room buildRoom(RoomParser parser){
+			
+			int width = parser.width;
+			int height = parser.height;
+			
+			String name = parser.getName();
+			
+			Room room = new Room(name, width,height); 
+
+			room.tiles = parser.getTiles();
+
+			Prop[][] props = parser.getProps();
+			for(int row = 0; row<height; row++){
+				for(int col = 0; col<width; col++){
+					if(props[row][col]!=null){
+						room.tiles[row][col].addProp(props[row][col]);
+					}
+				}
+			}
+			
+			//creating entities - currently represented by a set
+			Collection<Entity> entities = new HashSet<Entity>();
+			
+			//needs to convert string into entities
+			String[][] strings = parser.getEntities();
+			for(int row = 0; row<height; row++){
+				for(int col = 0; col<width; col++){
+					if(strings[row][col]!=null){
+						entities.add(stringToEntity(strings[row][col],row,col,room));
+					}
+				}
+			}
+
+			spawnLocs = new Location [4];
+
+			//needs to read through spawns and convert them into locations
+			int[][] spawns = parser.getSpawns();
+			for(int i = 0; i< 4; i++){
+				int[] coord = spawns[i];
+				spawnLocs[i]= Location.at(room,coord[0],coord[1]);
+			}
+
+			
+			return room;
+		}
+		
+		
+		//TODO: Make these able to take in different facing sprites and construct them
+		//appropriately
+		private static Entity stringToEntity(String s, int row, int col, Room r){
+			
+			Location loc = Location.at(r, col, row);
+			
+			switch(s){
+				
+			case "seed":
+				return new Seed(loc);
+			
+			case "door":
+				return new Door(loc);
+			
+			case "rune":
+				return new Rune(loc);
+			
+			case "runeStone":
+				return new RuneStone(loc);
+			
+			case "statue":
+				return new Statue(loc);
+			
+			default:
+				throw new Error("Could not find an entity of the name" + s + ", please " + 
+			    "double check the naming convention in the 'Room' class");
+				
+						
+			}
+			
+		}
+		
 	}
 
 }
