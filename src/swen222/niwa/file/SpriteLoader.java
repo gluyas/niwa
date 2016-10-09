@@ -81,7 +81,7 @@ public class SpriteLoader {
 			doc.getDocumentElement().normalize();
 
 			// get the MANIFEST node and its children
-			NodeList manifestNode = doc.getElementsByTagName("MANIFEST");
+			NodeList manifestNode = doc.getElementsByTagName("manifest");
 			NodeList nodeList = manifestNode.item(0).getChildNodes();
 
 			// iterate over each node and start parsing
@@ -192,7 +192,7 @@ public class SpriteLoader {
 			// now create the Sprite
 			return new Sprite(img, ax, ay, width);
 		} catch (IOException e) {
-			System.out.println("A sprite tag must have an image attribute");
+			System.out.println(spriteElement.getAttribute("img"));
 			e.printStackTrace();
 		}
 
