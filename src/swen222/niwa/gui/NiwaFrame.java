@@ -26,7 +26,7 @@ public class NiwaFrame extends JFrame implements Observer {
 	final Controller control;
 
 	public final MenuBar menuBar;
-	// public final RenderPanel renderPanel;
+	public final RenderPanel renderPanel;
 	public final MainAppPanel gamePanel;
 	public final InventoryPanel invPanel;
 
@@ -35,18 +35,17 @@ public class NiwaFrame extends JFrame implements Observer {
 
 		this.control = control;
 		// for testing
-		// Room stage = Room.newFromFile(new
-		// File("resource/rooms/niceForest.xml"));
+		Room stage = Room.newFromFile(new File("resource/rooms/desertBowl.xml"));
 
 		menuBar = new MenuBar(control);
-		// renderPanel = new RenderPanel(new RoomRenderer(stage));
+		renderPanel = new RenderPanel(new RoomRenderer(stage));
 		gamePanel = new MainAppPanel(control);
 		invPanel = new InventoryPanel(control);
 
 		this.setJMenuBar(menuBar);
 
 		add(invPanel, BorderLayout.NORTH);
-		// add(renderPanel, BorderLayout.CENTER);
+		add(renderPanel, BorderLayout.CENTER);
 		add(gamePanel, BorderLayout.SOUTH);
 
 		setMinimumSize(new Dimension(710, 200));

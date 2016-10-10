@@ -19,28 +19,30 @@ import javax.swing.*;
  */
 public class InventoryBtn extends JToggleButton implements MouseListener {
 
-	private boolean hover;
-	private String item;// name of the item in this slot, "Empty" if nothing
-						// there
 	public static final int SIZE = 50;
-	private Color color;// stand in for thumb nail image, for testing purposes
+	// name of the item in this slot, "Empty" if nothing there
+	private String item;
+	// image of the item, null if empty
 	private Image img;
-	private int count;// how many of this kind of item the player has
+	// how many of this kind of item the player has, 0 if empty
+	private int count;
+	private boolean hover;
 
 	public InventoryBtn() {
 		item = "Empty";
+		img = null;
 		count = 0;
 		hover = false;
 		// this is just here to test the drawing, will eventually take img from
 		// sprite
-		try {
-			//img = ImageIO.read(new File("resource/images/entities/misc/seedThumb.png"));
-			img = ImageIO.read(new File("resource/images/entities/runes/1Thumb.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		color = Color.WHITE;
+//		try {
+//			// img = ImageIO.read(new
+//			// File("resource/images/entities/misc/seedThumb.png"));
+//			img = ImageIO.read(new File("resource/images/entities/runes/1Thumb.png"));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		setFocusable(true);
 		setContentAreaFilled(false);
@@ -53,13 +55,15 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 	}
 
 	/**
-	 * updates the item and count fields, tool tip and action command of the
-	 * button
+	 * updates the item, img, and count fields, tool tip and action command of the
+	 * button to reflect what is currently stored here
 	 * 
 	 * @param item
 	 *            - the new item String
 	 * @param count
 	 *            - the new count integer
+	 * @param img
+	 *            - the image for this item
 	 */
 	public void updateButton(String item, int count, Image img) {
 		this.item = item;
@@ -67,10 +71,6 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 		this.img = img;
 		setActionCommand(item);
 		setToolTipText(item + ", " + count);
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 		}
 		g.fillRect(x, y, SIZE, SIZE);
 
-		g.setColor(color);
+		g.setColor(Color.WHITE);
 		g.fillRect(x + SIZE / 10, y + SIZE / 10, SIZE - 2 * (SIZE / 10), SIZE - 2 * (SIZE / 10));
 		g.drawImage(img, x + SIZE / 10, y + SIZE / 10, SIZE - 2 * (SIZE / 10), SIZE - 2 * (SIZE / 10), null);
 	}
