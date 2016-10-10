@@ -32,7 +32,7 @@ public class LogicTest {
 
 		r= Room.newFromFile(new File("resource/rooms/logicTestRoom.xml"));
 		r2= Room.newFromFile(new File("resource/rooms/desertBowl.xml"));
-		world= new World(1,2);
+		world=  new World(2,2);
 		world.addRoom(0,1,r);
 		world.addRoom(0, 0, r2);
 		ent1 = new PlayerEntity(Location.at(r,0,0));
@@ -54,11 +54,8 @@ public class LogicTest {
 
 	@Test
 	public void changeRoom(){
-		System.out.println("started: " +ent1.getLocation().toString());
 		logic.move(ent1,Direction.NORTH);
-		System.out.println(ent1.getLocation().toString());
 		assertTrue(ent1.getLocation().getRoom().equals(r2));
-		
 	}
 
 }
