@@ -234,7 +234,7 @@ public class RoomParser {
 				//creates different tiles depending on the char
 				switch(s){
 				case 'g':
-					randInt = new Random().nextInt(2)+1;
+					randInt = new Random().nextInt(3)+1;
 					t = new Tile("grassBlock", blockHeight, SpriteLoader.get("grassBlock"+randInt), true);
 					break;
 				case 's':
@@ -247,7 +247,7 @@ public class RoomParser {
 					t = new Tile("dirtBlock", blockHeight, SpriteLoader.get("dirtBlock"), true);
 					break;
 				case 'w':
-					randInt = new Random().nextInt(1)+1;
+					randInt = new Random().nextInt(2)+1;
 					t = new Tile("waterBlock", blockHeight, SpriteLoader.get("waterBlock"+randInt), false);
 					break;
 				case 'q':
@@ -300,11 +300,11 @@ public class RoomParser {
 					props[row][col] = new Prop("bamboo", SpriteLoader.get("bamboo"), false);
 					break;
 				case "bigrock":
-					randInt = new Random().nextInt(1)+1;
+					randInt = new Random().nextInt(2)+1;
 					props[row][col] = new Prop("bigRock", SpriteLoader.get("bigRock"+randInt), false);
 					break;
 				case "bigtree":
-					randInt = new Random().nextInt(2)+1;
+					randInt = new Random().nextInt(3)+1;
 					props[row][col] = new Prop("bigTree", SpriteLoader.get("bigTree"+randInt), false);
 					break;
 				case "bush":
@@ -335,7 +335,7 @@ public class RoomParser {
 					props[row][col] = new Prop("soil", SpriteLoader.get("soil"), true);
 					break;
 				case "smalltree":
-					randInt = new Random().nextInt(2)+1;
+					randInt = new Random().nextInt(3)+1;
 					props[row][col] = new Prop("smallTree", SpriteLoader.get("smallTree"+randInt), false);
 					break;
 				case "zen1":
