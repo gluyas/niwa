@@ -29,7 +29,7 @@ import swen222.niwa.model.world.Direction;
 public class SpriteLoader {
 
 	public static final String MANIFEST = "resource/images/spritesets.xml";
-
+	public static final String DEFAULT_SPRITE = "resource/images/tiles/tempObject.png";
 	private static final Map<String, SpriteSet> SPRITESETS = new HashMap<>();
 
 	/**
@@ -50,11 +50,18 @@ public class SpriteLoader {
 	 *
 	 */
 	public static class SpriteSet implements Visible {
-		private Sprite[] sprites = new Sprite[4];
+		private final Sprite[] sprites;
 
-		public SpriteSet() {}
+		private SpriteSet() {
+			sprites  = new Sprite[4];
+		}
+
+		private SpriteSet(Sprite[] sprites) {
+			this.sprites = sprites;
+		}
 
 		public SpriteSet(Sprite sprite) {
+			sprites = new Sprite[4];
 			for (int i = 0; i < 4; i++) sprites[i] = sprite;
 		}
 
@@ -63,8 +70,23 @@ public class SpriteLoader {
 		}
 
 		@Override
-		public Sprite sprite(Direction facing) {
-			return sprites[facing.ordinal()];
+		public Sprite sprite(Direction camera) {
+			return sprites[camera.ordinal()];
+		}
+
+		/**
+		 * Creates a copy of this SpriteSet, but facing in the provided direction,
+		 * with this one presumed to be facing North.
+		 * @param facing the Direction for the new SpriteSet to be facing
+		 * @return a new SpriteSet instance
+		 */
+		public SpriteSet facing(Direction facing) {
+			return new SpriteSet(sprites) {
+				@Override
+				public Sprite sprite(Direction camera) {
+					return sprites[(camera.ordinal()+facing.ordinal())%4];
+				}
+			};
 		}
 	}
 
@@ -169,8 +191,15 @@ public class SpriteLoader {
 	private static Sprite parseSprite(Node spriteNode){
 		Element spriteElement = (Element)spriteNode;
 		try {
-			// each sprite will always have an image path
-			Image img = ImageIO.read(new File(spriteElement.getAttribute("img")));
+			// each sprite will always have an image path, if its the path does not exist
+			// then assign it a default image path
+			File imgPath = new File(spriteElement.getAttribute("img"));
+			Image img;
+			if(imgPath.exists()){
+				img = ImageIO.read(imgPath);
+			}else{
+				img = ImageIO.read(new File(DEFAULT_SPRITE));
+			}
 			
 			// now store the other potential attributes; ax, ay, width
 			String axAttr = spriteElement.getAttribute("ax");

@@ -27,7 +27,7 @@ public class PlayerEntity extends Entity{
 	}
 
 	@Override
-	public Sprite sprite(Direction facing) {
+	public Sprite sprite(Direction camera) {
 		// TODO Auto-generated method stub
 		return null;
 	}

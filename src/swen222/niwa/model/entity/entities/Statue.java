@@ -38,7 +38,7 @@ public class Statue extends ObjectEntity {
 		triggered=false;
 	}
 	@Override
-	public Sprite sprite(Direction facing) {
+	public Sprite sprite(Direction camera) {
 		return sprite;
 	}
 
