@@ -396,13 +396,13 @@ public class RoomParser {
 					entities.add(new Rune(Location.at(room, col, row), "lightning", SpriteLoader.get("rune3")));
 					break;
 				case "runestone1":
-					entities.add(new RuneStone(Location.at(room, col, row), "circle", SpriteLoader.get("runeStone1")));
+					entities.add(new RuneStone(Location.at(room, col, row), "circle", SpriteLoader.get("runestone1")));
 					break;
 				case "runestone2":
-					entities.add(new RuneStone(Location.at(room, col, row), "cross", SpriteLoader.get("runeStone2")));
+					entities.add(new RuneStone(Location.at(room, col, row), "cross", SpriteLoader.get("runestone2")));
 					break;
 				case "runestone3":
-					entities.add(new RuneStone(Location.at(room, col, row), "lightning", SpriteLoader.get("runeStone3")));
+					entities.add(new RuneStone(Location.at(room, col, row), "lightning", SpriteLoader.get("runestone3")));
 					break;
 				case "seed":
 					entities.add(new Seed(Location.at(room, col, row), SpriteLoader.get("closed")));

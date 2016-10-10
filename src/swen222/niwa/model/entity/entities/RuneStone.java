@@ -27,8 +27,7 @@ public class RuneStone extends ChangingEntity{
 	
 	@Override
 	public Sprite sprite(Direction camera) {
-		sprites.sprite(camera);
-		return null;
+		return sprites.sprite(camera);
 	}
 
 }

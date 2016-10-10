@@ -20,7 +20,7 @@ public class DemoPlayer extends PlayerEntity {
 	private Direction facing = Direction.NORTH;
 
 	public DemoPlayer(Location loc) {
-		super(loc);
+		super(loc, ss);
 	}
 
 	@Override

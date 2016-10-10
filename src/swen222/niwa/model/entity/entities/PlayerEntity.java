@@ -2,6 +2,7 @@ package swen222.niwa.model.entity.entities;
 
 import java.util.ArrayList;
 
+import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.world.Direction;
@@ -13,23 +14,24 @@ import swen222.niwa.model.world.Location;
  */
 public class PlayerEntity extends Entity{
 
-	public String name;
-	public int points;
-	public ArrayList<Entity> inventory;
-	public int inventoryCapacity;
-	public Direction facing;
+	private String name;
+	private int points;
+	private ArrayList<Entity> inventory;
+	private int inventoryCapacity;
+	private Direction facing;
+	private SpriteSet sprites;
 
-	public PlayerEntity(Location loc) {
+	public PlayerEntity(Location loc, SpriteSet sprites) {
 		super(loc);
-		inventory= new ArrayList<Entity>();
-		inventoryCapacity=3;
-		points=0;
+		this.inventory= new ArrayList<Entity>();
+		this.inventoryCapacity =3 ;
+		this.points = 0;
+		this.sprites = sprites;
 	}
 
 	@Override
 	public Sprite sprite(Direction camera) {
-		// TODO Auto-generated method stub
-		return null;
+		return sprites.sprite(camera);
 	}
 
 	public void addItem(Entity item){

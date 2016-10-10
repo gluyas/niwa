@@ -22,7 +22,8 @@
 
 <prop type="bigrock" col="0" row="0"/>
 <prop type="fencefront" col="5" row="9"/>
-<entity type = "rune1" col = "1" row = "1"/>
+<entity type = "runestone1" col = "1" row = "1"/>
+
 
 
 
