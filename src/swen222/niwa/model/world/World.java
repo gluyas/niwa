@@ -27,10 +27,23 @@ public class World {
 		return null;
 	}
 
-	private World(int width, int height) {
+	public World(int width, int height) {
 		// this.width = width;
 		// this.height = height;
 		this.map = new Room[width][height];
+	}
+
+	//for testing
+	private void setRoom(int col, int row, Room r){
+		map[col][row] = r;
+	}
+
+	public Room[][] getMap(){
+		return map;
+	}
+	public void addRoom(int col, int row,Room room){
+		map[col][row]=room;
+		room.setPosition(col, row);
 	}
 
 	/**

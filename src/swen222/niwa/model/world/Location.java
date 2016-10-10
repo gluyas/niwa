@@ -74,6 +74,10 @@ public class Location {
 		this.row = row;
 	}
 
+	public Room getRoom(){
+		return room;
+	}
+
 	@Override
 	public int hashCode() {
 		return room.hashCode() ^ col ^ row;
