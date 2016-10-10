@@ -17,7 +17,7 @@ import swen222.niwa.Controller;
  * @author Jack U
  *
  */
-public class MenuBar extends JMenuBar implements ActionListener {
+public class MenuBar extends JMenuBar{
 
 	final Controller control;
 	
@@ -37,9 +37,9 @@ public class MenuBar extends JMenuBar implements ActionListener {
 		save = new JMenuItem("Save");
 		load = new JMenuItem("Load");
 		
-		newGame.addActionListener(this);
-		save.addActionListener(this);
-		load.addActionListener(this);
+		newGame.addActionListener(control);
+		save.addActionListener(control);
+		load.addActionListener(control);
 		
 		gameMenu.add(newGame);
 		gameMenu.add(save);
@@ -48,13 +48,6 @@ public class MenuBar extends JMenuBar implements ActionListener {
 		add(gameMenu);
 		
 		setVisible(true); //make sure we are visible!
-	}
-	
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

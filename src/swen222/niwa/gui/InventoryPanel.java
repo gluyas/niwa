@@ -4,6 +4,7 @@ package swen222.niwa.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,29 +41,28 @@ public class InventoryPanel extends JPanel {
 
 		setLayout(new GridLayout(1, INV_SIZE, 2, 2));
 		setBackground(new Color(0xfff0f5));
-
-		updateInventory(getTestSet());
 	}
 
 	/**
 	 * Takes in a map of item names and counts, iterates through each item
 	 * updating inventory buttons accordingly
 	 * 
-	 * @param items
+	 * @param items - map of item name to number in inventory
+	 * @param images - map of item name to image
 	 */
-	private void updateInventory(Map<String, Integer> items) {
+	public void updateInventory(Map<String, Integer> items, Map<String, Image> images) {
 		int i = 0;
 		for (String s : items.keySet()) {
-			buttons[i].updateButton(s, items.get(s));
+			buttons[i].updateButton(s, items.get(s), images.get(s));
 			i++;
 		}
 	}
-	
-	public String getSelectedItem(){
+
+	public String getSelectedItem() {
 		ButtonModel bMod = btnGroup.getSelection();
-		if(bMod == null){
+		if (bMod == null) {
 			return "null";
-		}else{
+		} else {
 			return bMod.getActionCommand();
 		}
 	}

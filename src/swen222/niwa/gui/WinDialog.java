@@ -1,14 +1,20 @@
 package swen222.niwa.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 /**
- * Dialog window that appears after the game is won displaying player scores
+ * Window that appears after the game is won displaying player scores
  * 
  * @author Zoe
  *
@@ -18,27 +24,45 @@ public class WinDialog extends JDialog {
 	public WinDialog(JFrame frame) {
 		super(frame, "game over, thank you for playing!");
 
-		setPreferredSize(new Dimension(400, 300));
+		setPreferredSize(new Dimension(400, 220));
 		setResizable(false);
-		// if we want something else to happen pls advise
+		// if we want something else to happen on close pls advise
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		add(scoreTable());
+		add(head(), BorderLayout.NORTH);
+		add(scoreTable(), BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(frame);
 		setVisible(true);
 	}
 
+	public JPanel head() {
+		JPanel panel = new JPanel();
+		// make it some nice color idk
+		panel.setBackground(new Color(0xA9EF6B));
+		JLabel playerScores = new JLabel("Player Scores:");
+		playerScores.setFont(playerScores.getFont().deriveFont(30f));
+		panel.add(playerScores);
+		return panel;
+	}
+
 	// this is method will dependent on how the scores are delivered
+	/**
+	 * Creates the panel and text area that contains the scores, will take in
+	 * some kind of parameter with the info to display
+	 * 
+	 * @return
+	 */
 	public JPanel scoreTable() {
 		JPanel panel = new JPanel();
 		// make it some nice color idk
-		panel.setBackground(new Color(199, 255, 144));
+		panel.setBackground(new Color(0xA9EF6B));
 		JTextArea scores = new JTextArea();
 		scores.setOpaque(false);
 		scores.setEditable(false);
+		scores.setFont(scores.getFont().deriveFont(16f));
 		scores.setText("here \nare \nsome \nscores \ni guess");
 		panel.add(scores);
 		return panel;
 	}
-
+	
 }

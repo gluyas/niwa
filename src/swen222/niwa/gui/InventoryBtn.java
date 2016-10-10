@@ -4,7 +4,11 @@ package swen222.niwa.gui;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -20,13 +24,23 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 						// there
 	public static final int SIZE = 50;
 	private Color color;// stand in for thumb nail image, for testing purposes
+	private Image img;
 	private int count;// how many of this kind of item the player has
 
 	public InventoryBtn() {
 		item = "Empty";
 		count = 0;
 		hover = false;
-		color = Color.BLACK;
+		// this is just here to test the drawing, will eventually take img from
+		// sprite
+		try {
+			//img = ImageIO.read(new File("resource/images/entities/misc/seedThumb.png"));
+			img = ImageIO.read(new File("resource/images/entities/runes/1Thumb.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		color = Color.WHITE;
 
 		setFocusable(true);
 		setContentAreaFilled(false);
@@ -42,12 +56,15 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 	 * updates the item and count fields, tool tip and action command of the
 	 * button
 	 * 
-	 * @param item - the new item String
-	 * @param count - the new count integer
+	 * @param item
+	 *            - the new item String
+	 * @param count
+	 *            - the new count integer
 	 */
-	public void updateButton(String item, int count) {
+	public void updateButton(String item, int count, Image img) {
 		this.item = item;
 		this.count = count;
+		this.img = img;
 		setActionCommand(item);
 		setToolTipText(item + ", " + count);
 	}
@@ -79,6 +96,7 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 
 		g.setColor(color);
 		g.fillRect(x + SIZE / 10, y + SIZE / 10, SIZE - 2 * (SIZE / 10), SIZE - 2 * (SIZE / 10));
+		g.drawImage(img, x + SIZE / 10, y + SIZE / 10, SIZE - 2 * (SIZE / 10), SIZE - 2 * (SIZE / 10), null);
 	}
 
 	@Override
