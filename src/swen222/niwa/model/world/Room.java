@@ -72,6 +72,10 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 		//return null;
 		return this.entities;
 	}
+	
+	public String getName(){
+		return name;
+	}
 
 	//TODO: javadoc!
 	public boolean addEntity(Entity e) {
