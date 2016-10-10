@@ -5,7 +5,7 @@ import java.util.Set;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.entity.ObjectEntity;
-import swen222.niwa.model.entity.StaticEntity;
+import swen222.niwa.model.entity.ChangingEntity;
 import swen222.niwa.model.entity.entities.Door;
 import swen222.niwa.model.entity.entities.PlayerEntity;
 import swen222.niwa.model.entity.entities.Rune;
@@ -316,8 +316,8 @@ public class Rules {
 			try {
 				entitiesAtPosition = entities.get(player.getLocation().move(player.getFacing()));// All entities in front of player
 				for(Entity e: entitiesAtPosition){
-					if(e instanceof StaticEntity){
-						if((StaticEntity)e instanceof RuneStone){
+					if(e instanceof ChangingEntity){
+						if((ChangingEntity)e instanceof RuneStone){
 							return (RuneStone)e;
 							}
 						}

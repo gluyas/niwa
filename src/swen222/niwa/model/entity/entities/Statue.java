@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import swen222.niwa.gui.Sprite;
+import swen222.niwa.model.entity.ChangingEntity;
 import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
@@ -14,7 +15,7 @@ import swen222.niwa.model.world.Location;
  * @author burnshami
  *
  */
-public class Statue extends ObjectEntity {
+public class Statue extends ChangingEntity {
 
 
 
