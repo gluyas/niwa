@@ -24,10 +24,10 @@ public class DemoPlayer extends PlayerEntity {
 	}
 
 	@Override
-	public Sprite sprite(Direction facing) {
+	public Sprite sprite(Direction camera) {
 		//return sprites[0];
 		//return sprites[this.facing.relativeTo(facing).ordinal()];
-		return ss.sprite(facing);
+		return ss.sprite(camera);
 	}
 
 	@Override

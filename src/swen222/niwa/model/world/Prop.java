@@ -185,7 +185,7 @@ public class Prop implements Visible {
 	}
 
 	@Override
-	public Sprite sprite(Direction facing) {
+	public Sprite sprite(Direction camera) {
 		// TODO Auto-generated method stub
 		return texture.sprite(0);
 	}

@@ -27,7 +27,7 @@ public class RuneStone extends StaticEntity{
 		return type;
 	}
 	@Override
-	public Sprite sprite(Direction facing) {
+	public Sprite sprite(Direction camera) {
 		// TODO Auto-generated method stub
 		return null;
 	}

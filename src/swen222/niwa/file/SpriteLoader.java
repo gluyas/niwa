@@ -50,11 +50,18 @@ public class SpriteLoader {
 	 *
 	 */
 	public static class SpriteSet implements Visible {
-		private Sprite[] sprites = new Sprite[4];
+		private final Sprite[] sprites;
 
-		public SpriteSet() {}
+		private SpriteSet() {
+			sprites  = new Sprite[4];
+		}
+
+		private SpriteSet(Sprite[] sprites) {
+			this.sprites = sprites;
+		}
 
 		public SpriteSet(Sprite sprite) {
+			sprites = new Sprite[4];
 			for (int i = 0; i < 4; i++) sprites[i] = sprite;
 		}
 
@@ -63,8 +70,23 @@ public class SpriteLoader {
 		}
 
 		@Override
-		public Sprite sprite(Direction facing) {
-			return sprites[facing.ordinal()];
+		public Sprite sprite(Direction camera) {
+			return sprites[camera.ordinal()];
+		}
+
+		/**
+		 * Creates a copy of this SpriteSet, but facing in the provided direction,
+		 * with this one presumed to be facing North.
+		 * @param facing the Direction for the new SpriteSet to be facing
+		 * @return a new SpriteSet instance
+		 */
+		public SpriteSet facing(Direction facing) {
+			return new SpriteSet(sprites) {
+				@Override
+				public Sprite sprite(Direction camera) {
+					return sprites[(camera.ordinal()+facing.ordinal())%4];
+				}
+			};
 		}
 	}
 

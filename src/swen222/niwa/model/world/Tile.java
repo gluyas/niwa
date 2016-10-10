@@ -175,7 +175,7 @@ public class Tile implements Visible {
 	}
 
 	@Override
-	public Sprite sprite(Direction facing) {
+	public Sprite sprite(Direction camera) {
 		return this.texture.sprite(this.height); // using a Texture strategy
 	}
 

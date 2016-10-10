@@ -41,7 +41,7 @@ public class Door extends ObjectEntity {
 		open=false;
 	}
 	@Override
-	public Sprite sprite(Direction facing) {
+	public Sprite sprite(Direction camera) {
 		return sprite;
 	}
 

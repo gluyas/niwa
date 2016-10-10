@@ -17,11 +17,11 @@ public interface Visible {
 	 * Core of this interface. This method will be used every time the Object is rendered.
 	 * If the sprite of an object changes, it should notify its Observers to ensure this is reflected in the GUI.
 	 *
-	 * @param facing the Direction that this Visible is being viewed from
+	 * @param camera the Direction that this Visible is being viewed from
 	 * @return an Sprite as a graphical representation of this Object, or null to skip rendering.
 	 */
 	@Nullable
-	Sprite sprite(Direction facing);
+	Sprite sprite(Direction camera);
 
 	default void drawSprite(Graphics g, Direction facing, int x, int y, double blockSize) {
 		Sprite s = this.sprite(facing);

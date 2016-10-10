@@ -35,7 +35,7 @@ public class Seed extends ObjectEntity {
 		super(loc);
 	}
 	@Override
-	public Sprite sprite(Direction facing) {
+	public Sprite sprite(Direction camera) {
 		return sprite;
 	}
 
