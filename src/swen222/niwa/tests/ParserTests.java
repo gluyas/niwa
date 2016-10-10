@@ -46,8 +46,8 @@ public class ParserTests {
 	public void testTileCreation(){
 		Tile[][] tileList = parser.getTiles();
 
-		assert(tileList[0][0].getType().equals("grass"));
-		assert(tileList[4][4].getType().equals("grass"));
+		assert(tileList[0][0].getType().equals(Tile.TileType.GRASSTILE));
+		assert(tileList[4][4].getType().equals(Tile.TileType.GRASSTILE));
 		assert(tileList.length==5);
 		assert(tileList[0].length==5);
 
@@ -58,8 +58,8 @@ public class ParserTests {
 	public void testTileCreation2(){
 		Tile[][] tileList = parser2.getTiles();
 
-		assert(tileList[2][2].getType().equals("stoneBlock"));
-		assert(tileList[4][3].getType().equals("stoneBlock"));
+		assert(tileList[2][2].getType().equals(Tile.TileType.WATERTILE));
+		assert(tileList[4][3].getType().equals(Tile.TileType.STONETILE));
 
 		assert(tileList[2][3].getHeight()==2);
 	}
@@ -68,7 +68,7 @@ public class ParserTests {
 	public void testPropCreation1(){
 		Prop[][] props = parser.getProps();
 
-		assert(props[0][1].getType().equals("bigtree"));
+		assert(props[0][1].getType().equals(Prop.PropType.BIGTREE));
 		assert((props[3][2]==null));
 
 	}

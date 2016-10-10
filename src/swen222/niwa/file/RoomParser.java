@@ -343,7 +343,7 @@ public class RoomParser {
 					break;
 				case "zen2":
 					props[row][col] = new Prop("zen2", SpriteLoader.get("zen2"), false);
-					break;
+					break;		
 				}
 			}
 		}
@@ -355,7 +355,7 @@ public class RoomParser {
 
 	/**
 	 * Gets the entities from the xml for this room, and returns a 2D string array
-	 * of entities so that they can be converted into entities in the
+	 * of entities so that they can be converted into entities in the 
 	 * roomparser. If there are no entities, returns an empty list.
 	 * @return
 	 */
@@ -380,7 +380,7 @@ public class RoomParser {
 
 				int col = Integer.valueOf(stringCol);
 				int row = Integer.valueOf(stringRow);
-
+				
 				//add the string in the 2D array
 				switch(type){
 				case "door":
@@ -436,7 +436,7 @@ public class RoomParser {
 
 	public void setLocationRoom(Room room) {
 		this.room = room;
-
+		
 	}
 
 

@@ -14,17 +14,17 @@ import swen222.niwa.model.world.Tile;
  *
  */
 public class RoomTests {
-
-	//File testRoom1 = new File("resource/rooms/testRoom.xml");
-	File testRoom2 = new File("resource/rooms/testRoom2.xml");
-
-
+	
+	File testRoom1 = new File("resource/rooms/testRoom.xml");
+	File testRoom2 = new File("rooms/testRoom2.xml");
+	
+	
 	@Test
 	public void testRoom1(){
-		Room r = Room.newFromFile(testRoom2);
-		assert(r.tileAt(Location.at(r,0,0)).getType().equals("grasstile"));
-		assert(r.tileAt(Location.at(r,4,4)).getType().equals("grasstile"));
+		Room r = Room.newFromFile(testRoom1);
+		assert(r.tileAt(Location.at(r,0,0)).getType().equals(Tile.TileType.GRASSTILE));
+		assert(r.tileAt(Location.at(r,4,4)).getType().equals(Tile.TileType.GRASSTILE));
 	}
-
+	
 
 }
