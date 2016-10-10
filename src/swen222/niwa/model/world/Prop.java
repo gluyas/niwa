@@ -39,9 +39,7 @@ public class Prop implements Visible {
 		GRASS,
 		PATH1,
 		PATH2,
-		SMALLTREE1,
-		SMALLTREE2,
-		SMALLTREE3,
+		SMALLTREE,
 		SOIL,
 		ZEN1,
 		ZEN2;
@@ -54,6 +52,9 @@ public class Prop implements Visible {
 	 * @param type
 	 */
 	public void setPropVariables(PropType type) {
+		
+		int textureDecider = 0;
+		
 		switch (type) {
 			case BAMBOO:
 				this.texture = new DevTexture(DevTexture.bamboo, 0.5, 0.79);
@@ -62,9 +63,9 @@ public class Prop implements Visible {
 
 			case BIGROCK:
 
-				int rockRandom = random.nextInt(2);
+				textureDecider = getRandomInt(2);
 
-				if(rockRandom == 0){
+				if(textureDecider == 0){
 					texture = new DevTexture(DevTexture.bigRock1, 0.5, 0.83);
 				}
 				else{
@@ -77,12 +78,12 @@ public class Prop implements Visible {
 
 			case BIGTREE:
 
-				int treeRandom = random.nextInt(3);
+				textureDecider = getRandomInt(3);
 
-				if(treeRandom == 0){
+				if(textureDecider == 0){
 					texture = new DevTexture(DevTexture.bigTree1, 0.5, 0.83);
 				}
-				else if (treeRandom == 1){
+				else if (textureDecider == 1){
 					texture = new DevTexture(DevTexture.bigTree2, 0.5, 0.83);
 				}
 				else {
@@ -124,21 +125,29 @@ public class Prop implements Visible {
 				this.canOccupy = true;
 				break;
 
+			case SOIL:
+				texture = new DevTexture(DevTexture.soil,0.5,0.84);
+				this.canOccupy = true;
+				break;
+				
+			case SMALLTREE:
+				
+				textureDecider = getRandomInt(3);
 
-			case SMALLTREE1:
-				texture = new DevTexture(DevTexture.smallTree1, 0.5, 0.835);
+				if(textureDecider == 0){
+					texture = new DevTexture(DevTexture.smallTree1, 0.5, 0.83);
+				}
+				else if (textureDecider == 1){
+					texture = new DevTexture(DevTexture.smallTree2, 0.5, 0.83);
+				}
+				else {
+					texture = new DevTexture(DevTexture.smallTree3, 0.5, 0.83);
+				}
+				
+				
 				this.canOccupy = false;
 				break;
 
-			case SMALLTREE2:
-				texture = new DevTexture(DevTexture.smallTree2, 0.5, 0.835);
-				this.canOccupy = false;
-				break;
-
-			case SMALLTREE3:
-				texture = new DevTexture(DevTexture.smallTree3, 0.5, 0.835);
-				this.canOccupy = false;
-				break;
 
 			case ZEN1:
 				texture = new DevTexture(DevTexture.zen1, 0.5, 0.835);
@@ -149,9 +158,13 @@ public class Prop implements Visible {
 				texture = new DevTexture(DevTexture.zen2, 0.5, 0.835);
 				this.canOccupy = false;
 				break;
-			case SOIL:
+			
 
 		}
+	}
+	
+	private int getRandomInt(int i){
+		return random.nextInt(i);
 	}
 
 

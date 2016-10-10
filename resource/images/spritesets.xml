@@ -1,0 +1,138 @@
+<?xml version="1.0"?> 
+
+<manifest>
+
+	<group name="tiles">
+		<spriteset name="dirt">
+			<sprite img="resource/images/tiles/misc/dirtBlock.png"/>
+		</spriteset>
+	</group>
+	
+	<group name="players">
+		<spriteset name="ghostBlue">
+			<sprite id="lf" img="resource/images/players/ghosts/blue/leftFront.png" ay="0.8" />
+			<sprite id="lb" img="resource/images/players/ghosts/blue/leftBack.png" ay="0.8" />
+			<sprite id="rf" img="resource/images/players/ghosts/blue/rightFront.png" ay="0.8" />
+			<sprite id="rb" img="resource/images/players/ghosts/blue/rightBack.png" ay="0.8" />
+			<faces n="rb" e="lf" s="rf" w="lb" />
+		</spriteset>
+	</group>
+	
+	<group name ="props">
+		<group name="fences">
+			<sprite id="front" img="resource/images/props/fences/fenceFront.png" ay="0.82"/>
+			<sprite id="side" img="resource/images/props/fences/fenceSide.png" ay="0.82"/>
+		
+			<spriteset name="fenceFront">
+				<faces n="front" e="side" s="front" w="side" />
+			</spriteset>
+		
+			<spriteset name="fenceSide">
+				<faces n="side" e="front" s="side" w="front" />
+			</spriteset>	
+		</group> 
+
+		<group name="paths">
+			<group name ="wood">
+				<sprite id="front" img="resource/images/props/paths/wood/front.png" ay="0.82"/>
+				<sprite id="side" img="resource/images/props/paths/wood/side.png" ay="0.82"/>
+				
+				<spriteset name="woodPathFront">
+					<faces n="front" e="side" s="front" w="side" />
+				</spriteset>
+				
+				<spriteset name="woodPathSide">
+					<faces n="side" e="front" s="side" w="front" />
+				</spriteset>
+			</group>
+			<group name ="stone">
+				<sprite id="front" img="resource/images/props/paths/stone/front.png" ay="0.82"/>
+				<sprite id="side" img="resource/images/props/paths/stone/side.png" ay="0.82"/>
+				
+				<spriteset name="stonePathFront">
+					<faces n="front" e="side" s="front" w="side" />
+				</spriteset>
+				
+				<spriteset name="stonePathSide">
+					<faces n="side" e="front" s="side" w="front" />
+				</spriteset>
+			</group>
+		</group>
+		
+		<group name="trees">
+			<group name="big">
+				<spriteset name="bigTree1">
+					<sprite img="resource/images/props/trees/big/1.png" ay="0.83"/>
+				</spriteset>
+				<spriteset name="bigTree2">
+					<sprite img="resource/images/props/trees/big/2.png" ay="0.83"/>
+				</spriteset>
+				<spriteset name="bigTree3">
+					<sprite img="resource/images/props/trees/big/3.png" ay="0.83"/>
+				</spriteset>
+			</group>
+			<group name="small">
+				<spriteset name="smallTree1">
+					<sprite img="resource/images/props/trees/small/1.png" ay="0.83"/>
+				</spriteset>
+				<spriteset name="smallTree2">
+					<sprite img="resource/images/props/trees/small/2.png" ay="0.83"/>
+				</spriteset>
+				<spriteset name="smallTree3">
+					<sprite img="resource/images/props/trees/small/3.png" ay="0.83"/>
+				</spriteset>
+			</group>
+		</group>
+		
+		<group name="rocks">
+			<spriteset name="bigRock1">
+				<sprite img="resource/images/props/rocks/bigRock1.png" ay="0.83"/>
+			</spriteset>
+			<spriteset name="bigRock2">
+				<sprite img="resource/images/props/rocks/bigRock2.png" ay="0.83"/>
+			</spriteset>
+
+		</group>
+		
+		<group name="misc">
+			<spriteset name="bamboo">
+				<sprite img="resource/images/props/misc/bamboo.png" ay="0.79"/>
+			</spriteset>
+			<spriteset name="bush">
+				<sprite img="resource/images/props/misc/bush.png" ay="0.84"/>
+			</spriteset>
+			<spriteset name="grass">
+				<sprite img="resource/images/props/misc/grass.png" ay="0.82"/>
+			</spriteset>
+			<spriteset name="zen1">
+				<sprite img="resource/images/props/misc/zen1.png" ay="0.835"/>
+			</spriteset>
+			<spriteset name="zen2">
+				<sprite img="resource/images/props/misc/zen2.png" ay="0.835"/>
+			</spriteset>
+		</group>
+	</group>
+	
+	
+	<group name="entities">
+		<group name="doors">
+			<group name="front">
+				<spriteset name="frontDoor>
+				</spriteset>
+			</group>
+			<group name="side">
+			</group>
+		</group>
+		<group name="flowers">
+		</group>
+		<group name="runes">
+		</group>
+		<group name="runestones">
+		</group>
+		<group name="misc">
+		</group>
+	</group>
+	
+	
+	
+</manifest>

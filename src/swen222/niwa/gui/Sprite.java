@@ -43,6 +43,17 @@ public class Sprite {
 		this.aY = aY;
 		this.width = 1;
 	}
+	
+	/**
+	 *  Create a new Sprite from a given Image, this is the most default version of a Sprite.
+	 * @param img
+	 */
+	public Sprite(Image img){
+		this.img = img;
+		this.aX = 0.5;
+		this.aY = 0.25;
+		this.width = 1;
+	}
 
 
 	/**
