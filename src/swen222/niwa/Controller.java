@@ -70,5 +70,6 @@ public class Controller implements Observer, ActionListener{
 		default:
 			//unknown command
 		}
+	}
 
 }
