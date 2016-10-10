@@ -35,6 +35,14 @@ public class PlayerEntity extends Entity{
 	public void addItem(Entity item){
 		inventory.add(item);
 	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public int getPoints(){
+		return points;
+	}
 
 	public void removeItem(Entity item){
 		if (inventory.remove(item)) {

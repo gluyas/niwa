@@ -20,6 +20,7 @@ import java.util.Set;
  * Micro-level representation of the world. Stores geometry as an array of Tiles
  *
  * @author Marc
+ * @author Jack U
  */
 public class Room { // extends Observable if we make it mutable, but unlikely
 
@@ -91,7 +92,8 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	public static Room newFromFile(File f) {
 		RoomParser parser = new RoomParser(f);
 		Room room = RoomBuilder.buildRoom(parser);
-
+		
+		
 		return room;
 	}
 

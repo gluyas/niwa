@@ -3,6 +3,7 @@ package swen222.niwa.file;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,7 +22,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
+import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
+import swen222.niwa.net.Player;
 
 /**
  * Creates save data in the save file. 
@@ -45,6 +49,10 @@ public class SaveParser {
 		parseMap();
 	}
 	
+	/**
+	 * Parses the initial map and overwrites it with the new one.
+	 * 
+	 */
 	public void parseMap(){
 		
 		try{
@@ -93,6 +101,14 @@ public class SaveParser {
 	}
 	
 	
+	/**
+	 * Saves a given map into the save file. 
+	 * Formatting for the row / width is not needed because the 
+	 * width and height is given in the arguments.
+	 * @param map
+	 * @param width
+	 * @param height
+	 */
 	public void saveMap(Room [][] map, int width, int height){
 		
 		for(int row = 0; row< height; row++){
@@ -109,8 +125,42 @@ public class SaveParser {
 		
 	}
 	
-	public static void savePlayerLocs(){
+	
+	/**
+	 * Saves all the important information about the players. 
+	 * This includes their name, their location, their points and their inventory.
+	 * @param players
+	 */
+	public void savePlayers(Player[] players){
 		
+		
+		for(Player player: players){
+			
+			String name = player.getName();
+			Location playerLoc; // how do I get this????
+			int points = player.getPoints();
+			ArrayList<Entity> inventory;
+			
+			//top class element for a player
+			Element playerElem = doc.createElement("Player");
+			
+			//adding player name
+			Element playerName = doc.createElement("PlayerName");
+			Text nameText = doc.createTextNode(name);
+			playerName.appendChild(nameText);
+			playerElem.appendChild(playerName);
+			
+			//top class element for player location
+			Element location = doc.createElement("Location");
+			
+			Element room = doc.createElement("Room");
+			Element col = doc.createElement("Col");
+			Element row = doc.createElement("Row");
+			
+			Element inventoryElem = doc.createElement("Inventory");
+			
+			
+		}
 		
 	}
 	
