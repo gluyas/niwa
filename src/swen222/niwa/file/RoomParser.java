@@ -3,11 +3,19 @@ package swen222.niwa.file;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
+import swen222.niwa.file.SpriteLoader.SpriteSet;
+import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.entity.entities.Door;
+import swen222.niwa.model.entity.entities.Rune;
+import swen222.niwa.model.entity.entities.RuneStone;
 import swen222.niwa.model.entity.entities.Seed;
+import swen222.niwa.model.entity.entities.Statue;
+import swen222.niwa.model.util.EntityTable;
+import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Prop;
+import swen222.niwa.model.world.Room;
 import swen222.niwa.model.world.Tile;
-import swen222.niwa.model.world.Tile.TileType;
 
 import javax.xml.parsers.*;
 import java.io.*;
@@ -16,6 +24,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -24,6 +33,7 @@ import java.util.Set;
  * Provides methods that get important information about the
  * room.
  * @author Jack U
+ * @author Hamish M
  *
  */
 public class RoomParser {
@@ -37,6 +47,7 @@ public class RoomParser {
 
 	public int width;
 	public int height;
+	private Room room;
 
 	public RoomParser(File f){
 		this.currentFile = f;
@@ -55,17 +66,17 @@ public class RoomParser {
 
 		try{
 
-		DocumentBuilderFactory factory =
-		DocumentBuilderFactory.newInstance();
-		builder = factory.newDocumentBuilder();
+			DocumentBuilderFactory factory =
+					DocumentBuilderFactory.newInstance();
+			builder = factory.newDocumentBuilder();
 
 
-		StringBuilder xmlStringBuilder = new StringBuilder();
-		xmlStringBuilder.append("<?xml version=\"1.0\"?> <class> </class>");
-		ByteArrayInputStream input =  new ByteArrayInputStream(
-		xmlStringBuilder.toString().getBytes("UTF-8"));
-		doc = builder.parse(currentFile);
-		rootElement = doc.getDocumentElement();
+			StringBuilder xmlStringBuilder = new StringBuilder();
+			xmlStringBuilder.append("<?xml version=\"1.0\"?> <class> </class>");
+			ByteArrayInputStream input =  new ByteArrayInputStream(
+					xmlStringBuilder.toString().getBytes("UTF-8"));
+			doc = builder.parse(currentFile);
+			rootElement = doc.getDocumentElement();
 
 
 		} catch (ParserConfigurationException | SAXException | IOException e) {
@@ -81,13 +92,13 @@ public class RoomParser {
 	 */
 	public int getWidth(){
 
-		 NodeList list = rootElement.getElementsByTagName("width");
-		 if(list.getLength()!=1){
-			 throw new NoSuchElementException("There is no width from the file you are trying"
-			 		+ " to read from");
-		 }
-		 String width = list.item(0).getTextContent();
-		 return Integer.parseInt(width);
+		NodeList list = rootElement.getElementsByTagName("width");
+		if(list.getLength()!=1){
+			throw new NoSuchElementException("There is no width from the file you are trying"
+					+ " to read from");
+		}
+		String width = list.item(0).getTextContent();
+		return Integer.parseInt(width);
 
 	}
 
@@ -97,27 +108,27 @@ public class RoomParser {
 	 * @return
 	 */
 	public int getHeight(){
-		 NodeList list = rootElement.getElementsByTagName("height");
-		 if(list.getLength()!=1){
-			 throw new NoSuchElementException("There is no height from the file you are trying"
-			 		+ " to read from");
-		 }
-		 String height = list.item(0).getTextContent();
-		 return Integer.parseInt(height);
+		NodeList list = rootElement.getElementsByTagName("height");
+		if(list.getLength()!=1){
+			throw new NoSuchElementException("There is no height from the file you are trying"
+					+ " to read from");
+		}
+		String height = list.item(0).getTextContent();
+		return Integer.parseInt(height);
 
 	}
-	
+
 	/**
 	 * Gets the name of the room
 	 * @return
 	 */
 	public String getName(){
-		 NodeList list = rootElement.getElementsByTagName("name");
-		 if(list.getLength()!=1){
-			 throw new NoSuchElementException("There is no name in this room!");
-		 }
-		 String name = list.item(0).getTextContent();
-		 return name;
+		NodeList list = rootElement.getElementsByTagName("name");
+		if(list.getLength()!=1){
+			throw new NoSuchElementException("There is no name in this room!");
+		}
+		String name = list.item(0).getTextContent();
+		return name;
 
 	}
 
@@ -127,43 +138,43 @@ public class RoomParser {
 	 */
 	public int[][] getSpawns(){
 
-		 int[][] spawns = new int[4][2];
+		int[][] spawns = new int[4][2];
 
-		 int numSpawns = 0;
-		 NodeList list= null;
+		int numSpawns = 0;
+		NodeList list= null;
 
-		 for (int i = 0; i < 4; i++){
+		for (int i = 0; i < 4; i++){
 
-			 switch(i){
-			 case 0:
-				 list = rootElement.getElementsByTagName("spawnNorth");
-				 break;
-			 case 1:
-				 list = rootElement.getElementsByTagName("spawnEast");
-				 break;
-			 case 2:
-				 list = rootElement.getElementsByTagName("spawnSouth");
-				 break;
-			 case 3:
-				 list = rootElement.getElementsByTagName("spawnWest");
-				 break;
-			 }
+			switch(i){
+			case 0:
+				list = rootElement.getElementsByTagName("spawnNorth");
+				break;
+			case 1:
+				list = rootElement.getElementsByTagName("spawnEast");
+				break;
+			case 2:
+				list = rootElement.getElementsByTagName("spawnSouth");
+				break;
+			case 3:
+				list = rootElement.getElementsByTagName("spawnWest");
+				break;
+			}
 
-			 if(list.getLength()!=0){
-				 Element el = (Element) list.item(0);
-				 int[] coords = getCoordsFromElement(el);
-				 spawns[i]=coords;
-				 numSpawns++;
+			if(list.getLength()!=0){
+				Element el = (Element) list.item(0);
+				int[] coords = getCoordsFromElement(el);
+				spawns[i]=coords;
+				numSpawns++;
 
-			 }
-		 }
+			}
+		}
 
 
-		 if(numSpawns==0){
-			 throw new Error("There must be at least one spawn location!");
-		 }
+		if(numSpawns==0){
+			throw new Error("There must be at least one spawn location!");
+		}
 
-		 return spawns;
+		return spawns;
 
 
 
@@ -198,7 +209,7 @@ public class RoomParser {
 			int col = 0;
 			while(col<width){
 				//breaks up the line into chars
-				Tile t = new Tile(1,TileType.GRASSTILE);
+				Tile t = null;
 
 
 				char s = line.charAt(col*3);
@@ -213,37 +224,38 @@ public class RoomParser {
 
 				//this needs to be a space - if its not throw an error
 				if(s3!=' '){
-				throw new Error ("There should be a space here");
+					throw new Error ("There should be a space here");
 				}
 
 
 				int blockHeight = Character.getNumericValue(s2);
+				int randInt;
 
 				//creates different tiles depending on the char
 				switch(s){
-					case 'g':
-						t=new Tile(blockHeight,TileType.GRASSTILE);
-						break;
-					case 's':
-						t=new Tile(blockHeight,TileType.STONETILE);
-						break;
-					case 'a':
-						t=new Tile(blockHeight,TileType.SANDTILE);
-						break;
-					case 'd':
-						t=new Tile(blockHeight,TileType.DIRTTILE);
-						break;
-					case 'w':
-						t=new Tile(blockHeight,TileType.WATERTILE);
-						break;
-					case 'q':
-						t=new Tile(blockHeight,TileType.KOITILE);
-						break;
+				case 'g':
+					randInt = new Random().nextInt(2)+1;
+					t = new Tile("grassBlock", blockHeight, SpriteLoader.get("grassBlock"+randInt), true);
+					break;
+				case 's':
+					t = new Tile("stoneBlock", blockHeight, SpriteLoader.get("stoneBlock"), true);
+					break;
+				case 'a':
+					t = new Tile("sandBlock", blockHeight, SpriteLoader.get("sandBlock"), true);
+					break;
+				case 'd':
+					t = new Tile("dirtBlock", blockHeight, SpriteLoader.get("dirtBlock"), true);
+					break;
+				case 'w':
+					randInt = new Random().nextInt(1)+1;
+					t = new Tile("waterBlock", blockHeight, SpriteLoader.get("waterBlock"+randInt), false);
+					break;
+				case 'q':
+					t = new Tile("koi", blockHeight, SpriteLoader.get("koi"), false);
+					break;
 				}
-
-
+				// add the tile to the rest of the room tiles
 				tiles[row][col]=t;
-
 				col++;
 			}
 
@@ -269,29 +281,76 @@ public class RoomParser {
 
 		//go through all the elements with the name 'prop'
 		for (int i = 0; i < list.getLength(); i++) {
-            if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                Element el = (Element) list.item(i);
+			if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				Element el = (Element) list.item(i);
 
-                //get the type, col, and row as strings
-                String type = el.getAttribute("type");
-                String stringCol = el.getAttribute("col");
-                String stringRow = el.getAttribute("row");
+				//get the type, col, and row as strings
+				String type = el.getAttribute("type");
+				String stringCol = el.getAttribute("col");
+				String stringRow = el.getAttribute("row");
 
-                //convert them to appropriate types
-                Prop.PropType propType = stringToEnumProp(type);
-                int col = Integer.valueOf(stringCol);
-                int row = Integer.valueOf(stringRow);
+				//convert them to appropriate types
+				int col = Integer.valueOf(stringCol);
+				int row = Integer.valueOf(stringRow);
 
-                //add the prop in the 2D array
-                props[row][col]=new Prop(propType);
-
-
-            }
+				//add the prop in the 2D array
+				int randInt;
+				switch(type){
+				case "bamboo":
+					props[row][col] = new Prop("bamboo", SpriteLoader.get("bamboo"), false);
+					break;
+				case "bigrock":
+					randInt = new Random().nextInt(1)+1;
+					props[row][col] = new Prop("bigRock", SpriteLoader.get("bigRock"+randInt), false);
+					break;
+				case "bigtree":
+					randInt = new Random().nextInt(2)+1;
+					props[row][col] = new Prop("bigTree", SpriteLoader.get("bigTree"+randInt), false);
+					break;
+				case "bush":
+					props[row][col] = new Prop("bush", SpriteLoader.get("bush"), false);
+					break;
+				case "fenceside":
+					props[row][col] = new Prop("fenceSide", SpriteLoader.get("fenceSide"), false);
+					break;
+				case "fencefront":
+					props[row][col] = new Prop("fenceFront", SpriteLoader.get("fenceFront"), false);
+					break;
+				case "grass":
+					props[row][col] = new Prop("grass", SpriteLoader.get("grass"), true);
+					break;
+				case "stonepathfront":
+					props[row][col] = new Prop("stonePathFront", SpriteLoader.get("stonePathFront"), true);
+					break;
+				case "stonepathside":
+					props[row][col] = new Prop("stonePathSide", SpriteLoader.get("stonePathSide"), true);
+					break;
+				case "woodpathfront":
+					props[row][col] = new Prop("woodPathFront", SpriteLoader.get("woodPathFront"), true);
+					break;
+				case "woodpathside":
+					props[row][col] = new Prop("woodPathSide", SpriteLoader.get("woodPathSide"), true);
+					break;
+				case "soil":
+					props[row][col] = new Prop("soil", SpriteLoader.get("soil"), true);
+					break;
+				case "smalltree":
+					randInt = new Random().nextInt(2)+1;
+					props[row][col] = new Prop("smallTree", SpriteLoader.get("smallTree"+randInt), false);
+					break;
+				case "zen1":
+					props[row][col] = new Prop("zen1", SpriteLoader.get("zen1"), false);
+					break;
+				case "zen2":
+					props[row][col] = new Prop("zen2", SpriteLoader.get("zen2"), false);
+					break;		
+				}
+			}
 		}
 
 		return props;
 
-		}
+	}
 
 
 	/**
@@ -301,9 +360,8 @@ public class RoomParser {
 	 * @return
 	 */
 
-	public String[][] getEntities(){
-
-		String[][] entities = new String[height][width];
+	public EntityTable<Entity> getEntities(){
+		EntityTable<Entity> entities = new HashEntityTable<Entity>();
 
 		NodeList list = rootElement.getElementsByTagName("entity");
 		if(list.getLength()==0){
@@ -312,43 +370,51 @@ public class RoomParser {
 
 		//go through all the elements with the name 'entity'
 		for (int i = 0; i < list.getLength(); i++) {
-            if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                Element el = (Element) list.item(i);
+			if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				Element el = (Element) list.item(i);
 
-                //get the type, col, and row as strings
-                String type = el.getAttribute("type");
-                String stringCol = el.getAttribute("col");
-                String stringRow = el.getAttribute("row");
+				//get the type, col, and row as strings
+				String type = el.getAttribute("type");
+				String stringCol = el.getAttribute("col");
+				String stringRow = el.getAttribute("row");
 
-                int col = Integer.valueOf(stringCol);
-                int row = Integer.valueOf(stringRow);
-
-                //add the string in the 2D array
-                entities[col][row]=type;
-
-
-            }
+				int col = Integer.valueOf(stringCol);
+				int row = Integer.valueOf(stringRow);
+				
+				//add the string in the 2D array
+				switch(type){
+				case "door":
+					entities.add(new Door(Location.at(room, col, row), SpriteLoader.get("closedDoor"), null));
+					break;
+				case "rune1":
+					entities.add(new Rune(Location.at(room, col, row), "circle", SpriteLoader.get("rune1")));
+					break;
+				case "rune2":
+					entities.add(new Rune(Location.at(room, col, row), "cross", SpriteLoader.get("rune2")));
+					break;
+				case "rune3":
+					entities.add(new Rune(Location.at(room, col, row), "lightning", SpriteLoader.get("rune3")));
+					break;
+				case "runestone1":
+					entities.add(new RuneStone(Location.at(room, col, row), "circle", SpriteLoader.get("runeStone1")));
+					break;
+				case "runestone2":
+					entities.add(new RuneStone(Location.at(room, col, row), "cross", SpriteLoader.get("runeStone2")));
+					break;
+				case "runestone3":
+					entities.add(new RuneStone(Location.at(room, col, row), "lightning", SpriteLoader.get("runeStone3")));
+					break;
+				case "seed":
+					entities.add(new Seed(Location.at(room, col, row), SpriteLoader.get("closed")));
+					break;
+				case "statue":
+					entities.add(new Statue(Location.at(room, col, row), SpriteLoader.get("statueDormant")));
+					break;
+				}
+			}
 		}
 
 		return entities;
-
-		}
-		
-
-
-
-	public Prop.PropType stringToEnumProp(String type){
-
-		String capsString = type.toUpperCase();
-		return Enum.valueOf(Prop.PropType.class, capsString);
-
-	}
-
-
-	public Prop.PropType stringToEnumEntity(String type){
-
-		String capsString = type.toUpperCase();
-		return Enum.valueOf(Prop.PropType.class, capsString);
 
 	}
 
@@ -356,16 +422,21 @@ public class RoomParser {
 
 		int [] coords= new int [2];
 
-		  //get the type, col, and row as strings
-        String stringCol = el.getAttribute("col");
-        String stringRow = el.getAttribute("row");
+		//get the type, col, and row as strings
+		String stringCol = el.getAttribute("col");
+		String stringRow = el.getAttribute("row");
 
-        coords[0] = Integer.valueOf(stringCol);
+		coords[0] = Integer.valueOf(stringCol);
 		coords[1] =  Integer.valueOf(stringRow);
 
 		return coords;
 
 
+	}
+
+	public void setLocationRoom(Room room) {
+		this.room = room;
+		
 	}
 
 

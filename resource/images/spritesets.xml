@@ -4,21 +4,21 @@
 
 	<group name="tiles">
 		<group name="grass">
-			<spriteset name="grass1">
+			<spriteset name="grassBlock1">
 				<sprite img="resource/images/tiles/grass/1.png"/>
 			</spriteset>
-			<spriteset name="grass2">
+			<spriteset name="grassBlock2">
 				<sprite img="resource/images/tiles/grass/2.png"/>
 			</spriteset>
-			<spriteset name="grass3">
+			<spriteset name="grassBlock3">
 				<sprite img="resource/images/tiles/grass/3.png"/>
 			</spriteset>
 		</group>
 		<group name="water">
-			<spriteset name="water1">
+			<spriteset name="waterBlock1">
 				<sprite img="resource/images/tiles/water/1.png"/>
 			</spriteset>
-			<spriteset name="water2">
+			<spriteset name="waterBlock2">
 				<sprite img="resource/images/tiles/water/2.png"/>
 			</spriteset>
 			<spriteset name="koi">
@@ -26,13 +26,13 @@
 			</spriteset>
 		</group>
 		
-		<spriteset name="dirt">
+		<spriteset name="dirtBlock">
 			<sprite img="resource/images/tiles/misc/dirtBlock.png"/>
 		</spriteset>
-		<spriteset name="sand">
+		<spriteset name="sandBlock">
 			<sprite img="resource/images/tiles/misc/sandBlock.png"/>
 		</spriteset>
-		<spriteset name="stone">
+		<spriteset name="stoneBlock">
 			<sprite img="resource/images/tiles/misc/stoneBlock.png"/>
 		</spriteset>
 		
@@ -173,15 +173,15 @@
 	<group name="entities">
 		<group name="doors">
 			<spriteset name="openDoor">
-				<sprite id="frontIn" img="resource/images/entities/doors/open/frontIn.png"/>
-				<sprite id="sideLeft" img="resource/images/entities/doors/open/sideLeft.png"/>	
-				<sprite id="frontOut" img="resource/images/entities/doors/open/frontOut.png"/>	
-				<sprite id="sideRight" img="resource/images/entities/doors/open/sideRight.png"/>	
+				<sprite id="frontIn" img="resource/images/entities/doors/open/frontIn.png" ay="0.83"/>
+				<sprite id="sideLeft" img="resource/images/entities/doors/open/sideLeft.png" ay="0.83"/>	
+				<sprite id="frontOut" img="resource/images/entities/doors/open/frontOut.png" ay="0.83"/>	
+				<sprite id="sideRight" img="resource/images/entities/doors/open/sideRight.png" ay="0.83"/>	
 				<faces n="frontIn" e="sideLeft" s="frontOut" w="sideRight"/>
 			</spriteset>
 			<spriteset name="closedDoor">
-				<sprite id="front" img="resource/images/entities/doors/closed/front.png"/>
-				<sprite id="side" img="resource/images/entities/doors/closed/side.png"/>	
+				<sprite id="front" img="resource/images/entities/doors/closed/front.png" ay="0.83"/>
+				<sprite id="side" img="resource/images/entities/doors/closed/side.png" ay="0.83"/>	
 				<faces n="front" e="side" s="front" w="side"/>
 			</spriteset>
 		</group>

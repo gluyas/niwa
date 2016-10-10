@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class DemoPlayer extends PlayerEntity {
 
-	static final SpriteLoader.SpriteSet ss = SpriteLoader.get("ghost-blue");
+	static final SpriteLoader.SpriteSet ss = SpriteLoader.get("ghostBlue");
 
 	private Direction facing = Direction.NORTH;
 

@@ -9,11 +9,8 @@ import swen222.niwa.model.entity.entities.Seed;
 import swen222.niwa.model.entity.entities.Statue;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.HashEntityTable;
-import swen222.niwa.model.world.Tile.Texture;
-import swen222.niwa.model.world.Tile.TileType;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Observer;
@@ -38,7 +35,7 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 
 	public static Location[] spawnLocs; // the locations of the areas the player can enter from, NESW
 
-	public EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
+	public static EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
 									// locations store the room they correspond to so it wouldn't complicate much to
 									// just have one big List of EVERY entity in the world - that would also simplify
 									// moving between rooms, only the entity's position would need to be updated,
@@ -92,7 +89,6 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	 * @return the newly created Room
 	 */
 	public static Room newFromFile(File f) {
-
 		RoomParser parser = new RoomParser(f);
 		Room room = RoomBuilder.buildRoom(parser);
 
@@ -127,8 +123,9 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 
 			String name = parser.getName();
 
-			Room room = new Room(name, width,height);
-
+			Room room = new Room(name, width, height);
+			// provide the parser a reference to the room so that it can set up locations
+			parser.setLocationRoom(room);
 			room.tiles = parser.getTiles();
 
 			Prop[][] props = parser.getProps();
@@ -140,18 +137,8 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 				}
 			}
 
-			//creating entities - currently represented by a set
-			Collection<Entity> entities = new HashSet<Entity>();
-
-			//needs to convert string into entities
-			String[][] strings = parser.getEntities();
-			for(int row = 0; row<height; row++){
-				for(int col = 0; col<width; col++){
-					if(strings[row][col]!=null){
-						entities.add(stringToEntity(strings[row][col],row,col,room));
-					}
-				}
-			}
+			// add the entities
+			entities = parser.getEntities();
 
 			spawnLocs = new Location [4];
 
@@ -164,39 +151,6 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 
 
 			return room;
-		}
-
-
-		//TODO: Make these able to take in different facing sprites and construct them
-		//appropriately
-		private static Entity stringToEntity(String s, int row, int col, Room r){
-
-			Location loc = Location.at(r, col, row);
-
-			switch(s){
-
-			case "seed":
-				return new Seed(loc);
-
-			case "door":
-				return null;
-
-			case "rune":
-				return new Rune(loc);
-
-			case "runeStone":
-				return new RuneStone(loc);
-
-			case "statue":
-				return new Statue(loc);
-
-			default:
-				throw new Error("Could not find an entity of the name" + s + ", please " +
-			    "double check the naming convention in the 'Room' class");
-
-
-			}
-
 		}
 
 	}

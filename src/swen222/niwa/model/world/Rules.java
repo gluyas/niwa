@@ -2,6 +2,7 @@ package swen222.niwa.model.world;
 
 import java.util.Set;
 
+import swen222.niwa.file.SpriteLoader;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.entity.ObjectEntity;
@@ -13,7 +14,6 @@ import swen222.niwa.model.entity.entities.RuneStone;
 import swen222.niwa.model.entity.entities.Seed;
 import swen222.niwa.model.entity.entities.Statue;
 import swen222.niwa.model.world.Location.InvalidLocationException;
-import swen222.niwa.model.world.Prop.PropType;
 
 /**
  * @author burnshami
@@ -271,7 +271,7 @@ public class Rules {
 	private boolean plantSeed(PlayerEntity player, Seed seed){
 		Location toPlant = player.getLocation();
 
-		if(!toPlant.tile().getProp().getType().equals(PropType.SOIL)){
+		if(!toPlant.tile().getProp().getType().equals("soil")){
 			return false;
 		}
 		player.removeItem(seed);
@@ -302,7 +302,7 @@ public class Rules {
 	 */
 	private void transformRuneStone(PlayerEntity player){
 		RuneStone stone =getRuneStone(player);//will never be null otherwise sameRuneType would return false above.
-		addEntity(new Seed(stone.getLocation()));
+		addEntity(new Seed(stone.getLocation(), SpriteLoader.get("seed")));
 		removeEntity(stone);
 	}
 

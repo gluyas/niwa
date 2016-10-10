@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
+import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
@@ -19,30 +21,21 @@ public class Door extends ObjectEntity {
 
 
 
-	static final Sprite sprite ;
+	private SpriteSet sprites ;
 	private ArrayList<Statue> statues;
 
 	private boolean open;
 
-	static {
-		try {
-			sprite = new Sprite (
-					ImageIO.read(new File("resource/images/entities/door-front.png")),
-					0.5, 0.8);
-		} catch (IOException e) {
-			throw new Error("Couldn't load image", e);
-		}
 
-	}
-
-	public Door(Location loc, ArrayList<Statue> triggers){
+	public Door(Location loc, SpriteSet sprites, ArrayList<Statue> triggers){
 		super(loc);
 		this.statues = triggers;
-		open=false;
+		this.sprites = sprites;
+		this.open = false;
 	}
 	@Override
 	public Sprite sprite(Direction camera) {
-		return sprite;
+		return sprites.sprite(camera);
 	}
 
 	public boolean isOpen() {

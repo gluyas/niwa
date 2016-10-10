@@ -2,6 +2,7 @@ package swen222.niwa.model.world;
 
 import java.util.Random;
 
+import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.gui.Visible;
 import swen222.niwa.model.entity.Entity;
@@ -14,118 +15,27 @@ import swen222.niwa.model.entity.Entity;
  */
 public class Tile implements Visible {
 
-	public enum TileType{
-		GRASSTILE,
-		STONETILE,
-		SANDTILE,
-		DIRTTILE,
-		WATERTILE,
-		KOITILE,
-	}
-
-	public TileType type;
+	private String type;
 	public final int height;
-	public Texture texture;
+	private SpriteSet sprites;
 	public Prop prop;
 	public boolean canOccupy;
 
 	private Random random;
 
-	public Tile(int height, TileType type) {
-		this.height = height;
+	public Tile( String type, int height, SpriteSet ss, boolean canOccupy) {
 		this.type = type;
-		random = new Random();
-		setTileVariables(type);
-
-
-
+		this.height = height;
+		this.sprites = ss;
+		this.canOccupy = canOccupy;
 	}
 
-	public Tile(int height, TileType type, Prop prop) {
-		this.height = height;
+	public Tile(String type, int height, SpriteSet ss, boolean canOccupy, Prop prop) {
 		this.type = type;
+		this.height = height;
+		this.sprites = ss;
+		this.canOccupy = canOccupy;
 		this.prop = prop;
-		random = new Random();
-		setTileVariables(type);
-	}
-
-	/**
-	 * Sets variables for specific tiles, as different
-	 * tiles have different behaviours
-	 * @param type
-	 */
-	public void setTileVariables(TileType type){
-
-		switch(type){
-		case GRASSTILE:
-
-
-			int grassRandom = random.nextInt(3);
-
-			switch (grassRandom){
-			case 0:
-				this.texture = new DevTexture(DevTexture.grassBlock1);
-				break;
-			case 1:
-				this.texture = new DevTexture(DevTexture.grassBlock2);
-				break;
-			case 2:
-				this.texture = new DevTexture(DevTexture.grassBlock3);
-				break;
-
-			default:
-				this.texture = new DevTexture(DevTexture.grassBlock1);
-				break;
-			}
-
-			this.canOccupy = true;
-			break;
-
-		case STONETILE:
-			texture = new DevTexture(DevTexture.stoneBlock);
-			this.canOccupy = true;
-			break;
-
-
-		case SANDTILE:
-			texture = new DevTexture(DevTexture.sandBlock);
-			this.canOccupy = true;
-			break;
-
-
-		case DIRTTILE:
-			texture = new DevTexture(DevTexture.dirtBlock);
-			this.canOccupy = true;
-			break;
-
-
-		case WATERTILE:
-
-			int waterRandom = random.nextInt(2);
-
-			switch (waterRandom){
-			case 0:
-				this.texture = new DevTexture(DevTexture.waterBlock1);
-				break;
-			case 1:
-				this.texture = new DevTexture(DevTexture.waterBlock3);
-				break;
-			default:
-				this.texture = new DevTexture(DevTexture.waterBlock1);
-				break;
-			}
-
-
-			this.canOccupy = false;
-			break;
-
-		case KOITILE:
-			texture = new DevTexture(DevTexture.waterBlock2);
-			this.canOccupy = false;
-
-		}
-
-
 	}
 
 	/**
@@ -141,7 +51,7 @@ public class Tile implements Visible {
 	 * Gets the type of the tile
 	 * @return
 	 */
-	public TileType getType(){
+	public String getType(){
 		return this.type;
 	}
 
@@ -176,23 +86,8 @@ public class Tile implements Visible {
 
 	@Override
 	public Sprite sprite(Direction camera) {
-		return this.texture.sprite(this.height); // using a Texture strategy
+		return sprites.sprite(camera);
 	}
-
-	/**
-	 * Proposed interface for how the texture will inform the rending pipeline of its appearance. May also
-	 * affect game play in some way, eg: slippery ice. Probably follows a STRATEGY pattern.
-	 */
-	//TODO: design a standardised texture format for tiles
-	public interface Texture {
-		// nothing for now, may be of use though due to complex process of drawing tiles, esp. for things like
-		// grass on top of dirt compared to just dirt on all 3 sides
-
-		// general idea here is that the texture will be able to construct the isometric view of a block
-		Sprite sprite(int height);
-	}
-
-
 
 }
 

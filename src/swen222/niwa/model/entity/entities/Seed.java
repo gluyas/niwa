@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.world.Direction;
@@ -16,27 +17,15 @@ import swen222.niwa.model.world.Location;
  */
 public class Seed extends ObjectEntity {
 	
+	private SpriteSet sprites;
 
-
-	static final Sprite sprite ;
-
-	static {
-		try {
-			sprite = new Sprite (
-					ImageIO.read(new File("resource/images/entities/seed.png")),
-					0.5, 0.8);
-		} catch (IOException e) {
-			throw new Error("Couldn't load image", e);
-		}
-
-	}
-
-	public Seed(Location loc){
+	public Seed(Location loc, SpriteSet sprites){
 		super(loc);
+		this.sprites = sprites;
 	}
 	@Override
 	public Sprite sprite(Direction camera) {
-		return sprite;
+		return sprites.sprite(camera);
 	}
 
 

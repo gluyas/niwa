@@ -1,8 +1,8 @@
 package swen222.niwa.model.entity.entities;
 
+import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.model.entity.ChangingEntity;
-import swen222.niwa.model.entity.entities.Rune.runeType;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
@@ -12,23 +12,22 @@ import swen222.niwa.model.world.Location;
  */
 public class RuneStone extends ChangingEntity{
 
-	public runeType type;
-	public RuneStone(Location loc, runeType type) {
+	private String type;
+	private SpriteSet sprites; 
+	
+	public RuneStone(Location loc, String type, SpriteSet sprites){
 		super(loc);
-		this.type=type;
+		this.type = type;
+		this.sprites = sprites;
 	}
 	
-	public RuneStone(Location loc) {
-		super(loc);
-	
-	}
-
-	public runeType getType(){
+	public String getType(){
 		return type;
 	}
+	
 	@Override
 	public Sprite sprite(Direction camera) {
-		// TODO Auto-generated method stub
+		sprites.sprite(camera);
 		return null;
 	}
 

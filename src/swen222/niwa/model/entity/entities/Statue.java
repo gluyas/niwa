@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.model.entity.ChangingEntity;
 import swen222.niwa.model.entity.ObjectEntity;
@@ -17,30 +18,17 @@ import swen222.niwa.model.world.Location;
  */
 public class Statue extends ChangingEntity {
 
-
-
-	static final Sprite sprite;
+	private SpriteSet sprites;
 	private boolean triggered;
 
-
-	static {
-		try {
-			sprite = new Sprite (
-					ImageIO.read(new File("resource/images/entities/statue.png")),
-					0.5, 0.8);
-		} catch (IOException e) {
-			throw new Error("Couldn't load image", e);
-		}
-
-	}
-
-	public Statue(Location loc){
+	public Statue(Location loc, SpriteSet sprites){
 		super(loc);
-		triggered=false;
+		this.sprites = sprites;
+		this.triggered = false;
 	}
 	@Override
 	public Sprite sprite(Direction camera) {
-		return sprite;
+		return sprites.sprite(camera);
 	}
 
 	public boolean isTriggered() {
