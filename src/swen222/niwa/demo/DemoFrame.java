@@ -27,7 +27,6 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 	RoomRenderer rr;
 	DemoPlayer p;
 	String stageName;
-	Rules control;
 
 	public DemoFrame(String stageName) {
 		super("Garden Demo");
@@ -35,7 +34,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		this.stageName = stageName;
 		Room stage = Room.newFromFile(new File(stageName));
 
-		control = new Rules(stage);
+
 		rr = new RoomRenderer(stage);
 		panel = new DemoPanel(rr);
 		add(panel);
@@ -69,23 +68,23 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		int code = e.getKeyCode();
 		switch (code) {
 			case VK_W:
-				control.move(p,directionRelativeToMap(Direction.NORTH));
-				//p.move(directionRelativeToMap(Direction.NORTH));
+
+				p.move(directionRelativeToMap(Direction.NORTH));
 				break;
 
 			case VK_A:
-				control.move(p,directionRelativeToMap(Direction.WEST));
-				//p.move(directionRelativeToMap(Direction.WEST));
+
+				p.move(directionRelativeToMap(Direction.WEST));
 				break;
 
 			case VK_S:
-				control.move(p,directionRelativeToMap(Direction.SOUTH));
-				//p.move(directionRelativeToMap(Direction.SOUTH));
+
+				p.move(directionRelativeToMap(Direction.SOUTH));
 				break;
 
 			case VK_D:
-				control.move(p,directionRelativeToMap(Direction.EAST));
-				//p.move(directionRelativeToMap(Direction.EAST));
+
+				p.move(directionRelativeToMap(Direction.EAST));
 				break;
 
 			case VK_Q:

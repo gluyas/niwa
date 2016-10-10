@@ -31,9 +31,12 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	public final int width;  // keep these fields final if we go for Rooms being immutable
 	public final int height; // there doesn't seem like any good use case where these would need to change
 
+	public int col;
+	public int row;
+
 	private Tile[][] tiles; // each location l corresponds to tiles[l.row][l.col]
 
-	public static Location[] spawnLocs; // the locations of the areas the player can enter from
+	public static Location[] spawnLocs; // the locations of the areas the player can enter from, NESW
 
 	public EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
 									// locations store the room they correspond to so it wouldn't complicate much to
@@ -53,6 +56,11 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 			assert tiles[loc.row][loc.col] != null : String.format("Tile at %s is null", loc.toString());
 			return tiles[loc.row][loc.col];
 		}
+	}
+
+	public void setPosition(int x, int y){
+		col=x;
+		row=y;
 	}
 
 	/**

@@ -5,7 +5,7 @@ import java.util.Set;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.entity.ObjectEntity;
-import swen222.niwa.model.entity.StaticEntity;
+import swen222.niwa.model.entity.ChangingEntity;
 import swen222.niwa.model.entity.entities.Door;
 import swen222.niwa.model.entity.entities.PlayerEntity;
 import swen222.niwa.model.entity.entities.Rune;
@@ -23,9 +23,9 @@ public class Rules {
 
 	public EntityTable<Entity> entities;
 	public Room room;
-	public Rules(Room room){
-		this.room = room;
-		entities=room.entities;//accessing through public access because getter wasn't working
+	public Room[][] world;
+	public Rules(Room[][] world){
+		this.world = world;
 	}
 
 //----------------------------------------------------------------------------------------------------------------
@@ -43,6 +43,11 @@ public class Rules {
 	 * @return
 	 */
 	public boolean move(PlayerEntity player, Direction dir){
+		setRoom(player);
+
+		if(outOfBounds(player,dir)){
+			return tryLeaveRoom(player, dir);
+		}
 		if(!canMove(player,dir)){
 			return false;
 		}
@@ -50,6 +55,59 @@ public class Rules {
 		pickUp(player);//pick up anything player is on
 		player.updateFacing(dir);
 		checkStatues();//Update statue states and opens door
+		return true;
+	}
+
+	private void setRoom(PlayerEntity player){
+		room= player.getLocation().getRoom();
+		entities =room.entities;
+	}
+
+	private boolean tryLeaveRoom(PlayerEntity player, Direction dir) {
+		int col = room.col;
+		int row = room.row;
+		Room newRoom;
+		switch(dir){
+		case NORTH:
+			if(row!=0){//Top of map
+				newRoom=world[col][row-1];
+				return moveRoom(player,2,newRoom);//Entering from south spawn
+			}
+			break;
+		case EAST:
+			if(col!=2){//Right of map
+				newRoom=world[col+1][row];
+				return moveRoom(player,4,newRoom);//Entering from West spawn
+			}
+			break;
+		case SOUTH:
+			if(row!=2){//Bottom of map
+				newRoom=world[col][row+1];
+				return moveRoom(player,0,newRoom);//Entering from north spawn
+			}
+			break;
+		case WEST:
+			if(col!=0){//West of map
+				newRoom=world[col-1][row];
+				return moveRoom(player,3,newRoom);//entering from east spawn
+			}
+			break;
+		}
+		return false;
+}
+
+	private boolean outOfBounds(PlayerEntity player, Direction dir){
+		try {
+			player.getLocation().move(dir);
+		} catch (InvalidLocationException e) {
+			return true;
+			}
+		return false;
+	}
+
+	private boolean moveRoom(PlayerEntity player, int entrySide,Room newRoom) {
+		entities.remove(player);
+		newRoom.addEntity(newRoom.spawnLocs[entrySide], player);
 		return true;
 	}
 
@@ -88,7 +146,7 @@ public class Rules {
 
 
 
-	public boolean canMove(PlayerEntity player, Direction dir){
+	private boolean canMove(PlayerEntity player, Direction dir){
 		try {
 			Location toGo =player.getLocation().move(dir);
 			Location from =player.getLocation();
@@ -122,7 +180,7 @@ public class Rules {
 	 * @param player
 	 * @return
 	 */
-	public boolean pickUp(PlayerEntity player){
+	private boolean pickUp(PlayerEntity player){
 		Set<Entity> entitiesAtPosition = entities.get(player.getLocation()); // All entities at player location
 
 		for(Entity e: entitiesAtPosition){
@@ -145,6 +203,8 @@ public class Rules {
 	 * @return
 	 */
 	public boolean drop(PlayerEntity player,ObjectEntity item){
+		setRoom(player);
+
 		Set<Entity> entitiesAtPosition = entities.get(player.getLocation()); // All entities at player location
 		for(Entity e: entitiesAtPosition){
 			if(e instanceof ObjectEntity){
@@ -173,6 +233,7 @@ public class Rules {
 	 * @return true if seed removed
 	 */
 	public boolean action(PlayerEntity player, ObjectEntity item){
+		setRoom(player);
 
 		if(item instanceof Seed){//Planting a seed
 			return plantSeed(player,(Seed)item);
@@ -189,7 +250,7 @@ public class Rules {
 	 * @param rune
 	 * @return
 	 */
-	public boolean triggerRuneStone(PlayerEntity player, Rune rune){
+	private boolean triggerRuneStone(PlayerEntity player, Rune rune){
 		if(!sameRuneType(player,rune)){
 			return false;
 		}
@@ -207,7 +268,7 @@ public class Rules {
 	 * @param seed
 	 * @return
 	 */
-	public boolean plantSeed(PlayerEntity player, Seed seed){
+	private boolean plantSeed(PlayerEntity player, Seed seed){
 		Location toPlant = player.getLocation();
 
 		if(!toPlant.tile().getProp().getType().equals(PropType.SOIL)){
@@ -224,7 +285,7 @@ public class Rules {
 	 * @param rune
 	 * @return
 	 */
-	public boolean sameRuneType(PlayerEntity player, Rune rune){
+	private boolean sameRuneType(PlayerEntity player, Rune rune){
 		RuneStone stone =getRuneStone(player);
 		if(stone==null){
 			return false;
@@ -239,7 +300,7 @@ public class Rules {
 	 * Turns runestone into seed
 	 * @param player
 	 */
-	public void transformRuneStone(PlayerEntity player){
+	private void transformRuneStone(PlayerEntity player){
 		RuneStone stone =getRuneStone(player);//will never be null otherwise sameRuneType would return false above.
 		addEntity(new Seed(stone.getLocation()));
 		removeEntity(stone);
@@ -250,13 +311,13 @@ public class Rules {
 	 * @param player
 	 * @return
 	 */
-	public RuneStone getRuneStone(PlayerEntity player){
+	private RuneStone getRuneStone(PlayerEntity player){
 		Set<Entity> entitiesAtPosition;
 			try {
 				entitiesAtPosition = entities.get(player.getLocation().move(player.getFacing()));// All entities in front of player
 				for(Entity e: entitiesAtPosition){
-					if(e instanceof StaticEntity){
-						if((StaticEntity)e instanceof RuneStone){
+					if(e instanceof ChangingEntity){
+						if((ChangingEntity)e instanceof RuneStone){
 							return (RuneStone)e;
 							}
 						}
@@ -268,10 +329,10 @@ public class Rules {
 
 	}
 
-	public void removeEntity(Entity e){
+	private void removeEntity(Entity e){
 		entities.remove(e);
 	}
-	public void addEntity(Entity e){
+	private void addEntity(Entity e){
 		entities.add(e);
 	}
 
