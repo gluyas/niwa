@@ -20,7 +20,6 @@ public class Controller implements Observer, ActionListener{
 	
 	public Controller() {
 		this.view = new NiwaFrame(this);
-		new WinDialog(view);
 	}
 	
 	public static void main(String[] args) {
