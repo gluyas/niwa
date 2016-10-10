@@ -25,17 +25,17 @@
 				<sprite img="resource/images/tiles/water/koi.png"/>
 			</spriteset>
 		</group>
-		<group name="misc">
-			<spriteset name="dirt">
-				<sprite img="resource/images/tiles/misc/dirtBlock.png"/>
-			</spriteset>
-			<spriteset name="sand">
-				<sprite img="resource/images/tiles/misc/sandBlock.png"/>
-			</spriteset>
-			<spriteset name="stone">
-				<sprite img="resource/images/tiles/misc/stoneBlock.png"/>
-			</spriteset>
-		</group>
+		
+		<spriteset name="dirt">
+			<sprite img="resource/images/tiles/misc/dirtBlock.png"/>
+		</spriteset>
+		<spriteset name="sand">
+			<sprite img="resource/images/tiles/misc/sandBlock.png"/>
+		</spriteset>
+		<spriteset name="stone">
+			<sprite img="resource/images/tiles/misc/stoneBlock.png"/>
+		</spriteset>
+		
 	</group>
 	
 	<group name="players">
@@ -152,64 +152,38 @@
 
 		</group>
 		
-		<group name="misc">
-			<spriteset name="bamboo">
-				<sprite img="resource/images/props/misc/bamboo.png" ay="0.79"/>
-			</spriteset>
-			<spriteset name="bush">
-				<sprite img="resource/images/props/misc/bush.png" ay="0.84"/>
-			</spriteset>
-			<spriteset name="grass">
-				<sprite img="resource/images/props/misc/grass.png" ay="0.82"/>
-			</spriteset>
-			<spriteset name="zen1">
-				<sprite img="resource/images/props/misc/zen1.png" ay="0.835"/>
-			</spriteset>
-			<spriteset name="zen2">
-				<sprite img="resource/images/props/misc/zen2.png" ay="0.835"/>
-			</spriteset>
-		</group>
+		<spriteset name="bamboo">
+			<sprite img="resource/images/props/misc/bamboo.png" ay="0.79"/>
+		</spriteset>
+		<spriteset name="bush">
+			<sprite img="resource/images/props/misc/bush.png" ay="0.84"/>
+		</spriteset>
+		<spriteset name="grass">
+			<sprite img="resource/images/props/misc/grass.png" ay="0.82"/>
+		</spriteset>
+		<spriteset name="zen1">
+			<sprite img="resource/images/props/misc/zen1.png" ay="0.835"/>
+		</spriteset>
+		<spriteset name="zen2">
+			<sprite img="resource/images/props/misc/zen2.png" ay="0.835"/>
+		</spriteset>
 	</group>
 	
 	
 	<group name="entities">
 		<group name="doors">
-			<group name="closed">
-				<sprite id="front" img="resource/images/entities/doors/front/closed.png" ay="0.8"/>
-				<sprite id="side" img="resource/images/entities/doors/side/closed.png" ay="0.8"/>
-				
-				<spriteset name="doorFrontClosed">
-					<faces n="front" e="side" s="front" w="side"/>
-				</spriteset>
-				
-				<spriteset name="doorSideClosed">
-					<faces n="side" e="front" s="side" w="front"/>
-				</spriteset>
-			</group>
-			<group name="openBack">
-				<sprite id="front" img="resource/images/entities/doors/front/openBack.png" ay="0.8"/>
-				<sprite id="side" img="resource/images/entities/doors/side/openBack.png" ay="0.8"/>
-				
-				<spriteset name="doorFrontOpenBack">
-					<faces n="front" e="side" s="front" w="side"/>
-				</spriteset>
-				
-				<spriteset name="doorSideOpenBack">
-					<faces n="side" e="front" s="side" w="front"/>
-				</spriteset>
-			</group>
-			<group name="openFront">
-				<sprite id="front" img="resource/images/entities/doors/front/openFront.png" ay="0.8"/>
-				<sprite id="side" img="resource/images/entities/doors/side/openFront.png" ay="0.8"/>
-				
-				<spriteset name="doorFrontOpenFront">
-					<faces n="front" e="side" s="front" w="side"/>
-				</spriteset>
-				
-				<spriteset name="doorSideOpenFront">
-					<faces n="side" e="front" s="side" w="front"/>
-				</spriteset>
-			</group>		
+			<spriteset name="openDoor">
+				<sprite id="frontIn" img="resource/images/entities/doors/open/frontIn.png"/>
+				<sprite id="sideLeft" img="resource/images/entities/doors/open/sideLeft.png"/>	
+				<sprite id="frontOut" img="resource/images/entities/doors/open/frontOut.png"/>	
+				<sprite id="sideRight" img="resource/images/entities/doors/open/sideRight.png"/>	
+				<faces n="frontIn" e="sideLeft" s="frontOut" w="sideRight"/>
+			</spriteset>
+			<spriteset name="closedDoor">
+				<sprite id="front" img="resource/images/entities/doors/closed/front.png"/>
+				<sprite id="side" img="resource/images/entities/doors/closed/side.png"/>	
+				<faces n="front" e="side" s="front" w="side"/>
+			</spriteset>
 		</group>
 		<group name="flowers">
 			<group name="black">
@@ -280,58 +254,38 @@
 			</spriteset>
 		</group>
 		<group name="runestones">
-			<group name="runestone1">
+			<spriteset name="runestone1">
 				<sprite id="front" img="resource/images/entities/runestones/1/front.png" ay="0.8"/>
 				<sprite id="side" img="resource/images/entities/runestones/1/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/1/back.png" ay="0.8"/>
-				
-				<spriteset name="rs1Front">
-					<faces n="front" e="side" s="back" w="side"/>
-				</spriteset>
-				<spriteset name="rs1Side">
-					<faces n="side" e="front" s="back" w="front"/>
-				</spriteset>
-			</group>
-			<group name="runestone2">
+				<faces n="front" e="side" s="back" w="side"/>			
+			</spriteset>
+			<spriteset name="runestone2">
 				<sprite id="front" img="resource/images/entities/runestones/2/front.png" ay="0.8"/>
 				<sprite id="side" img="resource/images/entities/runestones/2/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/2/back.png" ay="0.8"/>
-				
-				<spriteset name="rs2Front">
-					<faces n="front" e="side" s="back" w="side"/>
-				</spriteset>
-				<spriteset name="rs2Side">
-					<faces n="side" e="front" s="back" w="front"/>
-				</spriteset>
-			</group>
-			<group name="runestone3">
+				<faces n="front" e="side" s="back" w="side"/>			
+			</spriteset>
+			<spriteset name="runestone3">
 				<sprite id="front" img="resource/images/entities/runestones/3/front.png" ay="0.8"/>
 				<sprite id="side" img="resource/images/entities/runestones/3/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/3/back.png" ay="0.8"/>
-				
-				<spriteset name="rs3Front">
-					<faces n="front" e="side" s="back" w="side"/>
-				</spriteset>
-				<spriteset name="rs3Side">
-					<faces n="side" e="front" s="back" w="front"/>
-				</spriteset>
-			</group>
+				<faces n="front" e="side" s="back" w="side"/>		
+			</spriteset>
 		</group>
-		<group name="misc">
-			<spriteset name="seed">
-				<sprite img="resource/images/entities/misc/seed.png" ay="0.8"/>
+		<spriteset name="seed">
+			<sprite img="resource/images/entities/misc/seed.png" ay="0.8"/>
+		</spriteset>
+		<spriteset name="soil">
+			<sprite img="resource/images/entities/misc/soil.png"/>
+		</spriteset>
+		<group name ="statues">
+			<spriteset name="statueActive">
+				<sprite img="resource/images/entities/misc/statues/activated.png" ay="0.8"/>
 			</spriteset>
-			<spriteset name="soil">
-				<sprite img="resource/images/entities/misc/soil.png"/>
+			<spriteset name="statueDormant">
+				<sprite img="resource/images/entities/misc/statues/dormant.png" ay="0.8"/>
 			</spriteset>
-			<group name ="statues">
-				<spriteset name="statueActive">
-					<sprite img="resource/images/entities/misc/statues/activated.png" ay="0.8"/>
-				</spriteset>
-				<spriteset name="statueDormant">
-					<sprite img="resource/images/entities/misc/statues/dormant.png" ay="0.8"/>
-				</spriteset>
-			</group>
 		</group>
 	</group>
 	
