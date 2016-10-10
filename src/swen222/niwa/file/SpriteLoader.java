@@ -29,7 +29,7 @@ import swen222.niwa.model.world.Direction;
 public class SpriteLoader {
 
 	public static final String MANIFEST = "resource/images/spritesets.xml";
-
+	public static final String DEFAULT_SPRITE = "resource/images/tiles/tempObject.png";
 	private static final Map<String, SpriteSet> SPRITESETS = new HashMap<>();
 
 	/**
@@ -169,8 +169,15 @@ public class SpriteLoader {
 	private static Sprite parseSprite(Node spriteNode){
 		Element spriteElement = (Element)spriteNode;
 		try {
-			// each sprite will always have an image path
-			Image img = ImageIO.read(new File(spriteElement.getAttribute("img")));
+			// each sprite will always have an image path, if its the path does not exist
+			// then assign it a default image path
+			File imgPath = new File(spriteElement.getAttribute("img"));
+			Image img;
+			if(imgPath.exists()){
+				img = ImageIO.read(imgPath);
+			}else{
+				img = ImageIO.read(new File(DEFAULT_SPRITE));
+			}
 			
 			// now store the other potential attributes; ax, ay, width
 			String axAttr = spriteElement.getAttribute("ax");

@@ -3,9 +3,39 @@
 <manifest>
 
 	<group name="tiles">
-		<spriteset name="dirt">
-			<sprite img="resource/images/tiles/misc/dirtBlock.png"/>
-		</spriteset>
+		<group name="grass">
+			<spriteset name="grass1">
+				<sprite img="resource/images/tiles/grass/1.png"/>
+			</spriteset>
+			<spriteset name="grass2">
+				<sprite img="resource/images/tiles/grass/2.png"/>
+			</spriteset>
+			<spriteset name="grass3">
+				<sprite img="resource/images/tiles/grass/3.png"/>
+			</spriteset>
+		</group>
+		<group name="water">
+			<spriteset name="water1">
+				<sprite img="resource/images/tiles/water/1.png"/>
+			</spriteset>
+			<spriteset name="water2">
+				<sprite img="resource/images/tiles/water/2.png"/>
+			</spriteset>
+			<spriteset name="koi">
+				<sprite img="resource/images/tiles/water/koi.png"/>
+			</spriteset>
+		</group>
+		<group name="misc">
+			<spriteset name="dirt">
+				<sprite img="resource/images/tiles/misc/dirtBlock.png"/>
+			</spriteset>
+			<spriteset name="sand">
+				<sprite img="resource/images/tiles/misc/sandBlock.png"/>
+			</spriteset>
+			<spriteset name="stone">
+				<sprite img="resource/images/tiles/misc/stoneBlock.png"/>
+			</spriteset>
+		</group>
 	</group>
 	
 	<group name="players">
@@ -14,6 +44,34 @@
 			<sprite id="lb" img="resource/images/players/ghosts/blue/leftBack.png" ay="0.8" />
 			<sprite id="rf" img="resource/images/players/ghosts/blue/rightFront.png" ay="0.8" />
 			<sprite id="rb" img="resource/images/players/ghosts/blue/rightBack.png" ay="0.8" />
+			<faces n="rb" e="lf" s="rf" w="lb" />
+		</spriteset>
+		<spriteset name="ghostBlack">
+			<sprite id="lf" img="resource/images/players/ghosts/black/leftFront.png" ay="0.8" />
+			<sprite id="lb" img="resource/images/players/ghosts/black/leftBack.png" ay="0.8" />
+			<sprite id="rf" img="resource/images/players/ghosts/black/rightFront.png" ay="0.8" />
+			<sprite id="rb" img="resource/images/players/ghosts/black/rightBack.png" ay="0.8" />
+			<faces n="rb" e="lf" s="rf" w="lb" />
+		</spriteset>
+		<spriteset name="ghostGreen">
+			<sprite id="lf" img="resource/images/players/ghosts/green/leftFront.png" ay="0.8" />
+			<sprite id="lb" img="resource/images/players/ghosts/green/leftBack.png" ay="0.8" />
+			<sprite id="rf" img="resource/images/players/ghosts/green/rightFront.png" ay="0.8" />
+			<sprite id="rb" img="resource/images/players/ghosts/green/rightBack.png" ay="0.8" />
+			<faces n="rb" e="lf" s="rf" w="lb" />
+		</spriteset>
+		<spriteset name="ghostGrey">
+			<sprite id="lf" img="resource/images/players/ghosts/grey/leftFront.png" ay="0.8" />
+			<sprite id="lb" img="resource/images/players/ghosts/grey/leftBack.png" ay="0.8" />
+			<sprite id="rf" img="resource/images/players/ghosts/grey/rightFront.png" ay="0.8" />
+			<sprite id="rb" img="resource/images/players/ghosts/grey/rightBack.png" ay="0.8" />
+			<faces n="rb" e="lf" s="rf" w="lb" />
+		</spriteset>
+		<spriteset name="ghostRed">
+			<sprite id="lf" img="resource/images/players/ghosts/red/leftFront.png" ay="0.8" />
+			<sprite id="lb" img="resource/images/players/ghosts/red/leftBack.png" ay="0.8" />
+			<sprite id="rf" img="resource/images/players/ghosts/red/rightFront.png" ay="0.8" />
+			<sprite id="rb" img="resource/images/players/ghosts/red/rightBack.png" ay="0.8" />
 			<faces n="rb" e="lf" s="rf" w="lb" />
 		</spriteset>
 	</group>
@@ -116,20 +174,164 @@
 	
 	<group name="entities">
 		<group name="doors">
-			<group name="front">
-				<spriteset name="frontDoor>
+			<group name="closed">
+				<sprite id="front" img="resource/images/entities/doors/front/closed.png" ay="0.8"/>
+				<sprite id="side" img="resource/images/entities/doors/side/closed.png" ay="0.8"/>
+				
+				<spriteset name="doorFrontClosed">
+					<faces n="front" e="side" s="front" w="side"/>
+				</spriteset>
+				
+				<spriteset name="doorSideClosed">
+					<faces n="side" e="front" s="side" w="front"/>
 				</spriteset>
 			</group>
-			<group name="side">
+			<group name="openBack">
+				<sprite id="front" img="resource/images/entities/doors/front/openBack.png" ay="0.8"/>
+				<sprite id="side" img="resource/images/entities/doors/side/openBack.png" ay="0.8"/>
+				
+				<spriteset name="doorFrontOpenBack">
+					<faces n="front" e="side" s="front" w="side"/>
+				</spriteset>
+				
+				<spriteset name="doorSideOpenBack">
+					<faces n="side" e="front" s="side" w="front"/>
+				</spriteset>
 			</group>
+			<group name="openFront">
+				<sprite id="front" img="resource/images/entities/doors/front/openFront.png" ay="0.8"/>
+				<sprite id="side" img="resource/images/entities/doors/side/openFront.png" ay="0.8"/>
+				
+				<spriteset name="doorFrontOpenFront">
+					<faces n="front" e="side" s="front" w="side"/>
+				</spriteset>
+				
+				<spriteset name="doorSideOpenFront">
+					<faces n="side" e="front" s="side" w="front"/>
+				</spriteset>
+			</group>		
 		</group>
 		<group name="flowers">
+			<group name="black">
+				<spriteset name="blackFlower1">
+					<sprite img="resource/images/entities/flowers/black/1.png" ay="0.8"/>
+				</spriteset>
+				<spriteset name="blackFlower2">
+					<sprite img="resource/images/entities/flowers/black/2.png" ay="0.8"/>
+				</spriteset>
+				<spriteset name="blackFlower3">
+					<sprite img="resource/images/entities/flowers/black/3.png" ay="0.8"/>
+				</spriteset>
+			</group>
+			<group name="blue">
+				<spriteset name="blueFlower1">
+					<sprite img="resource/images/entities/flowers/blue/1.png" ay="0.8"/>
+				</spriteset>
+				<spriteset name="blueFlower2">
+					<sprite img="resource/images/entities/flowers/blue/2.png" ay="0.8"/>
+				</spriteset>
+				<spriteset name="blueFlower3">
+					<sprite img="resource/images/entities/flowers/blue/3.png" ay="0.8"/>
+				</spriteset>
+			</group>
+			<group name="green">
+				<spriteset name="greenFlower1">
+					<sprite img="resource/images/entities/flowers/green/1.png" ay="0.8"/>
+				</spriteset>
+				<spriteset name="greenFlower2">
+					<sprite img="resource/images/entities/flowers/green/2.png" ay="0.8"/>
+				</spriteset>
+				<spriteset name="greenFlower3">
+					<sprite img="resource/images/entities/flowers/green/3.png" ay="0.8"/>
+				</spriteset>
+			</group>
+			<group name="grey">
+				<spriteset name="greyFlower1">
+					<sprite img="resource/images/entities/flowers/grey/1.png" ay="0.8"/>
+				</spriteset>
+				<spriteset name="greyFlower2">
+					<sprite img="resource/images/entities/flowers/grey/2.png" ay="0.8"/>
+				</spriteset>
+				<spriteset name="greyFlower3">
+					<sprite img="resource/images/entities/flowers/grey/3.png" ay="0.8"/>
+				</spriteset>
+			</group>
+			<group name="red">
+				<spriteset name="redFlower1">
+					<sprite img="resource/images/entities/flowers/red/1.png" ay="0.8"/>
+				</spriteset>
+				<spriteset name="redFlower2">
+					<sprite img="resource/images/entities/flowers/red/2.png" ay="0.8"/>
+				</spriteset>
+				<spriteset name="redFlower3">
+					<sprite img="resource/images/entities/flowers/red/3.png" ay="0.8"/>
+				</spriteset>
+			</group>
 		</group>
 		<group name="runes">
+			<spriteset name="rune1">
+				<sprite img="resource/images/entities/runes/1.png" ay="0.8"/>
+			</spriteset>
+			<spriteset name="rune2">
+				<sprite img="resource/images/entities/runes/2.png" ay="0.8"/>
+			</spriteset>
+			<spriteset name="rune3">
+				<sprite img="resource/images/entities/runes/3.png" ay="0.8"/>
+			</spriteset>
 		</group>
 		<group name="runestones">
+			<group name="runestone1">
+				<sprite id="front" img="resource/images/entities/runestones/1/front.png" ay="0.8"/>
+				<sprite id="side" img="resource/images/entities/runestones/1/side.png" ay="0.8"/>
+				<sprite id="back" img="resource/images/entities/runestones/1/back.png" ay="0.8"/>
+				
+				<spriteset name="rs1Front">
+					<faces n="front" e="side" s="back" w="side"/>
+				</spriteset>
+				<spriteset name="rs1Side">
+					<faces n="side" e="front" s="back" w="front"/>
+				</spriteset>
+			</group>
+			<group name="runestone2">
+				<sprite id="front" img="resource/images/entities/runestones/2/front.png" ay="0.8"/>
+				<sprite id="side" img="resource/images/entities/runestones/2/side.png" ay="0.8"/>
+				<sprite id="back" img="resource/images/entities/runestones/2/back.png" ay="0.8"/>
+				
+				<spriteset name="rs2Front">
+					<faces n="front" e="side" s="back" w="side"/>
+				</spriteset>
+				<spriteset name="rs2Side">
+					<faces n="side" e="front" s="back" w="front"/>
+				</spriteset>
+			</group>
+			<group name="runestone3">
+				<sprite id="front" img="resource/images/entities/runestones/3/front.png" ay="0.8"/>
+				<sprite id="side" img="resource/images/entities/runestones/3/side.png" ay="0.8"/>
+				<sprite id="back" img="resource/images/entities/runestones/3/back.png" ay="0.8"/>
+				
+				<spriteset name="rs3Front">
+					<faces n="front" e="side" s="back" w="side"/>
+				</spriteset>
+				<spriteset name="rs3Side">
+					<faces n="side" e="front" s="back" w="front"/>
+				</spriteset>
+			</group>
 		</group>
 		<group name="misc">
+			<spriteset name="seed">
+				<sprite img="resource/images/entities/misc/seed.png" ay="0.8"/>
+			</spriteset>
+			<spriteset name="soil">
+				<sprite img="resource/images/entities/misc/soil.png"/>
+			</spriteset>
+			<group name ="statues">
+				<spriteset name="statueActive">
+					<sprite img="resource/images/entities/misc/statues/activated.png" ay="0.8"/>
+				</spriteset>
+				<spriteset name="statueDormant">
+					<sprite img="resource/images/entities/misc/statues/dormant.png" ay="0.8"/>
+				</spriteset>
+			</group>
 		</group>
 	</group>
 	
