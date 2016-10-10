@@ -46,6 +46,7 @@ public class Controller implements Observer, ActionListener{
 				System.out.println("I don't know what that is.");
 			}else{
 				//do inspect stuff with this object
+				//probs return a string held in that object
 				System.out.println("it's "+selected);
 			}
 		}else if(e.getActionCommand().equals("Rotate CW (Q)")){

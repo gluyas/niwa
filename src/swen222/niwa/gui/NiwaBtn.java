@@ -46,11 +46,11 @@ public class NiwaBtn extends JButton implements MouseListener {
 		super.paintComponent(g);
 
 		if (click) {
-			g.setColor(Color.RED);
+			g.setColor(new Color(0xF27165));
 		} else if (hover) {
-			g.setColor(Color.BLUE);
+			g.setColor(new Color(0xA9EF6B));
 		} else {
-			g.setColor(Color.GREEN);
+			g.setColor(new Color(0xA4E2E8));
 		}
 
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
