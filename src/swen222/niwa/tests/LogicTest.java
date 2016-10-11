@@ -7,6 +7,7 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
+import swen222.niwa.file.SpriteLoader;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.entity.entities.PlayerEntity;
 import swen222.niwa.model.util.EntityTable;
@@ -35,7 +36,7 @@ public class LogicTest {
 		world=  new World(2,2);
 		world.addRoom(0,1,r);
 		world.addRoom(0, 0, r2);
-		ent1 = new PlayerEntity(Location.at(r,0,0));
+		ent1 = new PlayerEntity(Location.at(r,0,0), SpriteLoader.get("ghostBlue"));
 		logic = new Rules(world.getMap());
 	}
 

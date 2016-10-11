@@ -322,7 +322,7 @@ public class RoomParser {
 					break;
 				case "stonepathfront":
 					props[row][col] = new Prop("stonePathFront", SpriteLoader.get("stonePathFront"), true);
-					break;
+					break; 
 				case "stonepathside":
 					props[row][col] = new Prop("stonePathSide", SpriteLoader.get("stonePathSide"), true);
 					break;

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<class>
+<width>9</width> <height>9</height>
+
+<name> pass </name>
+
+<spawnNorth col = "1" row = "0" />
+<spawnEast col = "8" row = "7" />
+<spawnSouth col = "7" row = "8" />
+<spawnWest col = "0" row = "1" />
+
+<tiles>
+	<line>g0 g0 d1 s2 s3 s4 g6 g6 g6 </line>
+	<line>g0 d0 s2 s3 s4 s4 g6 d6 g6 </line>
+	<line>s2 d0 s1 s3 s4 s4 g6 g6 s5 </line>
+	<line>s3 s2 s2 s2 s4 s5 s4 s4 s4 </line>
+	<line>s5 s4 s4 s3 s4 s3 s4 s2 s2 </line>
+	<line>s6 s6 s6 s5 s3 s2 s1 d0 g0 </line>
+	<line>w5 w5 w5 w4 w2 q0 w0 g0 g0 </line>
+	<line>s6 s7 s6 s4 s2 w0 w0 g0 g0 </line>
+	<line>s7 s6 s4 s2 d0 d0 g0 g0 g0 </line>
+</tiles>
+
+<prop type = "bigrock" col = "0" row = "8"/>
+<prop type = "bigrock" col = "1" row = "8"/>
+<prop type = "bigrock" col = "2" row = "4"/>
+<prop type = "bigrock" col = "3" row = "5"/>
+<prop type = "bigrock" col = "6" row = "4"/>
+<prop type = "bigrock" col = "7" row = "4"/>
+<prop type = "bigrock" col = "8" row = "4"/>
+
+
+<prop type = "bigtree" col ="2" row ="0"/>
+<prop type = "soil" col = "7" row="1"/>
+<prop type = "zen2" col = "1" row ="4"/>
+<prop type = "bush" col = "2" row ="8"/>
+
+<prop type = "grass" col = "6" row ="0"/>
+<prop type = "grass" col = "8" row ="0"/>
+<prop type = "grass" col = "6" row ="1"/>
+
+<prop type = "woodpathfront" col= "5" row = "4"/>
+<prop type = "woodpathside" col= "5" row = "5"/>
+<prop type = "woodpathfront" col= "6" row = "5"/>
+<prop type = "woodpathside" col= "7" row = "5"/>
+<prop type = "woodpathfront" col= "4" row = "1"/>
+<prop type = "woodpathside" col= "4" row = "2"/>
+<prop type = "woodpathfront" col= "4" row = "3"/>
+<prop type = "woodpathside" col= "4" row = "4"/>
+<prop type = "woodpathside" col= "3" row = "1"/>
+<prop type = "woodpathfront" col= "2" row = "1"/>
+<prop type = "woodpathfront" col= "1" row = "2"/>
+<prop type = "woodpathside" col= "2" row = "2"/>
+
+<entity type = "runestone2" col="4" row = "8" direction = "E"/>
+<entity type = "statue" col = "3" row ="4"/>
+<entity type = "door" col= "4" row = "3" direction = "N"/>
+<entity type = "rune1" col = "2" row = "5"/>
+<entity type = "seed" col= "0" row = "2"/>
+<entity type = "seed" col= "3" row = "0"/>
+</class>

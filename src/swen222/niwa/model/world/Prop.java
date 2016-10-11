@@ -13,14 +13,15 @@ import swen222.niwa.gui.Visible;
  */
 public class Prop implements Visible {
 
+
 	private final String type; // the type of prop
 	private SpriteSet sprites; // the props sprites which can change based on direction
 	private final boolean canOccupy; // whether or not the prop can be occupied by a player
-	
+
 	public Prop(String type, SpriteSet sprites, boolean canOccupy){
 		this.type = type;
 		this.sprites = sprites;
-		this.canOccupy = canOccupy;	
+		this.canOccupy = canOccupy;
 	}
 
 	/**
@@ -38,6 +39,9 @@ public class Prop implements Visible {
 		return canOccupy;
 	}
 
+	public String getDescription(){
+		return null;
+	}
 	@Override
 	public Sprite sprite(Direction camera) {
 		return sprites.sprite(camera);

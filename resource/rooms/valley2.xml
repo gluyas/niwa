@@ -10,20 +10,50 @@
 <spawnWest col = "0" row = "1" />
 
 <tiles>
-	<line>g3 g2 g1 w0 w0 w0 g1 g2 g3 </line>
-	<line>g3 g2 g1 w0 w0 w0 g1 g2 g3 </line>
-	<line>g3 g2 g1 w0 w0 w0 g1 g2 g3 </line>
+	<line>g3 g2 d1 w0 w0 w0 g1 g2 g3 </line>
+	<line>g3 g2 d1 w0 w0 w0 g1 g2 g3 </line>
+	<line>g3 g2 d1 w0 w0 w0 g1 g2 g3 </line>
 	<line>g3 g2 g1 w0 w0 w0 g1 g2 g3 </line>
 	<line>g3 g2 g1 s2 s2 s2 g1 g2 g3 </line>
+	<line>g3 g2 g1 q0 w0 w0 g1 g2 g3 </line>
 	<line>g3 g2 g1 w0 w0 w0 g1 g2 g3 </line>
 	<line>g3 g2 g1 w0 w0 w0 g1 g2 g3 </line>
-	<line>g3 g2 g1 w0 w0 w0 g1 g2 g3 </line>
-	<line>g3 g2 g1 w0 w0 w0 g1 g2 g3 </line>
+	<line>g3 g2 g1 w0 w0 w0 g1 g2 d3 </line>
 </tiles>
 
+<prop type = "fenceside" col="0" row ="8" direction ="E"/>
+<prop type = "fenceside" col="1" row ="8" direction ="E"/>
+<prop type = "fenceside" col="2" row ="8" direction ="E"/>
+
+<prop type = "soil" col="2" row ="0"/>
+<prop type = "soil" col="2" row ="1"/>
+<prop type = "soil" col="2" row ="2"/>
 
 
+<prop type = "bigtree" col="1" row="6"/>
+<prop type = "bigtree" col="2" row="5"/>
+<prop type = "bigtree" col="7" row="0"/>
+<prop type = "bigtree" col="6" row="0"/>
+<prop type = "bigtree" col="8" row="0"/>
+<prop type = "bigtree" col="7" row="1"/>
+<prop type = "bigtree" col="6" row="3"/>
 
+<prop type = "grass" col= "6" row ="7"/>
+<prop type = "grass" col= "7" row ="7"/>
+<prop type = "grass" col= "8" row ="7"/>
+<prop type = "grass" col= "6" row ="8"/>
+<prop type = "grass" col= "7" row ="8"/>
+<prop type = "soil" col= "8" row ="8"/>
+<prop type = "grass" col= "6" row ="6"/>
+<prop type = "grass" col= "7" row ="6"/>
+<prop type = "grass" col= "8" row ="6"/>
 
-<entity type = "seed" col= "1" row = "1"/>
+<entity type = "statue" col="2" row="6"/>
+<entity type = "statue" col="6" row="6"/>
+<entity type = "door" col="6" row="4"/>
+<entity type = "door" col="2" row="4"/>
+
+<entity type = "seed" col= "0" row = "5"/>
+<entity type = "seed" col= "6" row = "1"/>
+
 </class>
