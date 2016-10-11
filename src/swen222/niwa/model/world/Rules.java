@@ -234,7 +234,7 @@ public class Rules {
 		return true;
 	}
 
-	private String somethingToSee(PlayerEntity player){
+	public String somethingToSee(PlayerEntity player){
 		String description= "";
 		try {
 			Location inFront = player.getLocation().move(player.getFacing());
@@ -246,7 +246,7 @@ public class Rules {
 			}
 			return description;
 		} catch (InvalidLocationException e) {
-			return null;
+			return "";
 		}
 	}
 	/**

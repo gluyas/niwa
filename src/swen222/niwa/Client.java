@@ -109,7 +109,7 @@ public class Client extends Observable implements ActionListener, KeyListener {
 				if (slot != -1){
 					view.gamePanel.updateText(view.invPanel.getItemDescription());
 				}else{
-
+					// inspect on the world
 				}
 				break;
 
