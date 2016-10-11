@@ -6,19 +6,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.Charset;
 
-import swen222.niwa.Controller;
 import swen222.niwa.demo.DemoFrame;
-import swen222.niwa.demo.DemoPlayer;
-import swen222.niwa.gui.NiwaFrame;
-import swen222.niwa.gui.RoomRenderer;
-import swen222.niwa.model.world.Room;
-import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.util.EntityTable;
-import swen222.niwa.model.util.HashEntityTable;
+import swen222.niwa.model.util.ObservableEntityTable;
+import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Room;
+import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.util.HashEntityTable;
+import swen222.niwa.model.world.World;
 
 /**
  * A slave connection receives information about the current state of the board
@@ -26,27 +22,30 @@ import swen222.niwa.model.world.Room;
  * notifies the master connection of key presses by the player.
  *
  * @author Hamish M
+ * @author Marc
  */
 
 public class Slave extends Thread implements KeyListener{
 
-	// MOVEMENT DIRECTIONS
-	public static final int MOVE_UP = 1;
-	public static final int MOVE_DOWN = 2;
-	public static final int MOVE_LEFT = 3;
-	public static final int MOVE_RIGHT = 4;
 	// INTERACTIONS
-	public static final int PLAYER_ACTION = 5;
+	public static final int PLAYER_ACTION = 'a';
+	public static final int PLAYER_MOVE = 'm'; // following int indicates direction
 
+	public static final int REQUEST_WORLD = 'w';
+	public static final int REQUEST_ROOM = 'r';
 
+	public static final int STATUS_READY = 'g';
+	public static final int STATUS_STOP = 's';
 
-	private static EntityTable<Entity> et = new HashEntityTable<>();
-	private Room r;
+	private static ObservableEntityTable<Entity> et = new HashEntityTable<>();
+	private World currentWorld;
+	private static Room currentRoom;
 	private final Socket socket;
 	private DataOutputStream output;
-	private DataInputStream input;
-	private ObjectInputStream objIn;
-	private DemoFrame gameWindow;
+	private ObjectInputStream input;
+	private DemoFrame gameWindow = new DemoFrame(null, this);
+
+	private boolean exit = false;
 
 	//TODO: Very much just a place holder at the moment, will obviously need further implementation
 
@@ -54,58 +53,139 @@ public class Slave extends Thread implements KeyListener{
 		this.socket = socket;
 	}
 
+	private void setReady(boolean ready) throws IOException {
+		if (ready) output.write(STATUS_READY);
+		else output.write(STATUS_STOP);
+	}
+
+	private void requestWorld() throws IOException, ClassNotFoundException {
+		output.write(REQUEST_WORLD);
+		System.out.println("Requesting world");
+		while (!exit) {
+			if(input.available() != 0 && input.read() == Master.LOAD_WORLD){
+				loadWorld();
+			}
+		}
+	}
+
+	public void loadWorld() throws IOException, ClassNotFoundException {
+		System.out.println("RECEIVING WORLD");
+		setWorld((World) input.readObject());
+	}
+
+	private void setWorld(World w) {
+		this.currentWorld = w;
+	}
+
+	private void requestRoom() throws IOException, ClassNotFoundException {
+		output.write(REQUEST_ROOM);
+		System.out.println("REQUESTING ROOM");
+		while (!exit) {
+			if(input.available() != 0 && input.read() == Master.LOAD_ROOM){
+				setRoom((Room) input.readObject());
+				break;
+			}
+		}
+	}
+
+	private void loadRoom() throws IOException, ClassNotFoundException {
+		System.out.println("RECEIVING ROOM");
+		setRoom((Room) input.readObject());
+	}
+
+	private void setRoom(Room r) {
+		this.currentRoom = r;
+		et = new HashEntityTable<>();
+		gameWindow.setRoom(r);
+	}
+
+	private void applyUpdate() throws IOException, ClassNotFoundException {
+		Update ud = (Update) input.readObject();
+		//System.out.println("APPLYING UPDATE "+ud);
+		ud.apply();
+	}
+
+	private void addEntity() throws IOException, ClassNotFoundException {
+		Entity e = (Entity) input.readObject();
+		et.add(e);
+	}
+
+	private void removeEntity() throws IOException, ClassNotFoundException {
+		Entity e = (Entity) input.readObject();
+		et.remove(e);
+	}
+
 	public void run(){
-
-		try{
+		try {
 			output = new DataOutputStream(socket.getOutputStream());
-			input = new DataInputStream(socket.getInputStream());
-
-			objIn = new ObjectInputStream(socket.getInputStream());
-
-			boolean exit = false;
+			input = new ObjectInputStream(socket.getInputStream());
 
 			while(!exit) {
 				// read event
-				if(objIn.available() != 0){
-					System.out.println("Something is arriving from master");
-					byte action = objIn.readByte();
+				if(input.available() != 0){
+					int action = input.read();
 					switch (action) {
-					case 'r': // rooms
-						System.out.println("master sent me a room");
-						// TODO: initial room state, should only be sent once
-						// and then the remaining mutable objects will be sent
-						// over e.g. entities
-						r = (Room)objIn.readObject();
-						// no current room
-						if(gameWindow == null){
-							gameWindow = new DemoFrame(r, this);
-						}else{ // update the room to render
-							gameWindow.panel.rr = new RoomRenderer(r);
-						}
-						gameWindow.repaint();
-						break;
-					case 'p':
-						// TODO: updated player state
-						System.out.println("received a player");
-						DemoPlayer p = (DemoPlayer) objIn.readObject();;
-						System.out.println(p);
-						et.add(p);
-						for (Entity e : et) System.out.println(e.toString());
-						gameWindow.repaint();
-						break;
-					case 's':
-						// TODO: updated seed state
-						break;
+						case Master.LOAD_WORLD:
+							loadWorld();
+							break;
+
+						case Master.LOAD_ROOM:
+							loadRoom();
+							break;
+
+						case Master.APPLY_UPDATE:
+							applyUpdate();
+							break;
+
+						case Master.ADD_ENTITY:
+							addEntity();
+							break;
+
+						case Master.RM_ENTITY:
+							removeEntity();
+							break;
 					}
+
+
+					/*
+					switch (action) {
+						case 'r': // rooms
+							System.out.println("master sent me a room");
+							// TODO: initial room state, should only be sent once
+							// and then the remaining mutable objects will be sent
+							// over e.g. entities
+							currentRoom = (Room) input.readObject();
+							// no current room
+							if(gameWindow == null){
+								gameWindow = new DemoFrame(currentRoom, this);
+							}else{ // update the room to render
+								gameWindow.panel.rr = new RoomRenderer(currentRoom);
+							}
+							gameWindow.repaint();
+							break;
+						case 'p':
+							// TODO: updated player state
+							System.out.println("received a player");
+							DemoPlayer p = (DemoPlayer) input.readObject();;
+							System.out.println(p);
+							et.add(p);
+							for (Entity e : et) System.out.println(e.toString());
+							gameWindow.repaint();
+							break;
+						case 's':
+							// TODO: updated seed state
+							break;
+
+					}*/
 				}
 			}
 			socket.close(); // release socket ... v.important!
 
-
-		}catch(Exception e) {
+		} catch(Exception e) {
 			throw new Error(e);
 		}
 	}
+
 
 	private static String inputString(String msg){
 		System.out.println(msg);
@@ -120,7 +200,7 @@ public class Slave extends Thread implements KeyListener{
 	}
 
 	//TODO: fix this horrible non-encapsulation
-	public static EntityTable getEntityTable() {
+	public static ObservableEntityTable<Entity> getEntityTable() {
 		return et;
 	}
 
@@ -137,19 +217,23 @@ public class Slave extends Thread implements KeyListener{
 			int code = e.getKeyCode();
 			switch (code) {
 			case VK_W: // move up
-				output.writeInt(MOVE_UP);
+				output.write(PLAYER_MOVE);
+				output.write(Direction.NORTH.ordinal());
 				break;
 
 			case VK_A: // move left
-				output.writeInt(MOVE_LEFT);
+				output.write(PLAYER_MOVE);
+				output.write(Direction.WEST.ordinal());
 				break;
 
 			case VK_S: // move down
-				output.writeInt(MOVE_DOWN);
+				output.write(PLAYER_MOVE);
+				output.write(Direction.SOUTH.ordinal());
 				break;
 
 			case VK_D: // move right
-				output.writeInt(MOVE_RIGHT);
+				output.write(PLAYER_MOVE);
+				output.write(Direction.EAST.ordinal());
 				break;
 
 			case VK_Q: // rotate cw

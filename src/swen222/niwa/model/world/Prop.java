@@ -7,7 +7,7 @@ import swen222.niwa.gui.Visible;
 import swen222.niwa.model.world.Tile.Texture;
 
 /**
- * Interface for world objects which are fixed at the time of Room creation
+ * Interface for world objects which are fixed at the time of RoomTuple creation
  *
  * @author Marc
  * @author Jack
@@ -101,7 +101,6 @@ public class Prop implements Visible, Serializable {
 		}
 
 		}
-
 
 	/**
 	 * Returns the type of this prop

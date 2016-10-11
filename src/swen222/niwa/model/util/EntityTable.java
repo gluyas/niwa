@@ -3,6 +3,7 @@ package swen222.niwa.model.util;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.world.Location;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -12,7 +13,7 @@ import java.util.Set;
  *
  * @author Marc
  */
-public interface EntityTable<T extends Entity> extends Set<T> {
+public interface EntityTable<T extends Entity> extends Set<T>, Serializable {
 
 	/**
 	 * Get all Entities stored in this table at a specified location. Note that the members of this Collection
@@ -25,7 +26,7 @@ public interface EntityTable<T extends Entity> extends Set<T> {
 	 */
 	Set<T> get(Location loc);
 
-	static <T extends Entity> EntityTable<T> unmodifiableEntityTable(EntityTable<T> et) {
+	static <T extends Entity> EntityTable<T> unmodifiable(EntityTable<T> et) {
 		return new UnmodifiableEntityTable<>(et);
 	}
 

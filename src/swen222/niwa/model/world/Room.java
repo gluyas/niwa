@@ -1,14 +1,9 @@
 package swen222.niwa.model.world;
 
 import swen222.niwa.file.RoomParser;
-import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.util.EntityTable;
-import swen222.niwa.model.util.HashEntityTable;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.Observer;
-import java.util.Set;
 
 /**
  * Micro-level representation of the world. Stores geometry as an array of Tiles
@@ -18,6 +13,10 @@ import java.util.Set;
 public class Room implements Serializable { // extends Observable if we make it mutable, but unlikely
 
 	public final String name; //each room needs a name, may display this on GUI possibly
+
+	// Where this room sits w
+	public final int worldRow;
+	public final int worldCol;
 
 	public final int width;  // keep these fields final if we go for Rooms being immutable
 	public final int height; // there doesn't seem like any good use case where these would need to change
@@ -31,9 +30,9 @@ public class Room implements Serializable { // extends Observable if we make it 
 									// and not transfer it between collections
 
 	/**
-	 * Gets the Tile in this Room at a specified Location
+	 * Gets the Tile in this RoomTuple at a specified Location
 	 * @param loc the Location to find the Tile at
-	 * @throws IllegalArgumentException if the Location is a different Room
+	 * @throws IllegalArgumentException if the Location is a different RoomTuple
 	 * @return the Tile at that Location
 	 */
 	public Tile tileAt(Location loc) {
@@ -46,16 +45,16 @@ public class Room implements Serializable { // extends Observable if we make it 
 
 	/**
 	 * Create a room from a specified File
-	 * @param f a File containing XML Room data
-	 * @return the newly created Room
+	 * @param f a File containing XML RoomTuple data
+	 * @return the newly created RoomTuple
 	 */
-	public static Room newFromFile(File f) {
+	public static Room newFromFile(File f, int worldCol, int worldRow) {
 
 		RoomParser parser = new RoomParser(f);
 		int width = parser.width;
 		int height = parser.height;
 
-		Room room = new Room("Default", width,height); //TODO: add name to the Room schema
+		Room room = new Room("Default", worldCol, worldRow, width, height); //TODO: add name to the RoomTuple schema
 
 		room.tiles = parser.getTiles();
 
@@ -73,10 +72,12 @@ public class Room implements Serializable { // extends Observable if we make it 
 
 	// TODO: remove this - exists for testing purposes
 	public static Room emptyRoom(int w, int h) {
-		return new Room("Empty Room", w, h);
+		return new Room("Empty Room", 0, 0, w, h);
 	}
 
-	private Room(String name, int width, int height) {
+	private Room(String name, int worldCol, int worldRow, int width, int height) {
+		this.worldCol = worldCol;
+		this.worldRow = worldRow;
 		this.width = width;
 		this.height = height;
 		this.name = name;

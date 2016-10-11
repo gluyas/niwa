@@ -7,7 +7,7 @@ import swen222.niwa.gui.Visible;
 import swen222.niwa.model.entity.Entity;
 
 /**
- * Class for storing material and height information for a single unit of a Room. Can also hold a prop.
+ * Class for storing material and height information for a single unit of a RoomTuple. Can also hold a prop.
  *
  * @author Marc
  * @author Jack U

@@ -1,10 +1,9 @@
 package swen222.niwa.model.entity;
 
-import swen222.niwa.gui.RoomRenderer;
 import swen222.niwa.gui.Visible;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
-import swen222.niwa.model.world.Room;
+import swen222.niwa.model.util.Update;
 
 import java.io.Serializable;
 import java.util.Observable;
@@ -36,6 +35,7 @@ public abstract class Entity extends Observable implements Visible, Serializable
 	// this should probably remain as a lower access base method though - responsible for some important functions.
 	// perhaps make a MovementRule strategy or something, that each Entity can have reference to, and easily check here.
 	public final Location setLocation(Location newLoc) { // final method to prevent notifyObservers omission
+		//System.out.println("setting location "+this);
 		if (newLoc.equals(loc)) return loc; // don't want to update if nothing happens
 		Location oldLoc = loc;
 		this.loc = newLoc;
@@ -70,7 +70,7 @@ public abstract class Entity extends Observable implements Visible, Serializable
 		}
 	}
 
-	private class LocationUpdate implements EntityUpdate {
+	public class LocationUpdate implements Update {
 
 		public final Location from;
 		public final Location to;
@@ -83,6 +83,11 @@ public abstract class Entity extends Observable implements Visible, Serializable
 		@Override
 		public void apply() {
 			Entity.this.setLocation(to);
+		}
+
+		@Override
+		public String toString() {
+			return String.format("LocUD: %s from:%s to:%s", Entity.this, from, to);
 		}
 	}
 

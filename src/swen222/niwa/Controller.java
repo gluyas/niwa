@@ -6,7 +6,7 @@ import java.util.Observer;
 
 import swen222.niwa.gui.NiwaFrame;
 /**
- * Controller for the game. Responsible for handling interactions 
+ * Server for the game. Responsible for handling interactions
  * between model and view. 
  * @author Jack U
  *

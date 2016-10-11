@@ -47,14 +47,13 @@ public class HashEntityTable<E extends Entity> extends ObservableEntityTable<E> 
 			}
 
 			// LOCATION CHANGES: move ent from its old bucket to the new one
-			if (arg instanceof Location) {
-				Location oldLoc = (Location) arg;
-				Location newLoc = ent.getLocation();
-				if (oldLoc.equals(newLoc)) return; // don't need to do anything
-				if (!removeFromBuckets(ent, oldLoc, locMap)) { // probably getting trolled - but could mean table bad
-					System.err.printf("Lost %s from HashEntityTable %s under %s", ent, this, oldLoc);
-				} else if (!addToBuckets(ent, newLoc, locMap)) { // not as bad
-					System.err.printf("%s already in HashEntityTable %s under %s", ent, this, newLoc);
+			if (arg instanceof Entity.LocationUpdate) {
+				Entity.LocationUpdate locUD = (Entity.LocationUpdate) arg;
+				if (locUD.to.equals(locUD.from)) return; // don't need to do anything
+				if (!removeFromBuckets(ent, locUD.from, locMap)) { // probably getting trolled - but could be table bad
+					System.err.printf("Lost %s from HashEntityTable %s under %s", ent, this, locUD.from);
+				} else if (!addToBuckets(ent, locUD.to, locMap)) { // not as bad
+					System.err.printf("%s already in HashEntityTable %s under %s", ent, this, locUD.to);
 				}
 			} // to track another kind of update, put logic here
 		} catch (ClassCastException castFailed) {

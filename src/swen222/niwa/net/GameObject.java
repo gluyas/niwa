@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Observable;
 
 /**
+ * NOT USED - replaced by Object Streams and serialisation.
+ *
  * Class allowing for synchronised object references between the client and server. Every game object should
  * extend from this class, and is assigned a unique identifier (uid) which is consistent between client and server.
  * Also provides utility for sending and receiving object data between server and client.

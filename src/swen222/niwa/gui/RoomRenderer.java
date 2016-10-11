@@ -2,10 +2,7 @@ package swen222.niwa.gui;
 
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.util.EntityTable;
-import swen222.niwa.model.world.Direction;
-import swen222.niwa.model.world.Location;
-import swen222.niwa.model.world.Room;
-import swen222.niwa.model.world.Tile;
+import swen222.niwa.model.world.*;
 import swen222.niwa.net.Slave;
 
 import java.awt.*;
@@ -13,7 +10,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Draws the state of a Room onto a graphics object
+ * Draws the state of a RoomTuple onto a graphics object
  *
  * @author Marc
  */
@@ -48,7 +45,7 @@ public class RoomRenderer {
 	}
 
 	/**
-	 * Renders this Room in a rectangle on a given //todo: cbf this rn
+	 * Renders this RoomTuple in a rectangle on a given //todo: cbf this rn
 	 * @param g
 	 * @param width
 	 * @param height
@@ -69,12 +66,18 @@ public class RoomRenderer {
 			int[] pos = project(loc.col, loc.row, t.height, scalar);
 			t.drawSprite(g, facing, pos[0], pos[1], blockSize);
 			if (t.prop != null) t.prop.drawSprite(g, facing, pos[0], pos[1], blockSize);
+			if (t.prop != null) t.prop.drawSprite(g, facing, pos[0], pos[1], blockSize);
 
 			for (Entity e : et.get(loc)) {
-				System.out.println(e);
-				e.sprite(facing).draw(g, pos[0], pos[1], blockSize);
+				Sprite s = e.sprite(facing);
+				if (s!= null) s.draw(g, pos[0], pos[1], blockSize);
 			}
 
+		}
+
+		for (Entity e : et) {
+			Location loc = e.getLocation();
+			e.sprite(facing).draw(g, loc.col, loc.row, 0);
 		}
 	}
 
@@ -149,7 +152,7 @@ public class RoomRenderer {
 	}
 
 	/**
-	 * Iterates over all Locations in a Room from perspective-north to perspective-south (background to foreground)
+	 * Iterates over all Locations in a RoomTuple from perspective-north to perspective-south (background to foreground)
 	 * to facilitate the painter's algorithm
 	 */
 	private static class BackToFrontIterator implements Iterator<Location>, Iterable<Location> {

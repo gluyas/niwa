@@ -8,7 +8,6 @@ import swen222.niwa.model.world.Location;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 
 /**
  * Created by Marc on 30/09/2016.
@@ -50,12 +49,5 @@ public class DemoPlayer extends PlayerEntity {
 		facing = d;
 		return super.move(d);
 	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString() + getLocation().toString();
-	}
-
 
 }

@@ -19,6 +19,8 @@ public abstract class ObservableEntityTable<E extends Entity>
 	public final boolean add(E e) {
 		if (addImpl(e)) {
 			e.addObserver(this);
+			setChanged();
+			notifyObservers(new AddElementUpdate(e));
 			return true;
 		} else return false;
 	}
@@ -33,9 +35,13 @@ public abstract class ObservableEntityTable<E extends Entity>
 	protected abstract boolean addImpl(E e);
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public final boolean remove(Object o) {
 		if (removeImpl(o)) {
-			((Entity) o).deleteObserver(this);
+			E e = (E) o;
+			e.deleteObserver(this);
+			setChanged();
+			notifyObservers(new RemoveElementUpdate(e));
 			return true;
 		} else return false;
 	}
@@ -51,6 +57,7 @@ public abstract class ObservableEntityTable<E extends Entity>
 
 	@Override
 	public final void update(Observable o, Object arg) {
+		//System.out.printf("%s -> %s -> %s", o, this, arg);
 		updateImpl(o, arg);
 		setChanged();
 		notifyObservers(arg);
@@ -65,6 +72,39 @@ public abstract class ObservableEntityTable<E extends Entity>
 	 */
 	protected void updateImpl(Observable o, Object arg) {
 		// implementation specific - optional
+	}
+
+	public abstract class ElementUpdate implements Update {
+
+		public final E e;
+
+		public ElementUpdate(E e) {
+			this.e = e;
+		}
+	}
+
+	public class AddElementUpdate extends ElementUpdate {
+
+		public AddElementUpdate(E e) {
+			super(e);
+		}
+
+		@Override
+		public void apply() {
+			ObservableEntityTable.this.add(e);
+		}
+	}
+
+	public class RemoveElementUpdate extends ElementUpdate {
+
+		public RemoveElementUpdate(E e) {
+			super(e);
+		}
+
+		@Override
+		public void apply() {
+			ObservableEntityTable.this.remove(e);
+		}
 	}
 
 }

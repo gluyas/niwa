@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import swen222.niwa.model.world.Room;
+import swen222.niwa.model.world.World;
 import swen222.niwa.net.Master;
 import swen222.niwa.net.Slave;
 
@@ -46,8 +47,8 @@ public class Launcher {
 		// Check what to do
 		if(server){
 			// Running in server mode
-			Room game = Room.newFromFile(new File("resource/rooms/testRoom.xml"));
-			runServer(port, numOfPlayers, game);
+			Room game = Room.newFromFile(new File("resource/rooms/testRoom.xml"), 0, 0);
+			runServer(port, numOfPlayers);
 		}else if(host != null){
 			// Running in client mode
 			runClient(host, port);
@@ -65,7 +66,9 @@ public class Launcher {
 	 * Creates a server socket and listens for connections from client sockets,
 	 * once all clients have connected it starts a game.
 	 */
-	private static void runServer(int port, int numOfPlayers, Room game){
+	private static void runServer(int port, int numOfPlayers){
+
+		Server gameServer = new Server(new World(Room.newFromFile(new File("resource/rooms/testRoom.xml"), 0, 0)));
 
 		// Start listening for connections
 		System.out.println("SERVER LISTENING ON PORT: " +port);
@@ -80,13 +83,9 @@ public class Launcher {
 				System.out.println(client.getInetAddress() + " HAS CONNECTED.");
 				// TODO: need to create the user ID e.g. int uid = game.registerPlayer()
 				// then pass it into the Master object e.g. new Master(broadcastClock, uid, client)
-				connections[--numOfPlayers] = new Master(0, client, game);
+				connections[--numOfPlayers] = new Master(client, String.valueOf(numOfPlayers), gameServer);
 				connections[numOfPlayers].start();
 				// If all clients have connected
-				if(numOfPlayers == 0){
-					System.out.println("ALL CLIENTS ACCEPTED");
-					startGame();
-				}
 			}
 
 		}catch(IOException e){
@@ -108,8 +107,6 @@ public class Launcher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
 	}
 
 	private static void startGame(Master... connections){
