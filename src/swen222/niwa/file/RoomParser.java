@@ -384,7 +384,7 @@ public class RoomParser {
 		if(list.getLength()==0){
 			return entities;
 		}
-
+		ArrayList<Statue> statues = new ArrayList<>();
 		//go through all the elements with the name 'entity'
 		for (int i = 0; i < list.getLength(); i++) {
 			if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
@@ -402,7 +402,7 @@ public class RoomParser {
 				int col = Integer.valueOf(stringCol);
 				int row = Integer.valueOf(stringRow);
 				// we assume all the statues are listed before the door
-				ArrayList<Statue> statues = new ArrayList<>();
+
 				//add the string in the 2D array
 				switch(type){
 				case "door":

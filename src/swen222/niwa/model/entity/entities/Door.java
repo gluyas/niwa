@@ -59,11 +59,14 @@ public class Door extends ObjectEntity {
 	}
 
 	public boolean checkStatues(){
+		System.out.println("Statues"+statues.size());
 		for(Statue statue: statues){
 			if(!statue.isTriggered()){
+
 				return false;
 			}
 		}
+		System.out.println("Statues all triggered");
 		return true;
 	}
 }

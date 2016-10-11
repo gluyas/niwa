@@ -5,6 +5,7 @@ import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 import swen222.niwa.model.world.Rules;
+import swen222.niwa.model.world.World;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,13 +28,16 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 	RoomRenderer rr;
 	DemoPlayer p;
 	String stageName;
+	Rules rules;
+	World world;
 
 	public DemoFrame(String stageName) {
 		super("Garden Demo");
 
 		this.stageName = stageName;
 		Room stage = Room.newFromFile(new File(stageName));
-
+		world = new World(1,1);
+		rules = new Rules(world.getMap());
 
 		rr = new RoomRenderer(stage);
 		panel = new DemoPanel(rr);
@@ -68,23 +72,22 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		int code = e.getKeyCode();
 		switch (code) {
 			case VK_W:
-
-				p.move(directionRelativeToMap(Direction.NORTH));
+				rules.move(p,directionRelativeToMap(Direction.NORTH));
 				break;
 
 			case VK_A:
 
-				p.move(directionRelativeToMap(Direction.WEST));
+				rules.move(p,directionRelativeToMap(Direction.WEST));
 				break;
 
 			case VK_S:
 
-				p.move(directionRelativeToMap(Direction.SOUTH));
+				rules.move(p,directionRelativeToMap(Direction.SOUTH));
 				break;
 
 			case VK_D:
 
-				p.move(directionRelativeToMap(Direction.EAST));
+				rules.move(p,directionRelativeToMap(Direction.EAST));
 				break;
 
 			case VK_Q:
@@ -98,6 +101,10 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 				break;
 
 			case VK_R:
+				rules.action(p,p.getInventory().get(0));
+				repaint();
+				break;
+
 			case VK_F5:
 				refresh();
 				break;

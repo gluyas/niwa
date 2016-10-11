@@ -14,6 +14,10 @@
 	<line>g1 g1 g1 g1 g1 </line>
 </tiles>
 
+
+<entity type = "statue" col ="1" row = "2" />
+<entity type = "door" col = "0" row = "3"/>
+
 <prop type = "bigTree" col = "1" row = "0" />
 <prop type = "bigTree" col = "2" row = "0" />
 <prop type = "bigTree" col = "3" row = "0" />

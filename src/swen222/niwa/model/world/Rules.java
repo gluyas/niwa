@@ -8,6 +8,7 @@ import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.entity.ChangingEntity;
 import swen222.niwa.model.entity.entities.Door;
+import swen222.niwa.model.entity.entities.Flower;
 import swen222.niwa.model.entity.entities.PlayerEntity;
 import swen222.niwa.model.entity.entities.Rune;
 import swen222.niwa.model.entity.entities.RuneStone;
@@ -156,6 +157,14 @@ public class Rules {
 				if (entity instanceof PlayerEntity){
 						return false;
 				}
+				if (entity instanceof RuneStone){
+					return false;
+				}
+				if( entity instanceof Door){
+					if (!((Door) entity).isOpen()){//door is closed
+						return false;
+					}
+				}
 			}
 
 			if(!toGo.tile().canOccupy(player)){//check for physical props in direction
@@ -259,6 +268,7 @@ public class Rules {
 	 */
 	public boolean action(PlayerEntity player, ObjectEntity item){
 		setRoom(player);
+		System.out.println(item.toString());
 
 		if(item instanceof Seed){//Planting a seed
 			return plantSeed(player,(Seed)item);
@@ -296,9 +306,15 @@ public class Rules {
 	private boolean plantSeed(PlayerEntity player, Seed seed){
 		Location toPlant = player.getLocation();
 
+		for(Entity e: entities.get(toPlant)){
+			if(e instanceof Flower){ //flower already there
+				return false;
+			}
+		}
 		if(!toPlant.tile().getProp().getType().equals("soil")){
 			return false;
 		}
+		entities.add(new Flower(toPlant,"red"));
 		player.removeItem(seed);
 		addPoints(player,1);
 		return true;
