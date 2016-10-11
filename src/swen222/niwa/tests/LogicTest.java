@@ -36,7 +36,7 @@ public class LogicTest {
 		world=  new World(2,2);
 		world.addRoom(0,1,r);
 		world.addRoom(0, 0, r2);
-		ent1 = new PlayerEntity(Location.at(r,0,0), SpriteLoader.get("ghostBlue"));
+		ent1 = new PlayerEntity(Location.at(r,0,0), SpriteLoader.get("ghostBlue"),"blue");
 		logic = new Rules(world.getMap());
 	}
 
@@ -57,6 +57,14 @@ public class LogicTest {
 	public void changeRoom(){
 		logic.move(ent1,Direction.NORTH);
 		assertTrue(ent1.getLocation().getRoom().equals(r2));
+	}
+	
+	@Test
+	public void useClosedDoor(){
+		logic.move(ent1, Direction.SOUTH);
+		logic.move(ent1, Direction.SOUTH);
+		assert(world.roo)
+		
 	}
 
 }

@@ -40,6 +40,9 @@ public class Seed extends ObjectEntity {
 		return sprites.sprite(camera);
 	}
 
+	public String toString(){
+		return this.getName();
+	}
 
 
 

@@ -6,10 +6,13 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import swen222.niwa.model.entity.entities.PlayerEntity;
+import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Prop;
 import swen222.niwa.model.world.Room;
 import swen222.niwa.file.RoomParser;
 import swen222.niwa.file.SaveParser;
+import swen222.niwa.file.SpriteLoader;
 import swen222.niwa.model.world.Tile;
 
 /**
@@ -20,28 +23,61 @@ import swen222.niwa.model.world.Tile;
 public class SaveTests {
 
 	File crag = new File("resource/rooms/crag.xml");
+	File desertBowl = new File("resource/rooms/desertBowl.xml");
+	File mountain = new File("resource/rooms/mountain.xml");
+	File valley2 = new File("resource/rooms/valley2.xml");
 
-	@Before
-	public void setup(){
-
-	}
-
+	SaveParser p = new SaveParser();
 
 	@Test
+	public void testSaving(){
+
+		//testMapSave();
+		testPlayerSave();
+
+
+	}
+
+
+
 	public void testParse(){
 		SaveParser p = new SaveParser();
+		p.writeSave();
 	}
+
+
 
 	public void testMapSave(){
 		SaveParser p = new SaveParser();
 
-		Room [][] testMap = new Room[1][1];
+		Room [][] testMap = new Room[2][2];
 
 		testMap[0][0]= Room.newFromFile(crag);
+		testMap[0][1]= Room.newFromFile(crag);
+		testMap[1][0]= Room.newFromFile(mountain);
+		testMap[1][1]= Room.newFromFile(valley2);
 
-		p.saveMap(testMap,1,1);
+		p.saveMap(testMap,2,2);
+
+	    p.writeSave();
+
+	}
+
+	public void testPlayerSave(){
+
+		SaveParser p = new SaveParser();
+
+		PlayerEntity testPlayer = new PlayerEntity(Location.at(Room.newFromFile(mountain),3,3),SpriteLoader.get("ghostred"), "Donny");
+		System.out.println("player created");
+
+		PlayerEntity players [] = new PlayerEntity [1];
+		players[0]=testPlayer;
+
+		p.savePlayers(players);
+		System.out.println("players saved");
 
 		p.writeSave();
+
 	}
 
 

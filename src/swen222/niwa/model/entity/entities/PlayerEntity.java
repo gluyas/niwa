@@ -23,13 +23,14 @@ public class PlayerEntity extends Entity {
 	private Direction facing;
 	private SpriteSet sprites;
 
-	public PlayerEntity(Location loc, SpriteSet sprites, String type) {
+	public PlayerEntity(Location loc, SpriteSet sprites, String name) {
 		super(loc);
 		this.setDescription("What a spooky ghost...");
 		this.inventory = new ArrayList<ObjectEntity>();
 		this.inventoryCapacity = 9;
 		this.points = 0;
 		this.sprites = sprites;
+		this.name=name;
 	}
 
 	@Override
@@ -37,11 +38,11 @@ public class PlayerEntity extends Entity {
 		return sprites.sprite(camera);
 	}
 
-	public String getType(){
-		return type;
+	public ArrayList<ObjectEntity> getInventory(){
+		return inventory;
 	}
 
-	public void addItem(ObjectEntity item){
+	public void addItem(ObjectEntity item) {
 		inventory.add(item);
 	}
 
