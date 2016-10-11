@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<class>
+<width>6</width> <height>8</height>
+
+<name> Crag </name>
+
+<spawnNorth col = "2" row = "0" />
+<spawnEast col = "5" row = "5" />
+<spawnSouth col = "3" row = "7" />
+<spawnWest col = "0" row = "4" />
+
+
+<tiles>
+	<line>s4 s1 s1 d4 s4 s3 </line>
+	<line>s5 d0 s1 s4 d3 s5 </line>
+	<line>s5 s3 s2 s3 d3 s4 </line>
+	<line>s4 s2 s3 s0 s5 s4 </line>
+	<line>d4 s2 s1 s0 s1 d0 </line>
+	<line>s3 s0 d1 s0 d2 s3 </line>
+	<line>s2 s0 s1 s1 s4 s5 </line>
+	<line>d3 s2 s3 d1 s5 s5 </line>
+	
+	
+	
+</tiles>
+
+<prop type = "stonepathfront" col = "2" row = "0" />
+
+<prop type = "zen2" col = "0" row = "1" />
+<prop type = "stonepathfront" col = "2" row = "1" />
+<prop type = "soil" col = "4" row = "1" />
+
+
+<prop type = "stonepathside" col = "1" row = "2" />
+<prop type = "stonepathside" col = "2" row = "2" />
+<prop type = "stonepathside" col = "3" row = "2" />
+<prop type = "soil" col = "4" row = "2" />
+
+<prop type = "stonepathfront" col = "1" row = "3" />
+<prop type = "zen1" col = "5" row = "3" />
+
+
+<prop type = "stonepathside" col = "1" row = "4" />
+<prop type = "stonepathside" col = "2" row = "4" />
+
+
+<prop type = "zen1" col = "0" row = "6" />
+<prop type = "stonepathside" col = "2" row = "5" />
+<prop type = "stonepathside" col = "3" row = "5" />
+<prop type = "stonepathside" col = "4" row = "5" />
+<prop type = "stonepathside" col = "5" row = "5" />
+
+
+<entity type = "seed" col = "1" row = "6" />
+<prop type = "stonepathside" col = "2" row = "6" />
+<prop type = "stonepathside" col = "3" row = "6" />
+
+
+<prop type = "stonepathside" col = "3" row = "7" />
+<prop type = "zen2" col = "5" row = "7" />
+
+
+
+
+</class>

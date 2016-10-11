@@ -19,11 +19,11 @@ import swen222.niwa.model.world.Tile;
  */
 public class SaveTests {
 
-
+	File crag = new File("resource/rooms/crag.xml");
 
 	@Before
 	public void setup(){
-		
+
 	}
 
 
@@ -31,14 +31,17 @@ public class SaveTests {
 	public void testParse(){
 		SaveParser p = new SaveParser();
 	}
-	
+
 	public void testMapSave(){
 		SaveParser p = new SaveParser();
-		
-		//Room [][] testMap = new Room[1][1];
-		//testMap[0][0]=new Room
-		
-		//p.saveMap 
+
+		Room [][] testMap = new Room[1][1];
+
+		testMap[0][0]= Room.newFromFile(crag);
+
+		p.saveMap(testMap,1,1);
+
+		p.writeSave();
 	}
 
 
