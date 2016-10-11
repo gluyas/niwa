@@ -17,7 +17,6 @@ public class Seed extends ObjectEntity {
 	public Seed(Location loc, SpriteSet sprites){
 		super(loc);
 		this.sprites = sprites;
-		this.setThumbnail(sprites.sprite(Direction.NORTH).getImage());
 		this.setName("seed");
 		this.setDescription("A seed, perhaps you should plant it and see what grows.");
 	}
