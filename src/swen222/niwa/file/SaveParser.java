@@ -28,6 +28,7 @@ import org.xml.sax.SAXException;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.entity.entities.PlayerEntity;
+import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 
@@ -226,7 +227,42 @@ public class SaveParser {
 
 
 
-	public static void saveEntities(){
+	public void saveEntities(HashEntityTable<?> entities){
+
+
+		Element entityElem = doc.createElement("Entities");
+
+
+		for(Entity entity:entities){
+
+			Location entityLoc = entity.getLocation();
+			Element location = doc.createElement("Location");
+
+			//Element entityName = doc.createElement("Type");
+			//get location information
+			Element room = doc.createElement("Room");
+			Text roomText = doc.createTextNode(entityLoc.room.name);
+			room.appendChild(roomText);
+
+			Element col = doc.createElement("Col");
+			Text colText = doc.createTextNode(Integer.toString(entityLoc.col));
+			col.appendChild(colText);
+
+			Element row = doc.createElement("Row");
+			Text rowText = doc.createTextNode(Integer.toString(entityLoc.row));
+			row.appendChild(rowText);
+
+			//append to location top element
+			location.appendChild(room);
+			location.appendChild(col);
+			location.appendChild(row);
+
+			entityElem.appendChild(location);
+			rootElement.appendChild(entityElem);
+
+
+
+		}
 
 
 	}
