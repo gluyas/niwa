@@ -37,7 +37,7 @@ public class MainAppPanel extends JPanel{
 	}
 
 	/**
-	 * creates the rotate, action, and inspect buttons and the panel that
+	 * creates the rotate, action, inspect, and drop buttons and the panel that
 	 * contains them
 	 *
 	 * @return JPanel containing the buttons

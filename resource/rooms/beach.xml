@@ -10,15 +10,15 @@
 <spawnWest col = "0" row = "5" />
 
 <tiles>
-	<line>a0 w0 w0 w0 w0 w0 w0 w0 w0 </line>
-	<line>a0 w0 w0 w0 w0 w0 w0 w0 w0 </line>
-	<line>a0 a0 w0 w0 w0 w0 w0 w0 w0 </line>
-	<line>a0 a0 a0 a0 a0 a0 a0 w0 w0 </line>
+	<line>w0 w0 w0 d1 w0 w0 w0 w0 w0 </line>
+	<line>w0 w0 w0 w0 w0 w0 w0 w0 w0 </line>
+	<line>w0 w0 w0 w0 w0 w0 w0 w0 w0 </line>
+	<line>a0 a0 a0 a0 a0 a0 a0 a1 a0 </line>
+	<line>a0 a0 a0 a0 a0 a0 a1 a3 a1 </line>
+	<line>a0 a0 a0 a0 a0 a0 a0 a1 a0 </line>
 	<line>a0 a0 a0 a0 a0 a0 a0 a0 a0 </line>
-	<line>a0 a0 a0 a0 a0 a0 a0 a0 a0 </line>
-	<line>a0 a0 a0 a0 a0 a0 a0 a0 a0 </line>
-	<line>g1 g1 g1 g1 g1 g1 g1 g1 g1 </line>
-	<line>g2 g2 g2 g2 g2 g2 g2 g2 g2 </line>
+	<line>g1 g1 g1 g1 g1 g1 g0 g0 g0 </line>
+	<line>g2 g2 g2 g2 g2 g2 g1 g1 g1 </line>
 
 
 
@@ -27,5 +27,5 @@
 
 
 
-<entity type = "seed" col= "1" row = "1"/>
+<entity type = "seed" col= "3" row = "0"/>
 </class>

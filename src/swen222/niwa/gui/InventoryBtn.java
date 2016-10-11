@@ -62,6 +62,10 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 		setToolTipText(name);
 	}
 
+	/**
+	 * Returns the ObjectEntity stored in this button, might not need this
+	 * @return
+	 */
 	public ObjectEntity getItem(){
 		return item;
 	}

@@ -14,8 +14,7 @@ import swen222.niwa.model.world.Location;
  */
 public class PlayerEntity extends Entity {
 
-	private String name;
-	private String type;
+	public final String name;
 	private int points;
 	private ArrayList<ObjectEntity> inventory;
 	private int inventoryCapacity;

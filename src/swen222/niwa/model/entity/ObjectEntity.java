@@ -8,29 +8,51 @@ import swen222.niwa.model.world.Location;
  * @author burnshami
  *
  */
-public abstract class ObjectEntity extends Entity{
+public abstract class ObjectEntity extends Entity {
 
 	private String name;
-	private Image thumbnail;
+	private Image thumbnail; // to be displayed on inventory buttons
 
 	public ObjectEntity(Location loc) {
 		super(loc);
 		// TODO Auto-generated constructor stub
 	}
 
-	public String getName(){
+	/**
+	 * Get this ObjectEntity's name string
+	 *
+	 * @return
+	 */
+	public String getName() {
 		return name;
 	}
 
-	public void setName(String s){
+	/**
+	 * set this ObjectEntity's name string
+	 *
+	 * @param s
+	 *            - new name
+	 */
+	public void setName(String s) {
 		name = s;
 	}
 
-	public Image getThumbnail(){
+	/**
+	 * Get this ObjectEntity's thumbnail image
+	 *
+	 * @return
+	 */
+	public Image getThumbnail() {
 		return thumbnail;
 	}
 
-	public void setThumbnail(Image thumbnail){
+	/**
+	 * set this ObjectEntity's thumbnail image
+	 *
+	 * @param thumbnail
+	 *            - new thumbnail image
+	 */
+	public void setThumbnail(Image thumbnail) {
 		this.thumbnail = thumbnail;
 	}
 
