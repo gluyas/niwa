@@ -4,8 +4,6 @@ package swen222.niwa.gui;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -13,8 +11,7 @@ import java.util.Observer;
 import javax.swing.ButtonModel;
 import javax.swing.JPanel;
 
-import swen222.niwa.Controller;
-import swen222.niwa.model.entity.ObjectEntity;
+import swen222.niwa.Client;
 
 /**
  * Panel for displaying the inventory. Creates and manages the inventory buttons
@@ -22,16 +19,17 @@ import swen222.niwa.model.entity.ObjectEntity;
  * @author Zoe
  *
  */
-public class InventoryPanel extends JPanel implements Observer {
+public class InventoryPanel extends JPanel implements Observer{
 
 	// the below will change depending on how many items we let players hold
 	private static final int INV_SIZE = 9;
-	private Controller control;
+	private Client control;
 
 	private InventoryBtn[] buttons;
 	private DeselectableButtonGroup btnGroup;
 
-	public InventoryPanel(Controller control) {
+	public InventoryPanel(Client control) {
+		control.addObserver(this);
 		this.control = control;
 		buttons = new InventoryBtn[INV_SIZE];
 		btnGroup = new DeselectableButtonGroup();
@@ -47,39 +45,43 @@ public class InventoryPanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Takes in an ArrayList of ObjectEntity, iterates through each item
+	 * Takes in a map of item names and counts, iterates through each item
 	 * updating inventory buttons accordingly
 	 *
-	 * @param items
-	 *            - ArrayList of ObjectEntity in inventory
+	 * @param items - map of item name to number in inventory
+	 * @param images - map of item name to image
 	 */
-	public void updateInventory(ArrayList<ObjectEntity> items) {
+	public void updateInventory(Map<String, Integer> items, Map<String, Image> images) {
 		int i = 0;
-		for (ObjectEntity item : items) {
-			buttons[i].updateButton(item);
+		for (String s : items.keySet()) {
+			//buttons[i].updateButton(s, items.get(s), images.get(s));
 			i++;
 		}
 	}
 
-	/**
-	 * Returns the ObjectEntity stored in the selected inventory button, null if
-	 * none selected
-	 *
-	 * @return
-	 */
-	public ObjectEntity getSelectedItem() {
-		InventoryBtn selected = null;
-		for (int i = 0; i < INV_SIZE; i++) {
-			if (buttons[i].isSelected()) {
-				return buttons[i].getItem();
+	public String getSelectedItem() {
+		ButtonModel bMod = btnGroup.getSelection();
+		if (bMod == null) {
+			return "null";
+		} else {
+			return bMod.getActionCommand();
+		}
+	}
+
+	public int getSelectedSlot(){
+		for(int i=0;i<INV_SIZE;i++){
+			//protect against player selecting empty slot below
+			if(buttons[i].isSelected()){
+				return i;
 			}
 		}
-		return null;
+		return -1;
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// updateInventory();
+		// TODO Auto-generated method stub
+
 	}
 
 }

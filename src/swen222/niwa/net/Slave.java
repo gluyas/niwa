@@ -1,17 +1,17 @@
 package swen222.niwa.net;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
-import java.nio.charset.Charset;
 
-import swen222.niwa.Controller;
-import swen222.niwa.gui.NiwaFrame;
+import swen222.niwa.Client;
+import swen222.niwa.model.entity.PlayerEntity;
+import swen222.niwa.model.util.ObservableEntityTable;
+import swen222.niwa.model.util.Update;
+import swen222.niwa.model.world.Direction;
+import swen222.niwa.model.world.Room;
+import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.util.HashEntityTable;
+import swen222.niwa.model.world.World;
 
 /**
  * A slave connection receives information about the current state of the board
@@ -19,52 +19,224 @@ import swen222.niwa.gui.NiwaFrame;
  * notifies the master connection of key presses by the player.
  *
  * @author Hamish M
+ * @author Marc
  */
 
-public class Slave extends Thread implements KeyListener{
+public class Slave extends Thread {
+
+	// INTERACTIONS
+	public static final int PLAYER_ACTION = 'a';
+	public static final int PLAYER_MOVE = 'm'; // following int indicates direction
+	public static final int PLAYER_DROP = 'd';
+
+	public static final int REQUEST_WORLD = 'w';
+	public static final int REQUEST_ROOM = 'r';
+	public static final int REQUEST_PLAYER = 'p';
+
+	public static final int STATUS_READY = 'g';
+	public static final int STATUS_STOP = 's';
 
 	private final Socket socket;
 	private DataOutputStream output;
-	private DataInputStream input;
+	private ObjectInputStream input;
 
-	//TODO: Very much just a place holder at the moment, will obviously need further implementation
+	private Client client;
+	private ObservableEntityTable<Entity> et;
+
+	private boolean exit = false;
 
 	public Slave(Socket socket){
+		try {
+			output = new DataOutputStream(socket.getOutputStream());
+			input = new ObjectInputStream(socket.getInputStream());
+		} catch (IOException e) {
+			throw new Error(e);
+		}
 		this.socket = socket;
 	}
 
+	public void setClient(Client c) {
+		this.client = c;
+	}
+
+	public boolean move(Direction d) {
+		try {
+			output.write(PLAYER_MOVE);
+			output.write(d.ordinal());
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean action(int selectedSlot) {
+		try {
+			output.write(PLAYER_ACTION);
+			output.write(selectedSlot);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean drop(int selectedSlot) {
+		try {
+			output.write(PLAYER_DROP);
+			output.write(selectedSlot);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	private void setReady(boolean ready) throws IOException {
+		if (ready) output.write(STATUS_READY);
+		else output.write(STATUS_STOP);
+	}
+
+	private void requestWorld() throws IOException, ClassNotFoundException {
+		output.write(REQUEST_WORLD);
+		System.out.println("Requesting world");
+		while (!exit) {
+			if(input.available() != 0 && input.read() == Master.SET_WORLD) {
+				setWorld();
+			}
+		}
+	}
+
+	private void requestRoom() throws IOException, ClassNotFoundException {
+		output.write(REQUEST_ROOM);
+		System.out.println("REQUESTING ROOM");
+		while (!exit) {
+			if(input.available() != 0 && input.read() == Master.SET_ROOM) {
+				setRoom();
+			}
+		}
+	}
+
+	private void requestPlayer() throws IOException, ClassNotFoundException {
+		output.write(REQUEST_ROOM);
+		System.out.println("REQUESTING ROOM");
+		while (!exit) {
+			if(input.available() != 0 && input.read() == Master.SET_ROOM){
+				setPlayer();
+				break;
+			}
+		}
+	}
+
+	private void setRoom() throws IOException, ClassNotFoundException {
+		System.out.print("RECEIVING ROOM ... ");
+		Room r = (Room) input.readObject();
+		et = new HashEntityTable<>();
+		client.setRoom(r, ObservableEntityTable.unmodifiable(et));
+		System.out.println("DONE");
+	}
+
+	public void setWorld() throws IOException, ClassNotFoundException {
+		System.out.print("RECEIVING WORLD ... ");
+		World w  = (World) input.readObject();
+		client.setWorld(w);
+		System.out.println("DONE");
+	}
+
+	private void setPlayer() throws IOException, ClassNotFoundException {
+		System.out.print("RECEIVING PLAYER ...");
+		PlayerEntity p = (PlayerEntity) input.readObject();
+		client.setPlayer(p);
+		System.out.println("DONE");
+	}
+
+	private void applyUpdate() throws IOException, ClassNotFoundException {
+		Update ud = (Update) input.readObject();
+		//System.out.println("APPLYING UPDATE "+ud);
+		ud.apply();
+		client.update();
+	}
+
+	private void addEntity() throws IOException, ClassNotFoundException {
+		Entity e = (Entity) input.readObject();
+		et.add(e);
+	}
+
+	private void removeEntity() throws IOException, ClassNotFoundException {
+		Entity e = (Entity) input.readObject();
+		et.remove(e);
+	}
+
 	public void run(){
-		try{
-			output = new DataOutputStream(socket.getOutputStream());
-			input = new DataInputStream(socket.getInputStream());
-
-			NiwaFrame gameWindow = new NiwaFrame(new Controller());
-			boolean exit = false;
-
+		if (client == null) return;
+		try {
 			while(!exit) {
 				// read event
 				if(input.available() != 0){
-					System.out.println("Something is arriving from master");
-					int amount = input.readInt();
-					byte[] data = new byte[amount];
-					input.readFully(data);
-					// at this point I am just testing sending strings from master to slave
-					// decode the string
-					System.out.println(new String(data, Charset.defaultCharset()));
-					//game.fromByteArray(data);
-					//display.repaint();
-				}else{
-					String message = inputString("Type your message:");
-					output.writeUTF(message);
-					//output.write(encodedMessage);
-					output.flush();
+					int action = input.read();
+					switch (action) {
+						case Master.SET_WORLD:
+							setWorld();
+							break;
+
+						case Master.SET_ROOM:
+							setRoom();
+							break;
+
+						case Master.SET_PLAYER:
+							setPlayer();
+							break;
+
+						case Master.APPLY_UPDATE:
+							applyUpdate();
+							break;
+
+						case Master.ADD_ENTITY:
+							addEntity();
+							break;
+
+						case Master.RM_ENTITY:
+							removeEntity();
+							break;
+					}
+
+
+					/*
+					switch (action) {
+						case 'r': // rooms
+							System.out.println("master sent me a room");
+							// TODO: initial room state, should only be sent once
+							// and then the remaining mutable objects will be sent
+							// over e.g. entities
+							currentRoom = (Room) input.readObject();
+							// no current room
+							if(gameWindow == null){
+								gameWindow = new DemoFrame(currentRoom, this);
+							}else{ // update the room to render
+								gameWindow.panel.rr = new RoomRenderer(currentRoom);
+							}
+							gameWindow.repaint();
+							break;
+						case 'p':
+							// TODO: updated player state
+							System.out.println("received a player");
+							DemoPlayer p = (DemoPlayer) input.readObject();;
+							System.out.println(p);
+							et.add(p);
+							for (Entity e : et) System.out.println(e.toString());
+							gameWindow.repaint();
+							break;
+						case 's':
+							// TODO: updated seed state
+							break;
+
+					}*/
 				}
 			}
 			socket.close(); // release socket ... v.important!
 
-
-		}catch(IOException e){
-
+		} catch(Exception e) {
+			throw new Error(e);
 		}
 	}
 
@@ -79,38 +251,4 @@ public class Slave extends Thread implements KeyListener{
 			}
 		}
 	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		try {
-			int code = e.getKeyCode();
-			if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
-				output.writeBytes("right");
-			} else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
-				output.writeBytes("left");
-			} else if(code == KeyEvent.VK_UP) {
-				output.writeBytes("up");
-			} else if(code == KeyEvent.VK_DOWN) {
-				output.writeBytes("down");
-			}
-			output.flush();
-		} catch(IOException ioe) {
-			// something went wrong trying to communicate the key press to the
-			// server.  So, we just ignore it.
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
 }

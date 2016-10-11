@@ -1,16 +1,12 @@
-package swen222.niwa.model.entity.entities;
+package swen222.niwa.model.entity;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-
 import swen222.niwa.file.SpriteLoader;
+
 import swen222.niwa.file.SpriteLoader.SpriteSet;
-import swen222.niwa.gui.Sprite;
-import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.entity.ObjectEntity;
+import swen222.niwa.gui.graphics.Sprite;
+import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
@@ -25,8 +21,10 @@ public class Door extends ObjectEntity {
 	private ArrayList<Statue> statues;
 	private final String closedDesc = "This door is shut tight.";
 	private final String openDesc = "An open door can mean a world of possibilities.";
+
 	private boolean open;
 	private Direction facing;
+
 
 	public Door(Location loc, ArrayList<Statue> triggers, Direction facing){
 		super(loc);
@@ -34,7 +32,6 @@ public class Door extends ObjectEntity {
 		this.facing = facing;
 		this.setOpen(false);
 	}
-
 	@Override
 	public Sprite sprite(Direction camera) {
 		if (isOpen()) return SPRITES_OPEN.facing(facing).sprite(camera);
@@ -44,7 +41,6 @@ public class Door extends ObjectEntity {
 	public boolean isOpen() {
 		return open;
 	}
-
 	public void setOpen(boolean open) {
 		this.open = open;
 		if(open){
@@ -52,6 +48,8 @@ public class Door extends ObjectEntity {
 		} else {
 			this.setDescription(closedDesc);
 		}
+		setChanged();
+		notifyObservers((Update)()->this.setOpen(open));
 	}
 
 	public ArrayList<Statue> getStatues(){
@@ -69,5 +67,6 @@ public class Door extends ObjectEntity {
 		System.out.println("Statues all triggered");
 		return true;
 	}
-}
 
+
+}

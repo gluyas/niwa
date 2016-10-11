@@ -5,35 +5,40 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.JFrame;
-import swen222.niwa.Controller;
+import swen222.niwa.Client;
 import swen222.niwa.model.world.Room;
 
 /**
  * Top level frame for the application window.
  *
- * @author Jack U
- * @author kraemezoe
+ * @author Jack U, Zoe
+ *
  */
 
-public class NiwaFrame extends JFrame{
+public class NiwaFrame extends JFrame implements Observer {
 
-	final Controller control;
+	final Client control;
 
 	public final MenuBar menuBar;
 	public final RenderPanel renderPanel;
 	public final MainAppPanel gamePanel;
 	public final InventoryPanel invPanel;
 
-	public NiwaFrame(Controller control) throws HeadlessException {
-		super("niwa");
+	public NiwaFrame(Client control) throws HeadlessException {
+		super("✿　庭　～　ニ―ワッ　～　笑　❀");
 
 		this.control = control;
+		addKeyListener(control);
+		setFocusable(true);
 		// for testing
-		Room stage = Room.newFromFile(new File("resource/rooms/desertBowl.xml"));
+		//Room stage = Room.newFromFile(new File("resource/rooms/desertBowl.xml"));
 
 		menuBar = new MenuBar(control);
-		renderPanel = new RenderPanel(new RoomRenderer(stage));
+		renderPanel = new RenderPanel(control);
 		gamePanel = new MainAppPanel(control);
 		invPanel = new InventoryPanel(control);
 
@@ -49,6 +54,12 @@ public class NiwaFrame extends JFrame{
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true); // make sure we are visible!
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

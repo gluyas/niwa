@@ -1,24 +1,28 @@
 package swen222.niwa.model.world;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.Serializable;
+
 /**
  * Tuple class for storing a Location. All Location instances must correspond to a valid Tile co-ordinate in a
- * specific Room. Co-ordinates are stored in row/col format to make it coherent with a 2D array.
+ * specific RoomTuple. Co-ordinates are stored in row/col format to make it coherent with a 2D array.
  *
  * @author Marc
  */
-public class Location {
+public class Location implements Serializable {
 
 	public final Room room;
 	public final int row;
 	public final int col;
 
 	/**
-	 * Create a new Location representation of the specified Room and co-ordinates.
+	 * Create a new Location representation of the specified RoomTuple and co-ordinates.
 	 * Use this method to guarantee that all Locations correspond to a valid co-ordinate
 	 *
-	 * @param room the Room that this Location is within
-	 * @param col position from the left of the Room (x equivalent)
-	 * @param row position from the top of the Room (y equivalent)
+	 * @param room the RoomTuple that this Location is within
+	 * @param col position from the left of the RoomTuple (x equivalent)
+	 * @param row position from the top of the RoomTuple (y equivalent)
 	 */
 	public static Location at(Room room, int col, int row) {
 		if (room == null) throw new IllegalArgumentException("Cannot create a Location with null Room");
@@ -37,7 +41,7 @@ public class Location {
 	}
 
 	/**
-	 * Get the Location (in the same Room) adjacent to this one, in a specified Direction
+	 * Get the Location (in the same RoomTuple) adjacent to this one, in a specified Direction
 	 *
 	 * @param d Direction to move in
 	 * @return a new Location object

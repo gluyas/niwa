@@ -3,14 +3,14 @@ package swen222.niwa.tests;
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.world.Direction;
-import swen222.niwa.model.world.Location;
+import swen222.niwa.model.world.World;
 
 /**
  * Bare implementation for testing purposes.
  */
 public class TestEntity extends Entity {
 
-	public TestEntity(Location loc) {
+	public TestEntity(World.Location loc) {
 		super(loc);
 	}
 
@@ -24,7 +24,7 @@ public class TestEntity extends Entity {
 		return super.move(d);
 	}
 
-	public Location moveTo(Location newLoc) {
+	public World.Location moveTo(World.Location newLoc) {
 		return setLocation(newLoc);
 	}
 }

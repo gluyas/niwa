@@ -1,8 +1,10 @@
 package swen222.niwa.model.world;
 
 import swen222.niwa.file.SpriteLoader.SpriteSet;
-import swen222.niwa.gui.Sprite;
-import swen222.niwa.gui.Visible;
+import swen222.niwa.gui.graphics.Sprite;
+import swen222.niwa.gui.graphics.Visible;
+
+import java.io.Serializable;
 
 /**
  * Interface for world objects which are fixed at the time of Room creation
@@ -11,7 +13,7 @@ import swen222.niwa.gui.Visible;
  * @author Jack
  * @author Hamish M
  */
-public class Prop implements Visible {
+public class Prop implements Visible, Serializable {
 
 
 	private final String type; // the type of prop

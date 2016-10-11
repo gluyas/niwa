@@ -7,13 +7,12 @@ import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.entity.ObjectEntity;
 import swen222.niwa.model.entity.ChangingEntity;
-import swen222.niwa.model.entity.entities.Door;
-import swen222.niwa.model.entity.entities.Flower;
-import swen222.niwa.model.entity.entities.PlayerEntity;
-import swen222.niwa.model.entity.entities.Rune;
-import swen222.niwa.model.entity.entities.RuneStone;
-import swen222.niwa.model.entity.entities.Seed;
-import swen222.niwa.model.entity.entities.Statue;
+import swen222.niwa.model.entity.Door;
+import swen222.niwa.model.entity.PlayerEntity;
+import swen222.niwa.model.entity.Rune;
+import swen222.niwa.model.entity.RuneStone;
+import swen222.niwa.model.entity.Seed;
+import swen222.niwa.model.entity.Statue;
 import swen222.niwa.model.world.Location.InvalidLocationException;
 
 /**
@@ -65,32 +64,32 @@ public class Rules {
 	}
 
 	private boolean tryLeaveRoom(PlayerEntity player, Direction dir) {
-		int col = room.col;
-		int row = room.row;
+		int col = room.worldCol;
+		int row = room.worldRow;
 		Room newRoom;
 		switch(dir){
 		case NORTH:
 			if(row!=0){//Top of map
 				newRoom=world[col][row-1];
-				return moveRoom(player,2,newRoom);//Entering from south spawn
+				return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 			}
 			break;
 		case EAST:
 			if(col!=2){//Right of map
 				newRoom=world[col+1][row];
-				return moveRoom(player,4,newRoom);//Entering from West spawn
+				return moveRoom(player,dir.opposite(),newRoom);//Entering from West spawn
 			}
 			break;
 		case SOUTH:
 			if(row!=2){//Bottom of map
 				newRoom=world[col][row+1];
-				return moveRoom(player,0,newRoom);//Entering from north spawn
+				return moveRoom(player,dir.opposite(),newRoom);//Entering from north spawn
 			}
 			break;
 		case WEST:
 			if(col!=0){//West of map
 				newRoom=world[col-1][row];
-				return moveRoom(player,3,newRoom);//entering from east spawn
+				return moveRoom(player,dir.opposite(),newRoom);//entering from east spawn
 			}
 			break;
 		}
@@ -106,9 +105,10 @@ public class Rules {
 		return false;
 	}
 
-	private boolean moveRoom(PlayerEntity player, int entrySide,Room newRoom) {
+	private boolean moveRoom(PlayerEntity player, Direction entrySide,Room newRoom) {
 		entities.remove(player);
-		newRoom.addEntity(newRoom.spawnLocs[entrySide], player);
+		//FIXME
+		//newRoom.addEntity(newRoom.getSpawn(entrySide), player);
 		return true;
 	}
 
@@ -156,14 +156,6 @@ public class Rules {
 			for(Entity entity: entitiesInDirection){
 				if (entity instanceof PlayerEntity){
 						return false;
-				}
-				if (entity instanceof RuneStone){
-					return false;
-				}
-				if( entity instanceof Door){
-					if (!((Door) entity).isOpen()){//door is closed
-						return false;
-					}
 				}
 			}
 
@@ -268,7 +260,6 @@ public class Rules {
 	 */
 	public boolean action(PlayerEntity player, ObjectEntity item){
 		setRoom(player);
-		System.out.println(item.toString());
 
 		if(item instanceof Seed){//Planting a seed
 			return plantSeed(player,(Seed)item);
@@ -306,15 +297,9 @@ public class Rules {
 	private boolean plantSeed(PlayerEntity player, Seed seed){
 		Location toPlant = player.getLocation();
 
-		for(Entity e: entities.get(toPlant)){
-			if(e instanceof Flower){ //flower already there
-				return false;
-			}
-		}
 		if(!toPlant.tile().getProp().getType().equals("soil")){
 			return false;
 		}
-		entities.add(new Flower(toPlant,"red"));
 		player.removeItem(seed);
 		addPoints(player,1);
 		return true;
