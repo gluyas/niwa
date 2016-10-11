@@ -92,8 +92,8 @@ public class Client extends Observable implements ActionListener, KeyListener {
 		String description= "";
 		try {
 			Location inFront = player.getLocation().move(player.getFacing());
-			if(!inFront.tile().getProp().equals(null)){
-				description=inFront.tile().getProp().getDescription();
+			if(inFront.tile().getProp() != null){
+				return inFront.tile().getProp().getDescription();
 			}
 			for(Entity e:currentET.get(inFront)){
 				description=description+"\n"+e.getDescription();
