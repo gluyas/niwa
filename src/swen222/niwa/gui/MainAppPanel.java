@@ -29,7 +29,7 @@ public class MainAppPanel extends JPanel{
 
 		textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setPreferredSize(new Dimension(500, 40));
+		textArea.setPreferredSize(new Dimension(600, 40));
 
 		add(textArea);
 		add(buttons());

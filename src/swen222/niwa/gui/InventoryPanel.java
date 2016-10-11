@@ -4,6 +4,7 @@ package swen222.niwa.gui;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import javax.swing.ButtonModel;
 import javax.swing.JPanel;
 
 import swen222.niwa.Controller;
+import swen222.niwa.model.entity.ObjectEntity;
 
 /**
  * Panel for displaying the inventory. Creates and manages the inventory buttons
@@ -49,21 +51,22 @@ public class InventoryPanel extends JPanel {
 	 * @param items - map of item name to number in inventory
 	 * @param images - map of item name to image
 	 */
-	public void updateInventory(Map<String, Integer> items, Map<String, Image> images) {
+	public void updateInventory(ArrayList<ObjectEntity> items) {
 		int i = 0;
-		for (String s : items.keySet()) {
-			buttons[i].updateButton(s, items.get(s), images.get(s));
+		for (ObjectEntity item: items) {
+			buttons[i].updateButton(item);
 			i++;
 		}
 	}
 
-	public String getSelectedItem() {
-		ButtonModel bMod = btnGroup.getSelection();
-		if (bMod == null) {
-			return "null";
-		} else {
-			return bMod.getActionCommand();
+	public ObjectEntity getSelectedItem() {
+		InventoryBtn selected = null;
+		for(int i=0;i<INV_SIZE;i++){
+			if(buttons[i].isSelected()){
+				return buttons[i].getItem();
+			}
 		}
+		return null;
 	}
 
 }

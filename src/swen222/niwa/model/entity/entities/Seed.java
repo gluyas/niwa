@@ -1,5 +1,6 @@
 package swen222.niwa.model.entity.entities;
 
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 
@@ -19,15 +20,27 @@ public class Seed extends ObjectEntity {
 
 	private SpriteSet sprites;
 
+
 	public Seed(Location loc, SpriteSet sprites){
 		super(loc);
 		this.sprites = sprites;
+		Image thumb = null;
+		try {
+			thumb = ImageIO.read(new File("resource/images/misc/seedThumb.png"));
+		} catch (IOException e) {
+			// loading thumbnail failed
+			e.printStackTrace();
+		}
+		this.setThumbnail(thumb);
+		this.setName("seed");
 		this.setDescription("A seed, perhaps you should plant it and see what grows.");
 	}
 	@Override
 	public Sprite sprite(Direction camera) {
 		return sprites.sprite(camera);
 	}
+
+
 
 
 }
