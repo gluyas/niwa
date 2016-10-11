@@ -32,8 +32,8 @@ public class Statue extends ChangingEntity {
 	}
 	@Override
 	public Sprite sprite(Direction camera) {
-		if (triggered) return SS_DORMANT.sprite(camera);
-		else return SS_ACTIVE.sprite(camera);
+		if (triggered) return SS_ACTIVE.sprite(camera);
+		else return SS_DORMANT.sprite(camera);
 	}
 
 	public boolean isTriggered() {
