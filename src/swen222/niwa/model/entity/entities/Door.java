@@ -33,7 +33,7 @@ public class Door extends ObjectEntity {
 		super(loc);
 		this.statues = triggers;
 		this.sprites = sprites;
-		this.open = false;
+		this.setOpen(false);
 	}
 	@Override
 	public Sprite sprite(Direction camera) {

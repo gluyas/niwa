@@ -3,10 +3,6 @@ package swen222.niwa.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,7 +11,7 @@ import javax.swing.JTextArea;
 
 /**
  * Window that appears after the game is won displaying player scores
- * 
+ *
  * @author Zoe
  *
  */
@@ -50,7 +46,7 @@ public class WinDialog extends JDialog {
 	/**
 	 * Creates the panel and text area that contains the scores, will take in
 	 * some kind of parameter with the info to display
-	 * 
+	 *
 	 * @return
 	 */
 	public JPanel scoreTable(String s) {
@@ -66,5 +62,5 @@ public class WinDialog extends JDialog {
 		panel.add(scores);
 		return panel;
 	}
-	
+
 }

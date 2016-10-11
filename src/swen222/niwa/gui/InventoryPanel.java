@@ -2,7 +2,6 @@
 package swen222.niwa.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.util.HashMap;
@@ -15,7 +14,7 @@ import swen222.niwa.Controller;
 
 /**
  * Panel for displaying the inventory. Creates and manages the inventory buttons
- * 
+ *
  * @author Zoe
  *
  */
@@ -46,7 +45,7 @@ public class InventoryPanel extends JPanel {
 	/**
 	 * Takes in a map of item names and counts, iterates through each item
 	 * updating inventory buttons accordingly
-	 * 
+	 *
 	 * @param items - map of item name to number in inventory
 	 * @param images - map of item name to image
 	 */
@@ -65,17 +64,6 @@ public class InventoryPanel extends JPanel {
 		} else {
 			return bMod.getActionCommand();
 		}
-	}
-
-	// methods for testing concept
-
-	private Map<String, Integer> getTestSet() {
-		Map<String, Integer> items = new HashMap<>();
-		items.put("red", 1);
-		items.put("blue", 2);
-		items.put("green", 3);
-		items.put("HAH, you thought it was gonna be a colour again", 5);
-		return items;
 	}
 
 }

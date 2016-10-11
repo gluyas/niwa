@@ -4,9 +4,7 @@ package swen222.niwa.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
-import java.awt.Image;
 import java.io.File;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,7 +14,7 @@ import swen222.niwa.model.world.Room;
 
 /**
  * Top level frame for the application window.
- * 
+ *
  * @author Jack U, Zoe
  *
  */

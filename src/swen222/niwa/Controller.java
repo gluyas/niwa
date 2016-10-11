@@ -33,27 +33,39 @@ public class Controller implements Observer, ActionListener {
 
 	}
 
+	public void gameWon(String scores){
+		new WinDialog(view, scores);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// ((get someone 2 help w/ observer pattern and what it means for this))
+		String selected = view.invPanel.getSelectedItem();
 		switch (e.getActionCommand()) {
-		case "Action":
-			// do action stuff
+		case "Use Item":
+			if (!selected.equals("Empty")&&!selected.equals("null")) {
+				// do action stuff
+				System.out.println("used " + selected);
+				}
+				// nothing to do
 			break;
 		case "Inspect":
-			String selected = view.invPanel.getSelectedItem();
 			if (selected.equals("null")) {
 				// do inspect stuff in game world if we support that, or do
 				// nothing
 				System.out.println("I don't know what that is.");
-			} else {
-				if (selected.equals("Empty")) {
-					// nothing here to inspect
-				}
+			} else if (!selected.equals("Empty")) {
 				// do inspect stuff with this object
 				// probs return a string held in that object
 				System.out.println("it's " + selected);
 			}
+			break;
+		case "Drop":
+			if (!selected.equals("Empty")&&!selected.equals("null")) {
+				// drop this object
+				System.out.println("dropped " + selected);
+				}
+				// nothing to do
 			break;
 		case "Rotate CW(Q)":
 			// rotate clockwise
