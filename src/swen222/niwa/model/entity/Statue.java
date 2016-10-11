@@ -9,6 +9,7 @@ import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.model.entity.ChangingEntity;
 import swen222.niwa.model.entity.ObjectEntity;
+import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
@@ -43,6 +44,8 @@ public class Statue extends ChangingEntity {
 		} else {
 			this.setDescription(dormantDesc);
 		}
+		setChanged();
+		notifyObservers((Update)()->this.setTriggered(triggered));
 	}
 
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import swen222.niwa.file.SpriteLoader;
 import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
+import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
@@ -49,6 +50,8 @@ public class Door extends ObjectEntity {
 		} else {
 			this.setDescription(closedDesc);
 		}
+		setChanged();
+		notifyObservers((Update)()->this.setOpen(open));
 	}
 
 	public ArrayList<Statue> getStatues(){

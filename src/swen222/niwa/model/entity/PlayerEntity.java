@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
@@ -36,7 +37,11 @@ public class PlayerEntity extends Entity{
 	}
 
 	public void addItem(Entity item){
-		inventory.add(item);
+		if(inventory.add(item)){
+			setChanged();
+			notifyObservers((Update)()-> this.addItem(item));
+		}
+
 	}
 
 	public String getName(){
@@ -50,7 +55,7 @@ public class PlayerEntity extends Entity{
 	public void removeItem(Entity item){
 		if (inventory.remove(item)) {
 			setChanged();
-			//notifyObservers()
+			notifyObservers((Update)()->this.removeItem(item));
 		}
 	}
 	public Direction getFacing(){
@@ -59,13 +64,14 @@ public class PlayerEntity extends Entity{
 
 	public void updateFacing(Direction dir){
 		facing=dir;
+		setChanged();
+		notifyObservers((Update)()->this.updateFacing(dir));
 	}
 
 	public void addPoints(int number){
-		while(number!=0){
-			points++;
-			number--;
-		}
+		points=points+number;
+		setChanged();
+		notifyObservers((Update)()->this.addPoints(number));
 	}
 
 	public boolean canPickUp(){
