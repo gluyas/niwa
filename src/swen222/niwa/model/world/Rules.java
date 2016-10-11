@@ -186,7 +186,8 @@ public class Rules {
 		for(Entity e: entitiesAtPosition){
 			if(e instanceof ObjectEntity){
 				if(player.canPickUp()){
-					player.addItem((ObjectEntity) e); // adds item to playerinventory
+
+					player.addItem((ObjectEntity)e); // adds item to playerinventory
 					entities.remove(e); //Is this correct way to handle removing items from map?
 					return true;
 				}

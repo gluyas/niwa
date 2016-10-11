@@ -16,13 +16,14 @@ import swen222.niwa.model.world.Location;
 public class PlayerEntity extends Entity {
 
 	private String name;
+	private String type;
 	private int points;
 	private ArrayList<ObjectEntity> inventory;
 	private int inventoryCapacity;
 	private Direction facing;
 	private SpriteSet sprites;
 
-	public PlayerEntity(Location loc, SpriteSet sprites) {
+	public PlayerEntity(Location loc, SpriteSet sprites, String type) {
 		super(loc);
 		this.setDescription("What a spooky ghost...");
 		this.inventory = new ArrayList<ObjectEntity>();
@@ -36,7 +37,15 @@ public class PlayerEntity extends Entity {
 		return sprites.sprite(camera);
 	}
 
+<<<<<<< Updated upstream
 	public void addItem(ObjectEntity item) {
+=======
+	public String getType(){
+		return type;
+	}
+
+	public void addItem(ObjectEntity item){
+>>>>>>> Stashed changes
 		inventory.add(item);
 	}
 
