@@ -19,7 +19,7 @@ import java.util.Random;
  */
 public class RoomRenderer {
 
-	public static final double JITTER = 0.12;
+	public static final double JITTER = 0.14;
 	public static final double X_Y = Math.sqrt(3)/2; // 3D X to 2D Y
 	//public static final double X_Y = 0.5; // 3D X to 2D Y
 	public static final double Y_Y = X_Y; // 3D Y to 2D Y
