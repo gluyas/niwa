@@ -4,13 +4,12 @@ package swen222.niwa.gui;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.ButtonModel;
 import javax.swing.JPanel;
 
-import swen222.niwa.Controller;
+import swen222.niwa.Client;
 
 /**
  * Panel for displaying the inventory. Creates and manages the inventory buttons
@@ -22,12 +21,12 @@ public class InventoryPanel extends JPanel {
 
 	// the below will change depending on how many items we let players hold
 	private static final int INV_SIZE = 9;
-	private Controller control;
+	private Client control;
 
 	private InventoryBtn[] buttons;
 	private DeselectableButtonGroup btnGroup;
 
-	public InventoryPanel(Controller control) {
+	public InventoryPanel(Client control) {
 		this.control = control;
 		buttons = new InventoryBtn[INV_SIZE];
 		btnGroup = new DeselectableButtonGroup();

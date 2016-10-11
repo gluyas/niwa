@@ -1,13 +1,10 @@
 package swen222.niwa.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import swen222.niwa.Controller;
+import swen222.niwa.Client;
 
 
 /**
@@ -19,7 +16,7 @@ import swen222.niwa.Controller;
  */
 public class MenuBar extends JMenuBar{
 
-	final Controller control;
+	final Client control;
 	
 	final JMenu gameMenu;
 	
@@ -28,7 +25,7 @@ public class MenuBar extends JMenuBar{
 	final JMenuItem save;
 	final JMenuItem load;
 	
-	public MenuBar(Controller control){
+	public MenuBar(Client control){
 		this.control=control;
 		
 		gameMenu = new JMenu("Game");

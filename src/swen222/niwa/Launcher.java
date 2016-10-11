@@ -57,9 +57,6 @@ public class Launcher {
 			// TODO: Deal with these more elegantly
 			System.out.println("Please use the command '-server'");
 		}
-
-
-
 	}
 
 	/**
@@ -88,7 +85,7 @@ public class Launcher {
 				// If all clients have connected
 			}
 
-		}catch(IOException e){
+		}catch(IOException e) {
 
 		}
 	}
@@ -102,17 +99,13 @@ public class Launcher {
 			// Create the client's socket
 			Socket socket = new Socket(host, port);
 			System.out.println("CLIENT HAS BEEN CONNECTED TO " + host + " : " + port);
-			new Slave(socket).run();
+			Slave s = new Slave(socket);
+			new Client(s);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
-	private static void startGame(Master... connections){
-		// loop while there is atleast one connection
-	}
-
 
 	/**
 	 * Check whether or not there is at least one connection alive.

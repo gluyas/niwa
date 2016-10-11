@@ -7,7 +7,7 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import swen222.niwa.Controller;
+import swen222.niwa.Client;
 
 /**
  * The panel that creates and manages all the non-inventory components of the
@@ -18,11 +18,11 @@ import swen222.niwa.Controller;
  */
 public class MainAppPanel extends JPanel{
 
-	private Controller control;
+	private Client control;
 
 	private JTextArea textArea;
 
-	public MainAppPanel(Controller control) {
+	public MainAppPanel(Client control) {
 		this.control = control;
 
 		setBackground(new Color(0xffdab9));

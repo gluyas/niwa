@@ -1,5 +1,7 @@
 package swen222.niwa.gui;
 
+import swen222.niwa.Client;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
@@ -15,15 +17,18 @@ import javax.swing.JPanel;
  * @author Zoe
  *
  */
-public class RenderPanel extends JPanel implements Observer{
+public class RenderPanel extends JPanel implements Observer {
 
+	private Client control;
 	private RoomRenderer rr;
 
-	public RenderPanel (RoomRenderer rr){
+	public RenderPanel (Client control){
 		setDoubleBuffered(true);
-		this.rr = rr;
+		this.control = control;
+		this.rr = new RoomRenderer(control.getRoom());
+		control.addObserver(this);
 
-		setPreferredSize(new Dimension(360, 550));
+		setPreferredSize(new Dimension(1280, 720));
 	}
 
 	@Override
@@ -47,6 +52,8 @@ public class RenderPanel extends JPanel implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
+		rr.setRoom(control.getRoom());
+		rr.setET(control.getEntityTable());
 		repaint();
 	}
 

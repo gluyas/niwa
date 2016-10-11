@@ -9,7 +9,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JFrame;
-import swen222.niwa.Controller;
+import swen222.niwa.Client;
 import swen222.niwa.model.world.Room;
 
 /**
@@ -21,22 +21,22 @@ import swen222.niwa.model.world.Room;
 
 public class NiwaFrame extends JFrame implements Observer {
 
-	final Controller control;
+	final Client control;
 
 	public final MenuBar menuBar;
 	public final RenderPanel renderPanel;
 	public final MainAppPanel gamePanel;
 	public final InventoryPanel invPanel;
 
-	public NiwaFrame(Controller control) throws HeadlessException {
-		super("Title");
+	public NiwaFrame(Client control) throws HeadlessException {
+		super("庭～ニワ～笑");
 
 		this.control = control;
 		// for testing
-		Room stage = Room.newFromFile(new File("resource/rooms/desertBowl.xml"));
+		//Room stage = Room.newFromFile(new File("resource/rooms/desertBowl.xml"));
 
 		menuBar = new MenuBar(control);
-		renderPanel = new RenderPanel(new RoomRenderer(stage));
+		renderPanel = new RenderPanel(control);
 		gamePanel = new MainAppPanel(control);
 		invPanel = new InventoryPanel(control);
 

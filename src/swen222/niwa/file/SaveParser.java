@@ -43,8 +43,6 @@ public class SaveParser {
 	Document doc;
 	Element rootElement;
 
-
-
 	public SaveParser(){
 		parseMap();
 	}

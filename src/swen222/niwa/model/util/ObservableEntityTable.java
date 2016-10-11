@@ -1,9 +1,9 @@
 package swen222.niwa.model.util;
 
 import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.world.Location;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * EntityTable which utilises the Observer pattern. Subclasses must ensure that all Entities added to this Collection
@@ -105,6 +105,81 @@ public abstract class ObservableEntityTable<E extends Entity>
 		public void apply() {
 			ObservableEntityTable.this.remove(e);
 		}
+	}
+
+	public static <E extends Entity> ObservableEntityTable<E> unmodifiable(ObservableEntityTable<E> et) {
+		return new ObservableEntityTable<E>() {
+
+			@Override
+			protected boolean addImpl(E e) {
+				return false;
+			}
+
+			@Override
+			protected boolean removeImpl(Object o) {
+				return false;
+			}
+
+			@Override
+			public Set<E> get(Location loc) {
+				return null;
+			}
+
+			@Override
+			public int size() {
+				return et.size();
+			}
+
+			@Override
+			public boolean isEmpty() {
+				return et.isEmpty();
+			}
+
+			@Override
+			public boolean contains(Object o) {
+				return et.isEmpty();
+			}
+
+			@Override
+			public Iterator<E> iterator() {
+				return et.iterator();
+			}
+
+			@Override
+			public Object[] toArray() {
+				return et.toArray();
+			}
+
+			@Override
+			public <T> T[] toArray(T[] a) {
+				return et.toArray(a);
+			}
+
+			@Override
+			public boolean containsAll(Collection<?> c) {
+				return et.containsAll(c);
+			}
+
+			@Override
+			public boolean addAll(Collection<? extends E> c) {
+				return false;
+			}
+
+			@Override
+			public boolean retainAll(Collection<?> c) {
+				return false;
+			}
+
+			@Override
+			public boolean removeAll(Collection<?> c) {
+				return false;
+			}
+
+			@Override
+			public void clear() {
+
+			}
+		};
 	}
 
 }

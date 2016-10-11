@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 import java.io.*;
 import java.net.Socket;
 
-import swen222.niwa.demo.DemoFrame;
+import swen222.niwa.Client;
 import swen222.niwa.model.util.ObservableEntityTable;
 import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
@@ -25,11 +25,12 @@ import swen222.niwa.model.world.World;
  * @author Marc
  */
 
-public class Slave extends Thread implements KeyListener{
+public class Slave extends Thread {
 
 	// INTERACTIONS
 	public static final int PLAYER_ACTION = 'a';
 	public static final int PLAYER_MOVE = 'm'; // following int indicates direction
+	public static final int PLAYER_DROP = 'd';
 
 	public static final int REQUEST_WORLD = 'w';
 	public static final int REQUEST_ROOM = 'r';
@@ -37,20 +38,60 @@ public class Slave extends Thread implements KeyListener{
 	public static final int STATUS_READY = 'g';
 	public static final int STATUS_STOP = 's';
 
-	private static ObservableEntityTable<Entity> et = new HashEntityTable<>();
-	private World currentWorld;
-	private static Room currentRoom;
 	private final Socket socket;
 	private DataOutputStream output;
 	private ObjectInputStream input;
-	private DemoFrame gameWindow = new DemoFrame(null, this);
+
+	private Client client;
+	private ObservableEntityTable<Entity> et;
 
 	private boolean exit = false;
 
-	//TODO: Very much just a place holder at the moment, will obviously need further implementation
-
 	public Slave(Socket socket){
+		try {
+			output = new DataOutputStream(socket.getOutputStream());
+			input = new ObjectInputStream(socket.getInputStream());
+		} catch (IOException e) {
+			throw new Error(e);
+		}
 		this.socket = socket;
+	}
+
+	public void setClient(Client c) {
+		this.client = c;
+	}
+
+	public boolean move(Direction d) {
+		try {
+			output.write(PLAYER_MOVE);
+			output.write(d.ordinal());
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean action(int selectedSlot) {
+		try {
+			output.write(PLAYER_ACTION);
+			output.write(selectedSlot);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean drop(int selectedSlot) {
+		try {
+			output.write(PLAYER_DROP);
+			output.write(selectedSlot);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	private void setReady(boolean ready) throws IOException {
@@ -74,7 +115,8 @@ public class Slave extends Thread implements KeyListener{
 	}
 
 	private void setWorld(World w) {
-		this.currentWorld = w;
+		//this.currentWorld = w;
+		client.setWorld(w);
 	}
 
 	private void requestRoom() throws IOException, ClassNotFoundException {
@@ -94,9 +136,9 @@ public class Slave extends Thread implements KeyListener{
 	}
 
 	private void setRoom(Room r) {
-		this.currentRoom = r;
+		//this.currentRoom = r;
 		et = new HashEntityTable<>();
-		gameWindow.setRoom(r);
+		client.setRoom(r, ObservableEntityTable.unmodifiable(et));
 	}
 
 	private void applyUpdate() throws IOException, ClassNotFoundException {
@@ -116,10 +158,8 @@ public class Slave extends Thread implements KeyListener{
 	}
 
 	public void run(){
+		if (client == null) return;
 		try {
-			output = new DataOutputStream(socket.getOutputStream());
-			input = new ObjectInputStream(socket.getInputStream());
-
 			while(!exit) {
 				// read event
 				if(input.available() != 0){
@@ -186,7 +226,6 @@ public class Slave extends Thread implements KeyListener{
 		}
 	}
 
-
 	private static String inputString(String msg){
 		System.out.println(msg);
 		while(true){ // loop indefinitely
@@ -199,12 +238,7 @@ public class Slave extends Thread implements KeyListener{
 		}
 	}
 
-	//TODO: fix this horrible non-encapsulation
-	public static ObservableEntityTable<Entity> getEntityTable() {
-		return et;
-	}
-
-
+/*
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -256,6 +290,6 @@ public class Slave extends Thread implements KeyListener{
 		// TODO Auto-generated method stub
 
 	}
-
+*/
 
 }
