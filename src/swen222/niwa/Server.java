@@ -33,7 +33,7 @@ public class Server {
 		for (int row = 0; row < world.height; row++) {
 			for (int col = 0; col < world.width; col++) {
 				tables[row][col] = new HashEntityTable<>();
-				rules[row][col] = new Rules(world, tables[row][col]);
+				rules[row][col] = new Rules(world, tables[row][col],tables);
 			}
 		}
 	}
@@ -65,7 +65,7 @@ public class Server {
 
 	public void move(Master m, Direction d) {
 		PlayerEntity p = getPlayer(m);
-		Rules r = getRules(p);
+		Rules r = getRules(p);		
 		if (r != null) r.move(p, d);
 	}
 

@@ -27,11 +27,13 @@ public class Rules {
 	//private EntityTable<Entity> entities;
 	//public Room room;
 	private World world;
-	private EntityTable[][] entities;
+	private EntityTable<Entity> entities;
+	private EntityTable<Entity> [][] ets;
 
-	public Rules(World world, EntityTable<Entity>[] ets){
+	public Rules(World world, EntityTable<Entity> et, EntityTable<Entity>[][] ets){
 		this.world = world;
-		this.entities = ets;
+		this.entities = et;
+		this.ets = ets;
 	}
 
 //----------------------------------------------------------------------------------------------------------------
@@ -60,6 +62,7 @@ public class Rules {
 		player.move(dir);
 		pickUp(player);//pick up anything player is on
 		checkStatues();//Update statue states and opens door
+		System.out.println("moved normally");
 		return true;
 	}
 
@@ -107,10 +110,12 @@ public class Rules {
 	}
 
 	private boolean moveRoom(PlayerEntity player, Direction entrySide,Room newRoom) {
-		Room oldRoom = player.getLocation().room;
-
-		//FIXME
-		//newRoom.addEntity(newRoom.getSpawn(entrySide), player);
+		System.out.println("current room"+player.getLocation().getRoom().toString());
+		entities.remove(player);
+		player.setLocation(newRoom.getSpawn(entrySide));
+		System.out.println("current room after leaving"+player.getLocation().getRoom().toString());
+		ets[newRoom.worldCol][newRoom.worldRow].add(player);
+		System.out.println("moved room");
 		return true;
 	}
 
