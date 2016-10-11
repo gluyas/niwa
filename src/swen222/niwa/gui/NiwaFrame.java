@@ -5,9 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.JFrame;
 import swen222.niwa.Controller;
 import swen222.niwa.model.world.Room;
@@ -15,11 +12,11 @@ import swen222.niwa.model.world.Room;
 /**
  * Top level frame for the application window.
  *
- * @author Jack U, Zoe
- *
+ * @author Jack U
+ * @author kraemezoe
  */
 
-public class NiwaFrame extends JFrame implements Observer {
+public class NiwaFrame extends JFrame{
 
 	final Controller control;
 
@@ -29,7 +26,7 @@ public class NiwaFrame extends JFrame implements Observer {
 	public final InventoryPanel invPanel;
 
 	public NiwaFrame(Controller control) throws HeadlessException {
-		super("Title");
+		super("niwa");
 
 		this.control = control;
 		// for testing
@@ -52,12 +49,6 @@ public class NiwaFrame extends JFrame implements Observer {
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true); // make sure we are visible!
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

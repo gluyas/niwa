@@ -13,7 +13,7 @@ import swen222.niwa.model.world.Location;
  * @author burnshami
  *
  */
-public class PlayerEntity extends Entity{
+public class PlayerEntity extends Entity {
 
 	private String name;
 	private int points;
@@ -25,8 +25,8 @@ public class PlayerEntity extends Entity{
 	public PlayerEntity(Location loc, SpriteSet sprites) {
 		super(loc);
 		this.setDescription("What a spooky ghost...");
-		this.inventory= new ArrayList<ObjectEntity>();
-		this.inventoryCapacity =3 ;
+		this.inventory = new ArrayList<ObjectEntity>();
+		this.inventoryCapacity = 9;
 		this.points = 0;
 		this.sprites = sprites;
 	}
@@ -36,41 +36,42 @@ public class PlayerEntity extends Entity{
 		return sprites.sprite(camera);
 	}
 
-	public void addItem(ObjectEntity item){
+	public void addItem(ObjectEntity item) {
 		inventory.add(item);
 	}
 
-	public String getName(){
+	public String getName() {
 		return name;
 	}
 
-	public int getPoints(){
+	public int getPoints() {
 		return points;
 	}
 
-	public void removeItem(Entity item){
+	public void removeItem(Entity item) {
 		if (inventory.remove(item)) {
 			setChanged();
-			//notifyObservers()
+			// notifyObservers()
 		}
 	}
-	public Direction getFacing(){
+
+	public Direction getFacing() {
 		return facing;
 	}
 
-	public void updateFacing(Direction dir){
-		facing=dir;
+	public void updateFacing(Direction dir) {
+		facing = dir;
 	}
 
-	public void addPoints(int number){
-		while(number!=0){
+	public void addPoints(int number) {
+		while (number != 0) {
 			points++;
 			number--;
 		}
 	}
 
-	public boolean canPickUp(){
-		if(inventory.size()==inventoryCapacity){
+	public boolean canPickUp() {
+		if (inventory.size() == inventoryCapacity) {
 			return false;
 		}
 		return true;

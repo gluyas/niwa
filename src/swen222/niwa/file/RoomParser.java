@@ -295,54 +295,70 @@ public class RoomParser {
 
 				//add the prop in the 2D array
 				int randInt;
+				String des;
 				switch(type){
 				case "bamboo":
-					props[row][col] = new Prop("bamboo", SpriteLoader.get("bamboo"), false);
+					des = "A stand of bamboo sways in the wind.";
+					props[row][col] = new Prop("bamboo", SpriteLoader.get("bamboo"), false, des);
 					break;
 				case "bigrock":
 					randInt = new Random().nextInt(2)+1;
-					props[row][col] = new Prop("bigRock", SpriteLoader.get("bigRock"+randInt), false);
+					des = "A mighty boulder stands in your path.";
+					props[row][col] = new Prop("bigRock", SpriteLoader.get("bigRock"+randInt), false, des);
 					break;
 				case "bigtree":
 					randInt = new Random().nextInt(3)+1;
-					props[row][col] = new Prop("bigTree", SpriteLoader.get("bigTree"+randInt), false);
+					des = "The graceful boughs of this tree fill you with a sense of peace.";
+					props[row][col] = new Prop("bigTree", SpriteLoader.get("bigTree"+randInt), false, des);
 					break;
 				case "bush":
-					props[row][col] = new Prop("bush", SpriteLoader.get("bush"), false);
+					des = "What a cheery little bush!";
+					props[row][col] = new Prop("bush", SpriteLoader.get("bush"), false, des);
 					break;
 				case "fenceside":
-					props[row][col] = new Prop("fenceSide", SpriteLoader.get("fenceSide"), false);
+					des = "It's just a fence.";
+					props[row][col] = new Prop("fenceSide", SpriteLoader.get("fenceSide"), false, des);
 					break;
 				case "fencefront":
-					props[row][col] = new Prop("fenceFront", SpriteLoader.get("fenceFront"), false);
+					des = "It's just a fence.";
+					props[row][col] = new Prop("fenceFront", SpriteLoader.get("fenceFront"), false, des);
 					break;
 				case "grass":
-					props[row][col] = new Prop("grass", SpriteLoader.get("grass"), true);
+					des = "A lush stand of tall grass.";
+					props[row][col] = new Prop("grass", SpriteLoader.get("grass"), true, des);
 					break;
 				case "stonepathfront":
-					props[row][col] = new Prop("stonePathFront", SpriteLoader.get("stonePathFront"), true);
+					des = "A stone path, but where does it lead?";
+					props[row][col] = new Prop("stonePathFront", SpriteLoader.get("stonePathFront"), true, des);
 					break;
 				case "stonepathside":
-					props[row][col] = new Prop("stonePathSide", SpriteLoader.get("stonePathSide"), true);
+					des = "A stone path, but where does it lead?";
+					props[row][col] = new Prop("stonePathSide", SpriteLoader.get("stonePathSide"), true, des);
 					break;
 				case "woodpathfront":
-					props[row][col] = new Prop("woodPathFront", SpriteLoader.get("woodPathFront"), true);
+					des = "A wooden path to guide your way.";
+					props[row][col] = new Prop("woodPathFront", SpriteLoader.get("woodPathFront"), true, des);
 					break;
 				case "woodpathside":
-					props[row][col] = new Prop("woodPathSide", SpriteLoader.get("woodPathSide"), true);
+					des = "A wooden path to guide your way.";
+					props[row][col] = new Prop("woodPathSide", SpriteLoader.get("woodPathSide"), true, des);
 					break;
 				case "soil":
-					props[row][col] = new Prop("soil", SpriteLoader.get("soil"), true);
+					des = "A little patch of soil. It looks very fertile.";
+					props[row][col] = new Prop("soil", SpriteLoader.get("soil"), true, des);
 					break;
 				case "smalltree":
 					randInt = new Random().nextInt(3)+1;
-					props[row][col] = new Prop("smallTree", SpriteLoader.get("smallTree"+randInt), false);
+					des = "Like big trees, but smaller!";
+					props[row][col] = new Prop("smallTree", SpriteLoader.get("smallTree"+randInt), false, des);
 					break;
 				case "zen1":
-					props[row][col] = new Prop("zen1", SpriteLoader.get("zen1"), false);
+					des = "There's something inscribed on the stone: 古池や蛙飛びこむ水のおと";
+					props[row][col] = new Prop("zen1", SpriteLoader.get("zen1"), false, des);
 					break;
 				case "zen2":
-					props[row][col] = new Prop("zen2", SpriteLoader.get("zen2"), false);
+					des = "There's something inscribed on the stone: 初しぐれ猿も小蓑をほしげ也";
+					props[row][col] = new Prop("zen2", SpriteLoader.get("zen2"), false, des);
 					break;
 				}
 			}

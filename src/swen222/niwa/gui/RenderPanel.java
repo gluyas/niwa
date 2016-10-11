@@ -37,10 +37,18 @@ public class RenderPanel extends JPanel implements Observer{
 		rr.draw(g, this.getWidth(), this.getHeight());
 	}
 
+	/**
+	 * Returns the RoomRenderer used by this panel
+	 * @return
+	 */
 	public RoomRenderer getRR(){
 		return rr;
 	}
 
+	/**
+	 * Sets the RoomRenderer used by this panel
+	 * @param rr
+	 */
 	public void setRR(RoomRenderer rr) {
 		this.rr = rr;
 	}

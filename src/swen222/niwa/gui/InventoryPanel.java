@@ -7,6 +7,8 @@ import java.awt.Image;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.ButtonModel;
 import javax.swing.JPanel;
@@ -20,7 +22,7 @@ import swen222.niwa.model.entity.ObjectEntity;
  * @author Zoe
  *
  */
-public class InventoryPanel extends JPanel {
+public class InventoryPanel extends JPanel implements Observer {
 
 	// the below will change depending on how many items we let players hold
 	private static final int INV_SIZE = 9;
@@ -45,28 +47,39 @@ public class InventoryPanel extends JPanel {
 	}
 
 	/**
-	 * Takes in a map of item names and counts, iterates through each item
+	 * Takes in an ArrayList of ObjectEntity, iterates through each item
 	 * updating inventory buttons accordingly
 	 *
-	 * @param items - map of item name to number in inventory
-	 * @param images - map of item name to image
+	 * @param items
+	 *            - ArrayList of ObjectEntity in inventory
 	 */
 	public void updateInventory(ArrayList<ObjectEntity> items) {
 		int i = 0;
-		for (ObjectEntity item: items) {
+		for (ObjectEntity item : items) {
 			buttons[i].updateButton(item);
 			i++;
 		}
 	}
 
+	/**
+	 * Returns the ObjectEntity stored in the selected inventory button, null if
+	 * none selected
+	 *
+	 * @return
+	 */
 	public ObjectEntity getSelectedItem() {
 		InventoryBtn selected = null;
-		for(int i=0;i<INV_SIZE;i++){
-			if(buttons[i].isSelected()){
+		for (int i = 0; i < INV_SIZE; i++) {
+			if (buttons[i].isSelected()) {
 				return buttons[i].getItem();
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// updateInventory();
 	}
 
 }

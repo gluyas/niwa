@@ -13,7 +13,8 @@ import swen222.niwa.model.entity.ObjectEntity;
  * Controller for the game. Responsible for handling interactions between model
  * and view.
  *
- * @author Jack U, Zoe
+ * @author Jack U
+ * @author kraemezoe
  *
  */
 public class Controller implements Observer, ActionListener {
@@ -31,6 +32,7 @@ public class Controller implements Observer, ActionListener {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
+		// update the various parts of the view
 
 	}
 
@@ -44,9 +46,7 @@ public class Controller implements Observer, ActionListener {
 		ObjectEntity selected = view.invPanel.getSelectedItem();
 		switch (e.getActionCommand()) {
 		case "Use Item":
-			if (selected != null) {
-				// use this item
-			}
+			// use item
 			break;
 		case "Inspect":
 			if (selected == null) {
@@ -63,9 +63,11 @@ public class Controller implements Observer, ActionListener {
 			break;
 		case "Rotate CW(Q)":
 			// rotate clockwise
+			view.renderPanel.getRR().rotateCW();
 			break;
 		case "Rotate CCW(E)":
 			// rotate counterclockwise
+			view.renderPanel.getRR().rotateCCW();
 			break;
 		case "New Game":
 			// start a new game
