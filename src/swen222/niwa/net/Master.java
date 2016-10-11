@@ -67,8 +67,9 @@ public class Master extends Thread implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		try {
-			if (o == player && player.getLocation().room != currentRoom) {
-				setRoom(player.getLocation().room);
+			if (o == player && arg instanceof Entity.LocationUpdate) {
+				Entity.LocationUpdate ud = (Entity.LocationUpdate) arg;
+				if (ud.to.room != currentRoom) setRoom(ud.to.room);
 			} else if (o == et && arg instanceof ObservableEntityTable.ElementUpdate) {
 				// Entity table updates cannot be serialised as the tables themselves are not - we need to control it
 				// via messages over net
