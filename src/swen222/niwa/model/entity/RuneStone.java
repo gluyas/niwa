@@ -1,4 +1,4 @@
-package swen222.niwa.model.entity.entities;
+package swen222.niwa.model.entity;
 
 import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
@@ -10,7 +10,7 @@ import swen222.niwa.model.world.Location;
  * @author burnshami
  *
  */
-public class RuneStone extends ChangingEntity{
+public class RuneStone extends ChangingEntity {
 
 	private String type;
 	private SpriteSet sprites;

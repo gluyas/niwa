@@ -25,7 +25,7 @@ import org.xml.sax.SAXException;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
-import swen222.niwa.net.Player;
+
 
 /**
  * Creates save data in the save file.
@@ -102,7 +102,7 @@ public class SaveParser {
 			for(int col = 0; col < width; col++){
 
 				Element room = doc.createElement("Room");
-				String name = map[row][col].getName();
+				String name = map[row][col].name;
 				Text roomName = doc.createTextNode(name);
 				room.appendChild(roomName);
 				rootElement.appendChild(room);

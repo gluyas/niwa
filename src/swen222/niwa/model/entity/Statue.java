@@ -1,4 +1,4 @@
-package swen222.niwa.model.entity.entities;
+package swen222.niwa.model.entity;
 
 import java.io.File;
 import java.io.IOException;

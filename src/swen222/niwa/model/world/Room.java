@@ -1,20 +1,12 @@
 package swen222.niwa.model.world;
 
+import com.sun.istack.internal.Nullable;
 import swen222.niwa.file.RoomParser;
 import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.entity.entities.Door;
-import swen222.niwa.model.entity.entities.Rune;
-import swen222.niwa.model.entity.entities.RuneStone;
-import swen222.niwa.model.entity.entities.Seed;
-import swen222.niwa.model.entity.entities.Statue;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.HashEntityTable;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Observer;
-import java.util.Set;
 import java.io.Serializable;
 
 /**
@@ -27,7 +19,7 @@ public class Room implements Serializable { // extends Observable if we make it 
 
 	public final String name; //each room needs a name, may display this on GUI possibly
 
-	// Where this room sits w
+	// Where this room sits in the world
 	public final int worldRow;
 	public final int worldCol;
 
@@ -36,7 +28,7 @@ public class Room implements Serializable { // extends Observable if we make it 
 
 	private Tile[][] tiles; // each location l corresponds to tiles[l.row][l.col]
 
-	public static Location[] spawnLocs; // the locations of the areas the player can enter from, NESW
+	public final Location[] spawnLocs = new Location[4]; // the locations of the areas the player can enter from, NESW
 
 	public static EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
 									// locations store the room they correspond to so it wouldn't complicate much to
@@ -83,13 +75,14 @@ public class Room implements Serializable { // extends Observable if we make it 
 	 */
 	public static Room newFromFile(File f, int worldCol, int worldRow) {
 
-	public static Room newFromFile(File f) {
 		RoomParser parser = new RoomParser(f);
 		int width = parser.width;
 		int height = parser.height;
 
-		Room room = new Room("Default", worldCol, worldRow, width, height); //TODO: add name to the RoomTuple schema
+		//Room room = new Room("Default", worldCol, worldRow, width, height); //TODO: add name to the RoomTuple schema
 
+		return RoomBuilder.buildRoom(parser, worldCol, worldRow);
+		/*
 		room.tiles = parser.getTiles();
 
 		Prop[][] props = parser.getProps();
@@ -101,15 +94,17 @@ public class Room implements Serializable { // extends Observable if we make it 
 			}
 		}
 
-		Room room = RoomBuilder.buildRoom(parser);
-
-
-		return room;
+	*/
 	}
 
 	// TODO: remove this - exists for testing purposes
 	public static Room emptyRoom(int w, int h) {
 		return new Room("Empty Room", 0, 0, w, h);
+	}
+
+	@Nullable
+	public Location getSpawn(Direction d) {
+		return spawnLocs[d.ordinal()];
 	}
 
 	private Room(String name, int worldCol, int worldRow, int width, int height) {
@@ -121,17 +116,16 @@ public class Room implements Serializable { // extends Observable if we make it 
 		this.entities = new HashEntityTable<>();
 	}
 
-	public static class RoomBuilder{
+	public static class RoomBuilder {
 
-
-		private static Room buildRoom(RoomParser parser){
+		private static Room buildRoom(RoomParser parser, int worldCol, int worldRow){
 
 			int width = parser.width;
 			int height = parser.height;
 
 			String name = parser.getName();
 
-			Room room = new Room(name, width, height);
+			Room room = new Room(name, width, height, worldCol, worldRow);
 			// provide the parser a reference to the room so that it can set up locations
 			parser.setLocationRoom(room);
 			room.tiles = parser.getTiles();
@@ -148,19 +142,15 @@ public class Room implements Serializable { // extends Observable if we make it 
 			// add the entities
 			entities = parser.getEntities();
 
-			spawnLocs = new Location [4];
-
 			//needs to read through spawns and convert them into locations
 			int[][] spawns = parser.getSpawns();
-			for(int i = 0; i< 4; i++){
+			for(int i = 0; i< 4; i++) {
 				int[] coord = spawns[i];
-				spawnLocs[i]= Location.at(room,coord[0],coord[1]);
+				room.spawnLocs[i] = Location.at(room, coord[0], coord[1]);
 			}
-
 
 			return room;
 		}
-
 	}
 
 }

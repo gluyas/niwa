@@ -3,13 +3,12 @@ package swen222.niwa.file;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
-import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.entity.entities.Door;
-import swen222.niwa.model.entity.entities.Rune;
-import swen222.niwa.model.entity.entities.RuneStone;
-import swen222.niwa.model.entity.entities.Seed;
-import swen222.niwa.model.entity.entities.Statue;
+import swen222.niwa.model.entity.Door;
+import swen222.niwa.model.entity.Rune;
+import swen222.niwa.model.entity.RuneStone;
+import swen222.niwa.model.entity.Seed;
+import swen222.niwa.model.entity.Statue;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Location;
@@ -19,13 +18,8 @@ import swen222.niwa.model.world.Tile;
 
 import javax.xml.parsers.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * Parses in a specified file and adds the tiles
@@ -384,7 +378,8 @@ public class RoomParser {
 				//add the string in the 2D array
 				switch(type){
 				case "door":
-					entities.add(new Door(Location.at(room, col, row), SpriteLoader.get("closedDoor"), null));
+					//FIXME: use hamish's code on merge
+					//entities.add(new Door(Location.at(room, col, row), SpriteLoader.get("closedDoor"), null));
 					break;
 				case "rune1":
 					entities.add(new Rune(Location.at(room, col, row), "circle", SpriteLoader.get("rune1")));

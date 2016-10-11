@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import swen222.niwa.Server;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.entity.PlayerEntity;

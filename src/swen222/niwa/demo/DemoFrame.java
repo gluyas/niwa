@@ -32,7 +32,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		super("Garden Demo");
 
 		this.stageName = stageName;
-		Room stage = Room.newFromFile(new File(stageName));
+		Room stage = Room.newFromFile(new File(stageName),0,0);
 
 
 		rr = new RoomRenderer(stage);
@@ -107,7 +107,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 
 	private void refresh() {
 		rr.r.removeEntity(p);
-		Room stage = Room.newFromFile(new File(stageName));
+		Room stage = Room.newFromFile(new File(stageName),0,0);
 		rr = new RoomRenderer(stage);
 		panel.setRR(rr);
 		p.setLocation(Location.at(stage, 0, 0));

@@ -14,21 +14,19 @@ import java.util.Collections;
  */
 public class World implements Serializable {
 
-	Room crossroads,niceForest;
-	ArrayList<Room> rooms;
 							// TODO: solve issues outlined here
 	private Room[][] map;   // there are some tricky problems for this format - it's quite tricky to figure out where a
 							// given room is in this map, which is necessary for finding adjacent rooms when travelling
 							// linking rooms may actually be the simplest solution
-	private int width;
-	private int height;
+	public final int width;
+	public final int height;
 
 
 	public static World newFromRandom(int width, int height) {
 		World world = new World(width, height);
-		world.rooms = new ArrayList<Room>();
+		//world.rooms = new ArrayList<Room>();
 		world.initialiseRooms();
-		world.assignRooms();
+		//world.assignRooms();
 		return world;
 	}
 
@@ -52,12 +50,15 @@ public class World implements Serializable {
 
 	private void initialiseRooms() {
 		File[] maps = new File("resource/rooms").listFiles();
-		for(File file: maps){
-			rooms.add(Room.newFromFile(file));
+		for (int col = 0; col < width; col++) {
+			for (int row = 0; row < height; row++) {
+				int mapNum = col * height + row;
+				if (mapNum >= maps.length) return;
+				else map[row][col] = Room.newFromFile(maps[mapNum], col, row);
+			}
 		}
-		Collections.shuffle(rooms);
 	}
-
+/*
 	private void assignRooms(){
 		if(height*width>rooms.size()){
 			System.out.println("Too big a map");
@@ -71,7 +72,7 @@ public class World implements Serializable {
 			}
 		}
 	}
-
+*/
 
 	//for testing
 	private void setRoom(int col, int row, Room r){
@@ -81,17 +82,14 @@ public class World implements Serializable {
 	public Room[][] getMap(){
 		return map;
 	}
+
 	public void addRoom(int col, int row,Room room){
 		map[col][row]=room;
-		room.setPosition(col, row);
+		//room.setPosition(col, row);
 	}
 
-	public Room getRoom(int x, int y){
+	public Room getRoom(int x, int y) {
 		return map[x][y];
-	private World(int width, int height) {
-		this.width = width;
-		this.height = height;
-		this.map = new Room[width][height];
 	}
 
 	/**

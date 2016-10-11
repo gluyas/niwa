@@ -1,4 +1,9 @@
-package swen222.niwa.model.entity.entities;
+package swen222.niwa.model.entity;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
@@ -10,28 +15,19 @@ import swen222.niwa.model.world.Location;
  * @author burnshami
  *
  */
-public class Rune extends ObjectEntity {
+public class Seed extends ObjectEntity {
 
-	private String type;
 	private SpriteSet sprites;
 
-	public Rune (Location loc){
+	public Seed(Location loc, SpriteSet sprites){
 		super(loc);
-	}
-
-
-	public Rune (Location loc, String type, SpriteSet sprites){
-		super(loc);
-		this.type = type;
 		this.sprites = sprites;
-		this.setDescription("A rock with a strange "+type+"-like rune on it.");
-	}
-
-	public String getType(){
-		return type;
+		this.setDescription("A seed, perhaps you should plant it and see what grows.");
 	}
 	@Override
 	public Sprite sprite(Direction camera) {
 		return sprites.sprite(camera);
 	}
+
+
 }
