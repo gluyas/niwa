@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import swen222.niwa.file.RoomParser;
 import swen222.niwa.model.entity.Entity;
@@ -77,12 +79,18 @@ public class Launcher {
 		System.out.println("SERVER LISTENING ON PORT: " +port);
 
 		File[] maps = new File("resource/rooms").listFiles();
+		ArrayList<File> randomMaps = new ArrayList<File>();
+		for(File f: maps){
+			randomMaps.add(f);
+		}
+		Collections.shuffle(randomMaps);
 		Room[][] map = new Room[width][height];
 		loop : for (int col = 0; col < width; col++) {
 			for (int row = 0; row < height; row++) {
 				int mapNum = col * height + row;
 				if (mapNum >= maps.length) break loop;
-				RoomParser rp = new RoomParser(maps[mapNum]);
+				//RoomParser rp = new RoomParser(maps[mapNum]);
+				RoomParser rp = new RoomParser(randomMaps.get(mapNum));
 				map[row][col] = Room.RoomBuilder.buildRoom(rp, col, row);
 				tables[row][col] = new HashEntityTable<>();
 				tables[row][col].addAll(rp.getEntities());

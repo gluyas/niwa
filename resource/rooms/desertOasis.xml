@@ -4,8 +4,10 @@
 
 <name> DesertOasis </name>
 
-<spawnEast col = "4" row = "8" />
-<spawnWest col = "0" row = "4" />
+<spawnNorth col = "7" row = "1"/>
+<spawnEast col = "8" row = "5" />
+<spawnSouth col ="2" row = "8" />
+<spawnWest col = "0" row = "6" />
 
 <tiles>
 	<line>a1 a1 w0 w0 w0 w0 a1 s1 a1 </line>
@@ -77,7 +79,7 @@
 
 <prop type = "zen2" col = "0" row = "8"/>
 <prop type = "fenceside" col = "1" row = "8"/>
-<prop type = "fenceside" col = "2" row = "8"/>
+
 <prop type = "fenceside" col = "3" row = "8"/>
 <prop type = "fenceside" col = "4" row = "8"/>
 <prop type = "fenceside" col = "5" row = "8"/>

@@ -75,27 +75,38 @@ public class Rules {
 			case NORTH:
 				if(row!=0){//Top of map
 					newRoom=world.roomAt(col+dir.relativeX(), row+dir.relativeY());
-					return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 				}
-				break;
+				else{
+					newRoom=world.roomAt(col, world.height-1);
+				}
+				return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 			case EAST:
 				if(col!=2){//Right of map
 					newRoom=world.roomAt(col+dir.relativeX(), row+dir.relativeY());
-					return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
+
 				}
-				break;
+				else{
+					newRoom=world.roomAt(0, row);
+				}
+				return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 			case SOUTH:
 				if(row!=2){//Bottom of map
 					newRoom=world.roomAt(col+dir.relativeX(), row+dir.relativeY());
 					return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 				}
-				break;
+				else{
+					newRoom=world.roomAt(col,0);
+				}
+				return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 			case WEST:
 				if(col!=0){//West of map
 					newRoom=world.roomAt(col+dir.relativeX(), row+dir.relativeY());
 					return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 				}
-				break;
+				else{
+					newRoom=world.roomAt(world.width-1, row);
+				}
+				return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 		}
 		return false;
 	}

@@ -4,7 +4,7 @@
 
 <name> beach </name>
 
-<spawnNorth col = "4" row = "0" />
+<spawnNorth col = "3" row = "0" />
 <spawnEast col = "8" row = "3" />
 <spawnSouth col = "4" row = "8" />
 <spawnWest col = "0" row = "5" />
