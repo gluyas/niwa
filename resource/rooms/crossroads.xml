@@ -22,5 +22,5 @@
 <prop type = "bigrock" col = "0" row = "2"/>
 <prop type = "bigrock" col = "2" row = "0"/>
 
-<entity type = "seed" col= "1" row = "1"/>
+<entity type = "rune3" col= "1" row = "1"/>
 </class>

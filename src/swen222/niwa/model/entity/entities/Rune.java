@@ -48,7 +48,9 @@ public class Rune extends ObjectEntity {
 		this.setName(type+" rune");
 		this.setDescription("A rock with a strange "+type+"-like rune on it.");
 	}
-
+	public String toString(){
+		return type;
+	}
 	public String getType(){
 		return type;
 	}
