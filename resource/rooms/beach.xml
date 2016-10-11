@@ -28,4 +28,7 @@
 
 
 <entity type = "seed" col= "3" row = "0"/>
+<entity type = "seed" col= "2" row = "8"/>
+<entity type = "seed" col= "7" row = "4"/>
+<entity type = "seed" col= "0" row = "3"/>
 </class>
