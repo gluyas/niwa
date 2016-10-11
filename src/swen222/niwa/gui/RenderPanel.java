@@ -24,6 +24,7 @@ public class RenderPanel extends JPanel implements Observer {
 
 	public RenderPanel (Client control){
 		setDoubleBuffered(true);
+		control.addObserver(this);
 		this.control = control;
 		this.rr = new RoomRenderer(control.getRoom());
 		control.addObserver(this);

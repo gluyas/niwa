@@ -44,39 +44,32 @@ public class Client extends Observable implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// ((get someone 2 help w/ observer pattern and what it means for this))
+		// change this string to be the object description at merge
 		String selected = view.invPanel.getSelectedItem();
+		int slot = view.invPanel.getSelectedSlot();
 		switch (e.getActionCommand()) {
 		case "Use Item":
-			if (!selected.equals("Empty")&&!selected.equals("null")) {
-				// do action stuff
-				System.out.println("used " + selected);
-				}
-				// nothing to do
+			if(slot != -1){
+				slave.action(slot);
+			}
 			break;
 		case "Inspect":
-			if (selected.equals("null")) {
-				// do inspect stuff in game world if we support that, or do
-				// nothing
-				System.out.println("I don't know what that is.");
-			} else if (!selected.equals("Empty")) {
-				// do inspect stuff with this object
-				// probs return a string held in that object
-				System.out.println("it's " + selected);
+			if (slot != -1){
+				view.gamePanel.updateText(selected);
 			}
 			break;
 		case "Drop":
-			if (!selected.equals("Empty")&&!selected.equals("null")) {
-				// drop this object
-				System.out.println("dropped " + selected);
-				}
-				// nothing to do
+			if (slot != -1) {
+				slave.drop(slot);
+			}
 			break;
 		case "Rotate CW(Q)":
 			// rotate clockwise
+			view.renderPanel.getRR().rotateCW();
 			break;
 		case "Rotate CCW(E)":
 			// rotate counterclockwise
+			view.renderPanel.getRR().rotateCCW();
 			break;
 		case "New Game":
 			// start a new game

@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.ButtonModel;
 import javax.swing.JPanel;
@@ -17,7 +19,7 @@ import swen222.niwa.Client;
  * @author Zoe
  *
  */
-public class InventoryPanel extends JPanel {
+public class InventoryPanel extends JPanel implements Observer{
 
 	// the below will change depending on how many items we let players hold
 	private static final int INV_SIZE = 9;
@@ -27,6 +29,7 @@ public class InventoryPanel extends JPanel {
 	private DeselectableButtonGroup btnGroup;
 
 	public InventoryPanel(Client control) {
+		control.addObserver(this);
 		this.control = control;
 		buttons = new InventoryBtn[INV_SIZE];
 		btnGroup = new DeselectableButtonGroup();
@@ -63,6 +66,22 @@ public class InventoryPanel extends JPanel {
 		} else {
 			return bMod.getActionCommand();
 		}
+	}
+
+	public int getSelectedSlot(){
+		for(int i=0;i<INV_SIZE;i++){
+			//protect against player selecting empty slot below
+			if(buttons[i].isSelected()){
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
