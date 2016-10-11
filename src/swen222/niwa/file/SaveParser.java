@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
@@ -19,13 +20,16 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.entity.ObjectEntity;
+import swen222.niwa.model.entity.entities.PlayerEntity;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
-import swen222.niwa.net.Player;
 
 /**
  * Creates save data in the save file.
@@ -73,6 +77,9 @@ public class SaveParser {
 			//needs to get a root element
 			rootElement = doc.getDocumentElement();
 
+			removeAll(rootElement);
+
+
 
 			} catch (ParserConfigurationException e) {
 				System.out.println("Error in save parser");
@@ -118,38 +125,106 @@ public class SaveParser {
 	 * This includes their name, their location, their points and their inventory.
 	 * @param players
 	 */
-	public void savePlayers(Player[] players){
+	public void savePlayers(PlayerEntity[] players){
 
 
-		for(Player player: players){
+		for(int i = 0; i <players.length; i++){
+
+			PlayerEntity player = players[i];
 
 			String name = player.getName();
-			Location playerLoc; // how do I get this????
+			Location playerLoc = player.getLocation();
 			int points = player.getPoints();
-			ArrayList<Entity> inventory;
+			ArrayList<ObjectEntity> inventory = player.getInventory();
 
 			//top class element for a player
 			Element playerElem = doc.createElement("Player");
 
-			//adding player name
-			Element playerName = doc.createElement("PlayerName");
-			Text nameText = doc.createTextNode(name);
-			playerName.appendChild(nameText);
-			playerElem.appendChild(playerName);
+			savePlayerName(playerElem, name);
+			savePlayerLocation(playerElem, playerLoc);
+			savePlayerPoints(playerElem,points);
+			savePlayerInv(playerElem,inventory);
 
-			//top class element for player location
-			Element location = doc.createElement("Location");
-
-			Element room = doc.createElement("Room");
-			Element col = doc.createElement("Col");
-			Element row = doc.createElement("Row");
-
-			Element inventoryElem = doc.createElement("Inventory");
-
-
+			rootElement.appendChild(playerElem);
 		}
 
 	}
+
+
+	public void savePlayerName(Element e, String name){
+
+		// -------------PLAYERNAME------------------//
+
+		Element playerName = doc.createElement("PlayerName");
+		Text nameText = doc.createTextNode(name);
+
+		playerName.appendChild(nameText);
+		e.appendChild(playerName);
+
+	}
+
+	public void savePlayerLocation(Element e, Location playerLoc){
+
+		// -------------LOCATION-----------------//
+		System.out.println("Saving player location");
+		//top class element for player location
+		Element location = doc.createElement("Location");
+
+		//get location information
+		Element room = doc.createElement("Room");
+		Text roomText = doc.createTextNode(playerLoc.room.name);
+		room.appendChild(roomText);
+
+		Element col = doc.createElement("Col");
+		Text colText = doc.createTextNode(Integer.toString(playerLoc.col));
+		col.appendChild(colText);
+
+		Element row = doc.createElement("Row");
+		Text rowText = doc.createTextNode(Integer.toString(playerLoc.row));
+		row.appendChild(rowText);
+
+		//append to location top element
+		location.appendChild(room);
+		location.appendChild(col);
+		location.appendChild(row);
+		e.appendChild(location);
+	}
+
+
+	public void savePlayerPoints(Element e, int points){
+
+		// -------------POINTS-----------------//
+		System.out.println("Saving player points");
+
+		Element playerPoints = doc.createElement("PlayerPoints");
+		Text pointsText = doc.createTextNode(Integer.toString(points));
+		e.appendChild(playerPoints);
+
+	}
+
+	public void savePlayerInv(Element e, ArrayList<ObjectEntity> inv){
+
+		// -------------INVENTORY---------------//
+		System.out.println("Saving player inventory");
+
+		Element inventoryElem = doc.createElement("Inventory");
+
+		for(ObjectEntity entity: inv){
+			Element item = doc.createElement("Item");
+			Text itemName = doc.createTextNode(e.toString());
+
+			item.appendChild(itemName);
+			inventoryElem.appendChild(item);
+		}
+
+
+		e.appendChild(inventoryElem);
+
+	}
+
+
+
+
 
 	public static void saveEntities(){
 
@@ -160,7 +235,12 @@ public class SaveParser {
 	public void writeSave(){
 
 
-		Element testElement = doc.createElement("testElement");
+		//Element testElement = doc.createElement("testElement2");
+		//Text testText = doc.createTextNode("testText");
+
+		//testElement.appendChild(testText);
+		//rootElement.appendChild(testElement);
+
 
 
 
@@ -189,9 +269,15 @@ public class SaveParser {
 
 
 
+	}
 
-
+	public static void removeAll(Node node) {
+	    while (node.hasChildNodes())
+	        node.removeChild(node.getFirstChild());
 	}
 
 
 }
+
+
+
