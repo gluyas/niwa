@@ -17,8 +17,8 @@
 	<line>a1 s0 a1 a1 s0 a2 d2 d2 a2 </line>
 	<line>a0 s1 a1 a1 s1 a2 d2 d2 a2 </line>
 	<line>a1 a1 a1 a1 a1 a2 a2 a2 a2 </line>
-	
-	
+
+
 </tiles>
 
 <prop type = "bigtree" col = "0" row = "0"/>

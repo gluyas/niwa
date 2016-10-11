@@ -11,16 +11,16 @@
 
 <tiles>
 	<line>s9 s9 s8 g7 s5 s3 g1 g0 s1 s0 </line>
-	<line>s9 w8 w8 g6 g4 g3 g1 g0 g0 s1 </line>
-	<line>s8 w7 w7 s6 g4 g2 g0 g0 s0 s0 </line>
+	<line>s9 w8 w8 g6 g4 g2 g0 g0 g0 s1 </line>
+	<line>s8 w7 w7 s5 g4 g2 g1 g0 s0 s0 </line>
 	<line>s7 w6 w6 w5 s4 s3 g1 g0 g0 s0 </line>
 	<line>g5 s5 w4 w4 w3 w1 w0 w0 g0 g0 </line>
 	<line>g5 g4 s2 w3 q2 w1 w0 q0 w0 g0 </line>
 	<line>s3 g3 g1 w2 w2 w1 w0 w0 w0 g0 </line>
-	<line>s1 g1 g2 g0 g0 w0 w0 w0 g0 g0 </line>
+	<line>s1 g1 g2 g0 g0 w0 w0 w0 d0 g0 </line>
 	<line>s0 s0 g1 g0 g0 g0 g0 g0 g0 s0 </line>
 	<line>s2 s1 g0 g0 s0 s0 s0 s0 s0 s0 </line>
-	
+
 </tiles>
 
 <prop type="runestone1" col="0" row="0"/>
@@ -49,6 +49,10 @@
 <prop type="soil" col="8" row="7"/>
 <entity type = "runestone1" col = "0" row = "0" dir="e"/>
 <entity type = "seed" col = "2" row = "5"/>
+<entity type = "seed" col = "6" row = "0"/>
+<entity type = "seed" col = "1" row = "4"/>
+
+
 
 
 
