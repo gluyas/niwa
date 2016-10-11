@@ -16,6 +16,9 @@ import swen222.niwa.model.entity.Statue;
 import swen222.niwa.model.world.Location.InvalidLocationException;
 
 /**
+ *
+ * All the rules for the game. This is used by the client to decide what changes
+ * need to be made to the entities.
  * @author burnshami
  *
  */

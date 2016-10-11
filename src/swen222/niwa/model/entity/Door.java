@@ -12,6 +12,7 @@ import swen222.niwa.model.world.Location;
 
 /**
  * @author burnshami
+ * Door that can be opened when all the statues have been occupied in the room
  *
  */
 public class Door extends ObjectEntity {
@@ -56,6 +57,10 @@ public class Door extends ObjectEntity {
 		return statues;
 	}
 
+	/**
+	 * Checks if all the statues are triggered
+	 * @return
+	 */
 	public boolean checkStatues(){
 		System.out.println("Statues"+statues.size());
 		for(Statue statue: statues){

@@ -6,6 +6,9 @@ import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
 /**
+ *
+ * Represents a seed - when used with soil turns
+ * into a flower.
  * @author burnshami
  *
  */

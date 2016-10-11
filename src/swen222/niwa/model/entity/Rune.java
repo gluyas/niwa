@@ -12,6 +12,9 @@ import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
 /**
+ *
+ * Represents a rune - can be picked up by a player and
+ * used with a runeStone to gain seeds
  * @author burnshami
  *
  */

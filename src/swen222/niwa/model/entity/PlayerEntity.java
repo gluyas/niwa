@@ -11,6 +11,8 @@ import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
 /**
+ *
+ * Represents a player on the gameworld
  * @author burnshami
  *
  */

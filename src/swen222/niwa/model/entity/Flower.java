@@ -2,6 +2,12 @@ package swen222.niwa.model.entity;
 
 import java.util.Random;
 
+/**
+ * Represents a flower - when a seed is planted it turns into a flower
+ * Has different colours for different players .
+ * @author Hamish m
+ */
+
 import swen222.niwa.file.SpriteLoader;
 import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.graphics.Sprite;

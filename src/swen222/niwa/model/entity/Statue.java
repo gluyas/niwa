@@ -8,6 +8,10 @@ import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
 /**
+ *
+ * Represents a statue - Can be occupied by a ghost player.
+ *  When all the statues are occupied in a room it unlocks the door
+ *
  * @author burnshami
  *
  */

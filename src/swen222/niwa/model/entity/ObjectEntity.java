@@ -6,6 +6,8 @@ import swen222.niwa.model.world.Location;
 
 /**
  * @author burnshami
+ * 
+ * 
  *
  */
 public abstract class ObjectEntity extends Entity {

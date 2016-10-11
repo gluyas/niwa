@@ -7,6 +7,9 @@ import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
 /**
+ *
+ * Represents a runestone - Runestones can be used with
+ * runes to give the player seeds.
  * @author burnshami
  *
  */
