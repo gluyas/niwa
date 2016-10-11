@@ -122,7 +122,7 @@ public abstract class ObservableEntityTable<E extends Entity>
 
 			@Override
 			public Set<E> get(Location loc) {
-				return null;
+				return et.get(loc);
 			}
 
 			@Override

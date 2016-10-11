@@ -1,15 +1,8 @@
 package swen222.niwa.model.entity;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import swen222.niwa.file.SpriteLoader;
 import swen222.niwa.file.SpriteLoader.SpriteSet;
-import swen222.niwa.gui.Sprite;
-import swen222.niwa.model.entity.ChangingEntity;
-import swen222.niwa.model.entity.ObjectEntity;
+import swen222.niwa.gui.graphics.Sprite;
 import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;

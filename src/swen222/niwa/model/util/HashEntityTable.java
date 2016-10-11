@@ -28,6 +28,7 @@ public class HashEntityTable<E extends Entity> extends ObservableEntityTable<E> 
 	 */
 	public Set<E> get(Location loc) {
 		Set<E> bucket = locMap.get(loc);
+		//System.out.print(bucket);
 		if (bucket == null) return Collections.EMPTY_SET;
 		else return Collections.unmodifiableSet(bucket);
 	}

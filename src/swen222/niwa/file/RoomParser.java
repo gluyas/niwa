@@ -5,11 +5,11 @@ import org.xml.sax.SAXException;
 
 import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.entity.entities.Door;
-import swen222.niwa.model.entity.entities.Rune;
-import swen222.niwa.model.entity.entities.RuneStone;
-import swen222.niwa.model.entity.entities.Seed;
-import swen222.niwa.model.entity.entities.Statue;
+import swen222.niwa.model.entity.Door;
+import swen222.niwa.model.entity.Rune;
+import swen222.niwa.model.entity.RuneStone;
+import swen222.niwa.model.entity.Seed;
+import swen222.niwa.model.entity.Statue;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Direction;

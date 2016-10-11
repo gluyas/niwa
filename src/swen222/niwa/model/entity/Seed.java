@@ -1,13 +1,7 @@
-package swen222.niwa.model.entity.entities;
-
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+package swen222.niwa.model.entity;
 
 import swen222.niwa.file.SpriteLoader.SpriteSet;
-import swen222.niwa.gui.Sprite;
-import swen222.niwa.model.entity.ObjectEntity;
+import swen222.niwa.gui.graphics.Sprite;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
@@ -23,14 +17,7 @@ public class Seed extends ObjectEntity {
 	public Seed(Location loc, SpriteSet sprites){
 		super(loc);
 		this.sprites = sprites;
-		Image thumb = null;
-		try {
-			thumb = ImageIO.read(new File("resource/images/misc/seedThumb.png"));
-		} catch (IOException e) {
-			// loading thumbnail failed
-			e.printStackTrace();
-		}
-		this.setThumbnail(thumb);
+		this.setThumbnail(sprites.sprite(Direction.NORTH).getImage());
 		this.setName("seed");
 		this.setDescription("A seed, perhaps you should plant it and see what grows.");
 	}

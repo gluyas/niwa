@@ -29,9 +29,11 @@ public class NiwaFrame extends JFrame implements Observer {
 	public final InventoryPanel invPanel;
 
 	public NiwaFrame(Client control) throws HeadlessException {
-		super("庭～ニワ～笑");
+		super("✿　庭　～　ニ―ワッ　～　笑　❀");
 
 		this.control = control;
+		addKeyListener(control);
+		setFocusable(true);
 		// for testing
 		//Room stage = Room.newFromFile(new File("resource/rooms/desertBowl.xml"));
 

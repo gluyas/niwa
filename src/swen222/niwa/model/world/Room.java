@@ -28,7 +28,7 @@ public class Room implements Serializable { // extends Observable if we make it 
 
 	private Tile[][] tiles; // each location l corresponds to tiles[l.row][l.col]
 
-	public final Location[] spawnLocs = new Location[4]; // the locations of the areas the player can enter from, NESW
+	private final Location[] spawnLocs = new Location[4]; // the locations of the areas the player can enter from, NESW
 
 	public static EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
 									// locations store the room they correspond to so it wouldn't complicate much to
@@ -123,9 +123,11 @@ public class Room implements Serializable { // extends Observable if we make it 
 			int width = parser.width;
 			int height = parser.height;
 
+			//System.out.println(height+" "+width);
+
 			String name = parser.getName();
 
-			Room room = new Room(name, width, height, worldCol, worldRow);
+			Room room = new Room(name, worldCol, worldRow, width, height);
 			// provide the parser a reference to the room so that it can set up locations
 			parser.setLocationRoom(room);
 			room.tiles = parser.getTiles();
@@ -146,6 +148,7 @@ public class Room implements Serializable { // extends Observable if we make it 
 			int[][] spawns = parser.getSpawns();
 			for(int i = 0; i< 4; i++) {
 				int[] coord = spawns[i];
+				//System.out.println(room.width+" "+room.height);
 				room.spawnLocs[i] = Location.at(room, coord[0], coord[1]);
 			}
 

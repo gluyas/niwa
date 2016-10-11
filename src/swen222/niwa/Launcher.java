@@ -47,7 +47,7 @@ public class Launcher {
 		// Check what to do
 		if(server){
 			// Running in server mode
-			Room game = Room.newFromFile(new File("resource/rooms/testRoom.xml"), 0, 0);
+			Room game = Room.newFromFile(new File("resource/rooms/desertBowl.xml"), 0, 0);
 			runServer(port, numOfPlayers);
 		}else if(host != null){
 			// Running in client mode
@@ -65,7 +65,7 @@ public class Launcher {
 	 */
 	private static void runServer(int port, int numOfPlayers){
 
-		Server gameServer = new Server(new World(Room.newFromFile(new File("resource/rooms/testRoom.xml"), 0, 0)));
+		Server gameServer = new Server(new World(Room.newFromFile(new File("resource/rooms/crag.xml"), 0, 0)));
 
 		// Start listening for connections
 		System.out.println("SERVER LISTENING ON PORT: " +port);

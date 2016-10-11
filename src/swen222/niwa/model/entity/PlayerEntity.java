@@ -1,10 +1,10 @@
-package swen222.niwa.model.entity.entities;
+package swen222.niwa.model.entity;
 
 import java.util.ArrayList;
 
 import swen222.niwa.file.SpriteLoader.SpriteSet;
-import swen222.niwa.gui.Sprite;
-import swen222.niwa.model.entity.Entity;
+import swen222.niwa.gui.graphics.Sprite;
+import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
@@ -36,7 +36,7 @@ public class PlayerEntity extends Entity {
 		return sprites.sprite(camera);
 	}
 
-	public void addItem(Entity item){
+	public void addItem(ObjectEntity item){
 		if(inventory.add(item)){
 			setChanged();
 			notifyObservers((Update)()-> this.addItem(item));

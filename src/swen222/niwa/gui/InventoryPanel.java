@@ -54,7 +54,7 @@ public class InventoryPanel extends JPanel implements Observer{
 	public void updateInventory(Map<String, Integer> items, Map<String, Image> images) {
 		int i = 0;
 		for (String s : items.keySet()) {
-			buttons[i].updateButton(s, items.get(s), images.get(s));
+			//buttons[i].updateButton(s, items.get(s), images.get(s));
 			i++;
 		}
 	}

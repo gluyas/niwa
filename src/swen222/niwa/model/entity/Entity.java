@@ -1,6 +1,6 @@
 package swen222.niwa.model.entity;
 
-import swen222.niwa.gui.Visible;
+import swen222.niwa.gui.graphics.Visible;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.util.Update;

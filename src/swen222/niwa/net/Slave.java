@@ -1,13 +1,10 @@
 package swen222.niwa.net;
 
-import static java.awt.event.KeyEvent.*;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.*;
 import java.net.Socket;
 
 import swen222.niwa.Client;
+import swen222.niwa.model.entity.PlayerEntity;
 import swen222.niwa.model.util.ObservableEntityTable;
 import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
@@ -34,6 +31,7 @@ public class Slave extends Thread {
 
 	public static final int REQUEST_WORLD = 'w';
 	public static final int REQUEST_ROOM = 'r';
+	public static final int REQUEST_PLAYER = 'p';
 
 	public static final int STATUS_READY = 'g';
 	public static final int STATUS_STOP = 's';
@@ -103,48 +101,60 @@ public class Slave extends Thread {
 		output.write(REQUEST_WORLD);
 		System.out.println("Requesting world");
 		while (!exit) {
-			if(input.available() != 0 && input.read() == Master.LOAD_WORLD){
-				loadWorld();
+			if(input.available() != 0 && input.read() == Master.SET_WORLD) {
+				setWorld();
 			}
 		}
-	}
-
-	public void loadWorld() throws IOException, ClassNotFoundException {
-		System.out.println("RECEIVING WORLD");
-		setWorld((World) input.readObject());
-	}
-
-	private void setWorld(World w) {
-		//this.currentWorld = w;
-		client.setWorld(w);
 	}
 
 	private void requestRoom() throws IOException, ClassNotFoundException {
 		output.write(REQUEST_ROOM);
 		System.out.println("REQUESTING ROOM");
 		while (!exit) {
-			if(input.available() != 0 && input.read() == Master.LOAD_ROOM){
-				setRoom((Room) input.readObject());
+			if(input.available() != 0 && input.read() == Master.SET_ROOM) {
+				setRoom();
+			}
+		}
+	}
+
+	private void requestPlayer() throws IOException, ClassNotFoundException {
+		output.write(REQUEST_ROOM);
+		System.out.println("REQUESTING ROOM");
+		while (!exit) {
+			if(input.available() != 0 && input.read() == Master.SET_ROOM){
+				setPlayer();
 				break;
 			}
 		}
 	}
 
-	private void loadRoom() throws IOException, ClassNotFoundException {
-		System.out.println("RECEIVING ROOM");
-		setRoom((Room) input.readObject());
-	}
-
-	private void setRoom(Room r) {
-		//this.currentRoom = r;
+	private void setRoom() throws IOException, ClassNotFoundException {
+		System.out.print("RECEIVING ROOM ... ");
+		Room r = (Room) input.readObject();
 		et = new HashEntityTable<>();
 		client.setRoom(r, ObservableEntityTable.unmodifiable(et));
+		System.out.println("DONE");
+	}
+
+	public void setWorld() throws IOException, ClassNotFoundException {
+		System.out.print("RECEIVING WORLD ... ");
+		World w  = (World) input.readObject();
+		client.setWorld(w);
+		System.out.println("DONE");
+	}
+
+	private void setPlayer() throws IOException, ClassNotFoundException {
+		System.out.print("RECEIVING PLAYER ...");
+		PlayerEntity p = (PlayerEntity) input.readObject();
+		client.setPlayer(p);
+		System.out.println("DONE");
 	}
 
 	private void applyUpdate() throws IOException, ClassNotFoundException {
 		Update ud = (Update) input.readObject();
 		//System.out.println("APPLYING UPDATE "+ud);
 		ud.apply();
+		client.update();
 	}
 
 	private void addEntity() throws IOException, ClassNotFoundException {
@@ -165,12 +175,16 @@ public class Slave extends Thread {
 				if(input.available() != 0){
 					int action = input.read();
 					switch (action) {
-						case Master.LOAD_WORLD:
-							loadWorld();
+						case Master.SET_WORLD:
+							setWorld();
 							break;
 
-						case Master.LOAD_ROOM:
-							loadRoom();
+						case Master.SET_ROOM:
+							setRoom();
+							break;
+
+						case Master.SET_PLAYER:
+							setPlayer();
 							break;
 
 						case Master.APPLY_UPDATE:
@@ -237,59 +251,4 @@ public class Slave extends Thread {
 			}
 		}
 	}
-
-/*
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		try{
-			int code = e.getKeyCode();
-			switch (code) {
-			case VK_W: // move up
-				output.write(PLAYER_MOVE);
-				output.write(Direction.NORTH.ordinal());
-				break;
-
-			case VK_A: // move left
-				output.write(PLAYER_MOVE);
-				output.write(Direction.WEST.ordinal());
-				break;
-
-			case VK_S: // move down
-				output.write(PLAYER_MOVE);
-				output.write(Direction.SOUTH.ordinal());
-				break;
-
-			case VK_D: // move right
-				output.write(PLAYER_MOVE);
-				output.write(Direction.EAST.ordinal());
-				break;
-
-			case VK_Q: // rotate cw
-				break;
-
-			case VK_E: // rotate ccw
-				break;
-
-			case VK_F: // interaction
-
-				break;
-			}
-		}catch(IOException ee){
-
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-*/
-
 }

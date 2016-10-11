@@ -1,6 +1,7 @@
 package swen222.niwa.gui;
 
 import swen222.niwa.Client;
+import swen222.niwa.gui.graphics.RoomRenderer;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,9 +28,9 @@ public class RenderPanel extends JPanel implements Observer {
 		control.addObserver(this);
 		this.control = control;
 		this.rr = new RoomRenderer(control.getRoom());
-		control.addObserver(this);
+		addKeyListener(control);
 
-		setPreferredSize(new Dimension(1280, 720));
+		setPreferredSize(new Dimension(1280, 630));
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class RenderPanel extends JPanel implements Observer {
 		);
 		((Graphics2D) g).setPaint(grad);
 		g.fillRect(0,0,getWidth(), getHeight());
-		rr.draw(g, this.getWidth(), this.getHeight());
+		rr.draw(g, this.getWidth(), this.getHeight()+120);
 	}
 
 	/**

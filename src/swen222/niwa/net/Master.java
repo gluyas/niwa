@@ -25,10 +25,13 @@ import swen222.niwa.model.world.Room;
  */
 public class Master extends Thread implements Observer {
 
-	public static final int LOAD_WORLD = 'w';
-	public static final int LOAD_ROOM = 'r';
+	public static final int SET_WORLD = 'w';
+	public static final int SET_ROOM = 'r';
+	public static final int SET_PLAYER = 'p';
+
 	public static final int ADD_ENTITY = 'e';
 	public static final int RM_ENTITY = 'm';
+
 	public static final int APPLY_UPDATE = 'u';
 
 	public final String name; // username for the player - account will be stored under this.
@@ -90,11 +93,13 @@ public class Master extends Thread implements Observer {
 	private void sendAdd(Entity e) throws IOException {
 		output.write(ADD_ENTITY);
 		output.writeObject(e);
+		output.flush();
 	}
 
 	private void sendRemove(Entity e) throws IOException {
 		output.write(RM_ENTITY);
 		output.writeObject(e);
+		output.flush();
 	}
 
 	private void setRoom(Room r) throws IOException {
@@ -103,17 +108,18 @@ public class Master extends Thread implements Observer {
 		this.et = server.getEntityTable(currentRoom);
 		this.et.addObserver(this);
 		sendRoom();
+		System.out.println("SENDING PLAYER");
 	}
 
 	private void sendWorld() throws IOException {
-		output.write(LOAD_WORLD);
+		output.write(SET_WORLD);
 		output.writeObject(server.world);
 		output.flush();
 		System.out.println("SENDING WORLD "+server.world);
 	}
 
 	private void sendRoom() throws IOException {
-		output.write(LOAD_ROOM);
+		output.write(SET_ROOM);
 		output.writeObject(currentRoom); //TODO: set current room to the player's initial value!
 		for (Entity e : server.getRoomEntities(currentRoom)) {
 			output.write(ADD_ENTITY);
@@ -121,6 +127,12 @@ public class Master extends Thread implements Observer {
 		}
 		output.flush();
 		System.out.println("SENDING ROOM "+currentRoom);
+	}
+
+	private void sendPlayer() throws IOException {
+		output.write(SET_PLAYER);
+		output.writeObject(player);
+		output.flush();
 	}
 
 	private void sendUpdate(Object update) throws IOException {
@@ -136,33 +148,50 @@ public class Master extends Thread implements Observer {
 
 	public void run(){
 		try {
+
 			sendWorld();
 			sendRoom();
+			sendPlayer();
+
 			while(!close) {
 				if(input.available() != 0) {
 					int event = input.read();
 					switch(event) {
 						case Slave.PLAYER_ACTION:
-							server.action(this);
+							server.action(this, input.read());
 							break;
+
 						case Slave.PLAYER_MOVE:
 							// second int is an ordinal
 							Direction d = Direction.values()[input.read()];
 							//System.out.println("MOVING "+d);
 							server.move(this, d);
 							break;
+
+						case Slave.PLAYER_DROP:
+							server.drop(this, input.read());
+							break;
+
 						case Slave.REQUEST_ROOM:
 							sendRoom();
 							break;
+
 						case Slave.REQUEST_WORLD:
 							sendWorld();
 							break;
+
+						case Slave.REQUEST_PLAYER:
+							sendPlayer();
+							break;
+
 						case Slave.STATUS_READY:
 							//setReady(true);
 							break;
+
 						case Slave.STATUS_STOP:
 							//setReady(false);
 							break;
+
 					}
 					output.flush();
 				}
@@ -172,7 +201,4 @@ public class Master extends Thread implements Observer {
 			e.printStackTrace();
 		}
 	}
-
-
-
 }

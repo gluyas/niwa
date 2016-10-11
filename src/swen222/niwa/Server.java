@@ -1,7 +1,7 @@
 package swen222.niwa;
 
 import com.sun.istack.internal.Nullable;
-import swen222.niwa.demo.DemoPlayer;
+import swen222.niwa.file.SpriteLoader;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.entity.PlayerEntity;
 import swen222.niwa.model.util.HashEntityTable;
@@ -45,7 +45,7 @@ public class Server {
 	 * @return the PlayerEntity associated with the Master
 	 */
 	public  PlayerEntity join(Master client) {
-		PlayerEntity newPlayer = new DemoPlayer(world.getSpawn());
+		PlayerEntity newPlayer = new PlayerEntity(world.getSpawn(), SpriteLoader.get("ghostGreen"), "marc");
 		connections.put(client, newPlayer);
 		getEntityTable(world.getSpawn().room).add(newPlayer);
 		return newPlayer;
@@ -67,7 +67,11 @@ public class Server {
 		if (p != null) p.move(d);
 	}
 
-	public void action(Master m) {
+	public void action(Master m, int selectedItem) {
+
+	}
+
+	public void drop(Master m, int selectedItem) {
 
 	}
 

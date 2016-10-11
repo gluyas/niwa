@@ -26,6 +26,7 @@ public class MainAppPanel extends JPanel{
 		this.control = control;
 
 		setBackground(new Color(0xffdab9));
+		addKeyListener(control);
 
 		textArea = new JTextArea();
 		textArea.setEditable(false);

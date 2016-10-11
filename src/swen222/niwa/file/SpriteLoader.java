@@ -3,6 +3,7 @@ package swen222.niwa.file;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +16,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import swen222.niwa.gui.Sprite;
-import swen222.niwa.gui.Visible;
+import swen222.niwa.gui.graphics.Sprite;
+import swen222.niwa.gui.graphics.Visible;
 import swen222.niwa.model.world.Direction;
 
 /**
@@ -49,7 +50,7 @@ public class SpriteLoader {
 	 * @author Hamish M
 	 *
 	 */
-	public static class SpriteSet implements Visible {
+	public static class SpriteSet implements Visible, Serializable {
 		private final Sprite[] sprites;
 
 		private SpriteSet() {

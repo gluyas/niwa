@@ -33,16 +33,16 @@ public interface EntityTable<T extends Entity> extends Set<T>, Serializable {
 	/**
 	 * Basic wrapper class to prevent external modification
 	 */
-	class UnmodifiableEntityTable<T extends Entity> implements EntityTable<T> {
+	class UnmodifiableEntityTable<E extends Entity> implements EntityTable<E> {
 
-		private final EntityTable parent;
+		private final EntityTable<E> parent;
 
-		public UnmodifiableEntityTable(EntityTable<T> parent) {
+		public UnmodifiableEntityTable(EntityTable<E> parent) {
 			this.parent = parent;
 		}
 
 		@Override
-		public boolean add(T t) {
+		public boolean add(E e) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -57,8 +57,10 @@ public interface EntityTable<T extends Entity> extends Set<T>, Serializable {
 		}
 
 		@Override
-		public Set get(Location loc) {
-			return parent.get(loc);
+		public Set<E> get(Location loc) {
+			Set<E> out = parent.get(loc);
+			//System.out.println(out);
+			return out;
 		}
 
 		@Override

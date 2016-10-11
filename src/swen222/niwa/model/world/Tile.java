@@ -1,10 +1,11 @@
 package swen222.niwa.model.world;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import swen222.niwa.file.SpriteLoader.SpriteSet;
-import swen222.niwa.gui.Sprite;
-import swen222.niwa.gui.Visible;
+import swen222.niwa.gui.graphics.Sprite;
+import swen222.niwa.gui.graphics.Visible;
 import swen222.niwa.model.entity.Entity;
 
 /**
@@ -13,7 +14,7 @@ import swen222.niwa.model.entity.Entity;
  * @author Marc
  * @author Jack U
  */
-public class Tile implements Visible {
+public class Tile implements Visible, Serializable {
 
 	private String type;
 	public final int height;
