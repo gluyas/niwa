@@ -23,6 +23,8 @@ public class Door extends ObjectEntity {
 
 	private SpriteSet sprites ;
 	private ArrayList<Statue> statues;
+	private final String closedDesc = "This door is shut tight.";
+	private final String openDesc = "An open door can mean a world of possibilities.";
 
 	private boolean open;
 
@@ -43,6 +45,11 @@ public class Door extends ObjectEntity {
 	}
 	public void setOpen(boolean open) {
 		this.open = open;
+		if(open){
+			this.setDescription(openDesc);
+		} else {
+			this.setDescription(closedDesc);
+		}
 	}
 
 	public ArrayList<Statue> getStatues(){

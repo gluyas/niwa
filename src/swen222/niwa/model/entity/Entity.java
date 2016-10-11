@@ -17,6 +17,7 @@ import java.util.Observable;
 public abstract class Entity extends Observable implements Visible {
 
 	private Location loc; // private so that notifyObservers in moveTo cannot be omitted
+	private String description;
 
 	/**
 	 * Create a new Entity at the given Location
@@ -67,5 +68,13 @@ public abstract class Entity extends Observable implements Visible {
 		} catch (Location.InvalidLocationException invalidMove) {
 			return false;
 		}
+	}
+
+	public String getDescription(){
+		return description;
+	}
+
+	public void setDescription(String s){
+		description = s;
 	}
 }

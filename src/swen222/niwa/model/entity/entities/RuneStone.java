@@ -13,18 +13,19 @@ import swen222.niwa.model.world.Location;
 public class RuneStone extends ChangingEntity{
 
 	private String type;
-	private SpriteSet sprites; 
-	
+	private SpriteSet sprites;
+
 	public RuneStone(Location loc, String type, SpriteSet sprites){
 		super(loc);
 		this.type = type;
 		this.sprites = sprites;
+		this.setDescription("A large stone with a strange "+type+"-like rune on it.");
 	}
-	
+
 	public String getType(){
 		return type;
 	}
-	
+
 	@Override
 	public Sprite sprite(Direction camera) {
 		return sprites.sprite(camera);

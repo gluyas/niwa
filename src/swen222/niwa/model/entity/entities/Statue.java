@@ -20,6 +20,8 @@ public class Statue extends ChangingEntity {
 
 	private SpriteSet sprites;
 	private boolean triggered;
+	private final String dormantDesc = "A stone statue. It looks like it's sleeping.";
+	private final String activeDesc = "The statue is giving out an eerie glow...";
 
 	public Statue(Location loc, SpriteSet sprites){
 		super(loc);
@@ -36,6 +38,11 @@ public class Statue extends ChangingEntity {
 	}
 	public void setTriggered(boolean triggered) {
 		this.triggered = triggered;
+		if(triggered){
+			this.setDescription(activeDesc);
+		} else {
+			this.setDescription(dormantDesc);
+		}
 	}
 
 

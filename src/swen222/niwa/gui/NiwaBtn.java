@@ -38,7 +38,7 @@ public class NiwaBtn extends JButton implements MouseListener {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(90, 40);
+		return new Dimension(100, 40);
 	}
 
 	@Override

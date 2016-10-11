@@ -11,7 +11,7 @@ import swen222.niwa.gui.WinDialog;
 /**
  * Controller for the game. Responsible for handling interactions between model
  * and view.
- * 
+ *
  * @author Jack U, Zoe
  *
  */
@@ -55,10 +55,10 @@ public class Controller implements Observer, ActionListener {
 				System.out.println("it's " + selected);
 			}
 			break;
-		case "Rotate CW (Q)":
+		case "Rotate CW(Q)":
 			// rotate clockwise
 			break;
-		case "Rotate CCW (E)":
+		case "Rotate CCW(E)":
 			// rotate counterclockwise
 			break;
 		case "New Game":

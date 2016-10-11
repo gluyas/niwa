@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JPanel;
 
@@ -13,17 +15,17 @@ import javax.swing.JPanel;
  * @author Zoe
  *
  */
-public class RenderPanel extends JPanel{
-	
+public class RenderPanel extends JPanel implements Observer{
+
 	private RoomRenderer rr;
-	
+
 	public RenderPanel (RoomRenderer rr){
 		setDoubleBuffered(true);
 		this.rr = rr;
-		
+
 		setPreferredSize(new Dimension(360, 550));
 	}
-	
+
 	@Override
 	public void paint(Graphics g){
 		GradientPaint grad = new GradientPaint(
@@ -34,13 +36,18 @@ public class RenderPanel extends JPanel{
 		g.fillRect(0,0,getWidth(), getHeight());
 		rr.draw(g, this.getWidth(), this.getHeight());
 	}
-	
+
 	public RoomRenderer getRR(){
 		return rr;
 	}
-	
+
 	public void setRR(RoomRenderer rr) {
 		this.rr = rr;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		repaint();
 	}
 
 }

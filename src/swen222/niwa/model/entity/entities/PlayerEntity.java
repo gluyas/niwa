@@ -23,6 +23,7 @@ public class PlayerEntity extends Entity{
 
 	public PlayerEntity(Location loc, SpriteSet sprites) {
 		super(loc);
+		this.setDescription("What a spooky ghost...");
 		this.inventory= new ArrayList<Entity>();
 		this.inventoryCapacity =3 ;
 		this.points = 0;
@@ -37,11 +38,11 @@ public class PlayerEntity extends Entity{
 	public void addItem(Entity item){
 		inventory.add(item);
 	}
-	
+
 	public String getName(){
 		return name;
 	}
-	
+
 	public int getPoints(){
 		return points;
 	}
