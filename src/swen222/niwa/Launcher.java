@@ -79,10 +79,8 @@ public class Launcher {
 		System.out.println("SERVER LISTENING ON PORT: " +port);
 
 		File[] maps = new File("resource/rooms").listFiles();
-		ArrayList<File> randomMaps = new ArrayList<File>();
-		for(File f: maps){
-			randomMaps.add(f);
-		}
+		ArrayList<File> randomMaps = new ArrayList<>();
+		for(File f: maps) randomMaps.add(f);
 		Collections.shuffle(randomMaps);
 		Room[][] map = new Room[width][height];
 		loop : for (int col = 0; col < width; col++) {

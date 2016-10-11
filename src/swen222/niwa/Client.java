@@ -163,7 +163,7 @@ public class Client extends Observable implements ActionListener, KeyListener {
 				return;
 				// unknown command
 		}
-		view.requestFocus();
+		view.requestFocusInWindow();
 		//System.out.println("ACTION!");
 		update();
 	}
@@ -219,6 +219,7 @@ public class Client extends Observable implements ActionListener, KeyListener {
 				if (slot != -1) slave.drop(slot);
 				break;
 		}
+		view.requestFocusInWindow();
 	}
 
 	@Override
