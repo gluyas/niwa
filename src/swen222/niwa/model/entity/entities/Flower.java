@@ -44,6 +44,7 @@ public class Flower extends Entity{
 		super(loc);
 		this.type = type;
 		this.sprites = getRandomSprite(type);
+		this.setDescription("What a lovely "+type+" flower.");
 	}
 
 	private SpriteSet getRandomSprite(String type) {
