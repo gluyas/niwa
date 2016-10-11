@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,7 +28,7 @@ import org.xml.sax.SAXException;
 
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.entity.ObjectEntity;
-import swen222.niwa.model.entity.entities.PlayerEntity;
+import swen222.niwa.model.entity.PlayerEntity;
 import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
@@ -110,7 +111,7 @@ public class SaveParser {
 			for(int col = 0; col < width; col++){
 
 				Element room = doc.createElement("Room");
-				String name = map[row][col].getName();
+				String name = map[row][col].name;
 				Text roomName = doc.createTextNode(name);
 				room.appendChild(roomName);
 				rootElement.appendChild(room);
@@ -136,7 +137,7 @@ public class SaveParser {
 			String name = player.getName();
 			Location playerLoc = player.getLocation();
 			int points = player.getPoints();
-			ArrayList<ObjectEntity> inventory = player.getInventory();
+			List<ObjectEntity> inventory = player.getInventory();
 
 			//top class element for a player
 			Element playerElem = doc.createElement("Player");
@@ -203,7 +204,7 @@ public class SaveParser {
 
 	}
 
-	public void savePlayerInv(Element e, ArrayList<ObjectEntity> inv){
+	public void savePlayerInv(Element e, List<ObjectEntity> inv){
 
 		// -------------INVENTORY---------------//
 		System.out.println("Saving player inventory");

@@ -77,11 +77,11 @@ public enum Direction {
 			case NORTH:
 				return this;
 			case EAST:
-				return this.turnCCW();
+				return this.turnCW();
 			case SOUTH:
 				return this.opposite();
 			case WEST:
-				return this.turnCW();
+				return this.turnCCW();
 			default:
 				throw new AssertionError("Direction not accounted for: " + this); // this should never happen
 		}

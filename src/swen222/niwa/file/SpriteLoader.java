@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ import swen222.niwa.model.world.Direction;
  *
  * @author meiklehami1
  */
-public class SpriteLoader {
+public class SpriteLoader implements Serializable {
 
 	public static final String MANIFEST = "resource/images/spritesets.xml";
 	public static final String DEFAULT_SPRITE = "resource/images/tiles/tempObject.png";
@@ -114,12 +115,12 @@ public class SpriteLoader {
 				String nodeName = currentNode.getNodeName();
 
 				switch (nodeName){
-				case "spriteset":
-					parseSpriteSet(currentNode, new HashMap<>());
-					break;
-				case "group":
-					parseGroup(currentNode, new HashMap<>());
-					break;
+					case "spriteset":
+						parseSpriteSet(currentNode, new HashMap<>());
+						break;
+					case "group":
+						parseGroup(currentNode, new HashMap<>());
+						break;
 				}
 			}
 
@@ -142,15 +143,15 @@ public class SpriteLoader {
 
 				// decide what to do with each child
 				switch (child.getNodeName()){
-				case "sprite":
-					localContext.put(child.getAttribute("id"), parseSprite(currentNode));
-					break;
-				case "group":
-					parseGroup(currentNode, localContext);
-					break;
-				case "spriteset":
-					parseSpriteSet(currentNode, localContext);
-					break;
+					case "sprite":
+						localContext.put(child.getAttribute("id"), parseSprite(currentNode));
+						break;
+					case "group":
+						parseGroup(currentNode, localContext);
+						break;
+					case "spriteset":
+						parseSpriteSet(currentNode, localContext);
+						break;
 				}
 			}
 		}

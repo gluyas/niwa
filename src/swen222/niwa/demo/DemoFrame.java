@@ -1,6 +1,9 @@
 package swen222.niwa.demo;
 
-import swen222.niwa.gui.RoomRenderer;
+import swen222.niwa.gui.graphics.RoomRenderer;
+import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.util.EntityTable;
+import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
@@ -35,11 +38,19 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		super("Garden Demo");
 
 		this.stageName = stageName;
-		Room stage = Room.newFromFile(new File(stageName));
+		Room stage = Room.newFromFile(new File(stageName), 0, 0);
 		world = new World(1,1);
 		rules = new Rules(world.getMap());
 
-		rr = new RoomRenderer(stage);
+		p = new DemoPlayer(Location.at(stage, 0, 0));
+		if (!stage.addEntity(p)) throw new AssertionError();
+		p.addObserver(this);
+
+		EntityTable<Entity> et = new HashEntityTable<>();
+		et.add(p);
+
+		rr = new RoomRenderer(stage, et);
+
 		panel = new DemoPanel(rr);
 		add(panel);
 		panel.setEnabled(true);
@@ -47,10 +58,6 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		panel.setPreferredSize(new Dimension(1280, 720));
 		panel.setSize(1280, 720);
 		addKeyListener(this);
-
-		p = new DemoPlayer(Location.at(stage, 0, 0));
-		if (!stage.addEntity(p)) throw new AssertionError();
-		p.addObserver(this);
 
 		pack();
 		setVisible(true); // make sure we are visible!
@@ -113,13 +120,14 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 	}
 
 	private void refresh() {
-		rr.r.removeEntity(p);
-		Room stage = Room.newFromFile(new File(stageName));
-		rr = new RoomRenderer(stage);
-		panel.setRR(rr);
-		p.setLocation(Location.at(stage, 0, 0));
-		stage.addEntity(p);
-		repaint();
+		//rr.setRoom(Room.newFromFile(new File(stageName), 0, 0));
+		//rr.r.removeEntity(p);
+//		Room stage = Room.newFromFile(new File(stageName), 0, 0);
+//		rr = new RoomRenderer(stage);
+//		panel.setRR(rr);
+//		p.setLocation(Location.at(stage, 0, 0));
+//		stage.addEntity(p);
+//		repaint();
 	}
 
 	@Override
@@ -139,18 +147,18 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 
 		switch(roomDirection){
 
-		case NORTH:
-			return d;
+			case NORTH:
+				return d;
 
-		case WEST:
-			return d.turnCCW();
+			case WEST:
+				return d.turnCCW();
 
-		case SOUTH:
-			d=d.turnCW();
-			return d.turnCW();
+			case SOUTH:
+				d=d.turnCW();
+				return d.turnCW();
 
-		case EAST:
-			return d.turnCW();
+			case EAST:
+				return d.turnCW();
 		}
 		return d;
 

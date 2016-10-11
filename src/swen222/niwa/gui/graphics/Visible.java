@@ -23,8 +23,8 @@ public interface Visible {
 	@Nullable
 	Sprite sprite(Direction camera);
 
-	default void drawSprite(Graphics g, Direction facing, int x, int y, double blockSize) {
-		Sprite s = this.sprite(facing);
+	default void drawSprite(Graphics g, Direction camera, int x, int y, double blockSize) {
+		Sprite s = this.sprite(camera);
 		if (s == null) return;
 		s.draw(g, x, y, blockSize);
 	}

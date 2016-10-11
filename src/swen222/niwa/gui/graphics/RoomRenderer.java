@@ -30,7 +30,7 @@ public class RoomRenderer {
 
 	private Direction facing = Direction.NORTH; // the world direction that is northeast from the user's perspective
 
-	public RoomRenderer(Room subject) {
+	public RoomRenderer(Room subject, EntityTable<?> et) {
 		this.r = subject;
 	}
 

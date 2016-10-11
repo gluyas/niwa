@@ -27,7 +27,7 @@ public class RenderPanel extends JPanel implements Observer {
 		setDoubleBuffered(true);
 		control.addObserver(this);
 		this.control = control;
-		this.rr = new RoomRenderer(control.getRoom());
+		this.rr = new RoomRenderer(control.getRoom(), null);
 		addKeyListener(control);
 
 		setPreferredSize(new Dimension(1280, 630));
