@@ -17,7 +17,7 @@ import java.util.Observable;
 public abstract class Entity extends Observable implements Visible {
 
 	private Location loc; // private so that notifyObservers in moveTo cannot be omitted
-	private String description;
+	private String description; // the flavour text description of this Entity
 
 	/**
 	 * Create a new Entity at the given Location
@@ -70,10 +70,18 @@ public abstract class Entity extends Observable implements Visible {
 		}
 	}
 
+	/**
+	 * Get this Entity's description
+	 * @return
+	 */
 	public String getDescription(){
 		return description;
 	}
 
+	/**
+	 * Sets the description of this Entity
+	 * @param s
+	 */
 	public void setDescription(String s){
 		description = s;
 	}

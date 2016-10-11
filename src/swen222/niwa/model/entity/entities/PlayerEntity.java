@@ -37,15 +37,11 @@ public class PlayerEntity extends Entity {
 		return sprites.sprite(camera);
 	}
 
-<<<<<<< Updated upstream
-	public void addItem(ObjectEntity item) {
-=======
 	public String getType(){
 		return type;
 	}
 
 	public void addItem(ObjectEntity item){
->>>>>>> Stashed changes
 		inventory.add(item);
 	}
 
