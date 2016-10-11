@@ -3,8 +3,7 @@ package swen222.niwa.gui;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,6 +11,7 @@ import javax.swing.ButtonModel;
 import javax.swing.JPanel;
 
 import swen222.niwa.Client;
+import swen222.niwa.model.entity.ObjectEntity;
 
 /**
  * Panel for displaying the inventory. Creates and manages the inventory buttons
@@ -19,7 +19,7 @@ import swen222.niwa.Client;
  * @author Zoe
  *
  */
-public class InventoryPanel extends JPanel implements Observer{
+public class InventoryPanel extends JPanel implements Observer {
 
 	// the below will change depending on how many items we let players hold
 	private static final int INV_SIZE = 9;
@@ -48,30 +48,35 @@ public class InventoryPanel extends JPanel implements Observer{
 	 * Takes in a map of item names and counts, iterates through each item
 	 * updating inventory buttons accordingly
 	 *
-	 * @param items - map of item name to number in inventory
-	 * @param images - map of item name to image
+	 * @param items
+	 *            - map of item name to number in inventory
+	 * @param images
+	 *            - map of item name to image
 	 */
-	public void updateInventory(Map<String, Integer> items, Map<String, Image> images) {
-		int i = 0;
-		for (String s : items.keySet()) {
-			//buttons[i].updateButton(s, items.get(s), images.get(s));
-			i++;
+	public void updateInventory(ArrayList<ObjectEntity> items) {
+		// int i = 0;
+		for (int i = 0; i < INV_SIZE; i++) {
+			if (i < items.size()) {
+				buttons[i].updateButton(items.get(i));
+			} else {
+				buttons[i].resetButton();
+			}
 		}
 	}
 
-	public String getSelectedItem() {
-		ButtonModel bMod = btnGroup.getSelection();
-		if (bMod == null) {
-			return "null";
-		} else {
-			return bMod.getActionCommand();
+	public String getItemDescription() {
+		for(int i=0; i < INV_SIZE; i++){
+			if(buttons[i].isSelected() && buttons[i].getItem() != null){
+				return buttons[i].getItem().getDescription();
+			}
 		}
+		return "";
 	}
 
-	public int getSelectedSlot(){
-		for(int i=0;i<INV_SIZE;i++){
-			//protect against player selecting empty slot below
-			if(buttons[i].isSelected()){
+	public int getSelectedSlot() {
+		for (int i = 0; i < INV_SIZE; i++) {
+			// protect against player selecting empty slot below
+			if (buttons[i].isSelected() && buttons[i].getItem() != null) {
 				return i;
 			}
 		}

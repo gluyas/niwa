@@ -29,21 +29,6 @@ public class Rune extends ObjectEntity {
 		super(loc);
 		this.type = type;
 		this.sprites = sprites;
-		Image thumb = null;
-		try {
-			if(type.equals("circle")){
-				thumb = ImageIO.read(new File("resource/images/runes/1Thumb.png"));
-			}else if(type.equals("cross")){
-				thumb = ImageIO.read(new File("resource/images/runes/2Thumb.png"));
-			}else{
-				thumb = ImageIO.read(new File("resource/images/runes/3Thumb.png"));
-			}
-
-		} catch (IOException e) {
-			// loading thumbnail failed
-			e.printStackTrace();
-		}
-		this.setThumbnail(thumb);
 		this.setName(type+" rune");
 		this.setDescription("A rock with a strange "+type+"-like rune on it.");
 	}

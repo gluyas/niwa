@@ -11,7 +11,6 @@ import swen222.niwa.model.world.Location;
 public abstract class ObjectEntity extends Entity {
 
 	private String name;
-	private Image thumbnail; // to be displayed on inventory buttons
 
 	public ObjectEntity(Location loc) {
 		super(loc);
@@ -35,25 +34,6 @@ public abstract class ObjectEntity extends Entity {
 	 */
 	public void setName(String s) {
 		name = s;
-	}
-
-	/**
-	 * Get this ObjectEntity's thumbnail image
-	 *
-	 * @return
-	 */
-	public Image getThumbnail() {
-		return thumbnail;
-	}
-
-	/**
-	 * set this ObjectEntity's thumbnail image
-	 *
-	 * @param thumbnail
-	 *            - new thumbnail image
-	 */
-	public void setThumbnail(Image thumbnail) {
-		this.thumbnail = thumbnail;
 	}
 
 }

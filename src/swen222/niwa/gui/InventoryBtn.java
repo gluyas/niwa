@@ -7,6 +7,8 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -27,6 +29,20 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 	// name of the item in this slot, "Empty" if nothing there
 	private String name;
 	// image of the item, null if empty
+	private static Map<String, Image> IMAGES = new HashMap<String, Image>();
+
+	static{
+		try {
+			IMAGES.put("seed", ImageIO.read(new File("resource/images/entities/misc/seedThumb.png")));
+			IMAGES.put("circle", ImageIO.read(new File("resource/images/entities/runes/1Thumb.png")));
+			IMAGES.put("cross", ImageIO.read(new File("resource/images/entities/runes/2Thumb.png")));
+			IMAGES.put("lightning", ImageIO.read(new File("resource/images/entities/runes/3Thumb.png")));
+		} catch (IOException e) {
+			// file reading failed
+			e.printStackTrace();
+		}
+	}
+
 	private Image img;
 	// how many of this kind of item the player has, 0 if empty
 	private boolean hover;
@@ -57,9 +73,15 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 	public void updateButton(ObjectEntity item) {
 		this.item = item;
 		this.name = item.getName();
-		this.img = item.getThumbnail();
+		this.img = IMAGES.get(name);
 		setActionCommand(name);
 		setToolTipText(name);
+	}
+
+	public void resetButton(){
+		this.item = null;
+		this.name = "Empty";
+		this.img = null;
 	}
 
 	/**

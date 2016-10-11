@@ -97,7 +97,6 @@ public class Client extends Observable implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// change this string to be the object description at merge
-		String selected = view.invPanel.getSelectedItem();
 		int slot = view.invPanel.getSelectedSlot();
 		switch (e.getActionCommand()) {
 			case "Use Item":
@@ -108,7 +107,9 @@ public class Client extends Observable implements ActionListener, KeyListener {
 
 			case "Inspect":
 				if (slot != -1){
-					view.gamePanel.updateText(selected);
+					view.gamePanel.updateText(view.invPanel.getItemDescription());
+				}else{
+
 				}
 				break;
 
@@ -191,7 +192,7 @@ public class Client extends Observable implements ActionListener, KeyListener {
 
 			case VK_I:
 				if (slot != -1){
-					view.gamePanel.updateText(view.invPanel.getSelectedItem());
+					view.gamePanel.updateText(view.invPanel.getItemDescription());
 				}
 				break;
 
