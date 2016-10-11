@@ -73,7 +73,6 @@ public class Client extends Observable implements ActionListener, KeyListener {
 	public void setRoom(Room newRoom, EntityTable<Entity> newET) {
 		this.currentRoom = newRoom;
 		this.currentET = newET;
-		System.out.println("changed room on client");
 		setChanged();
 		notifyObservers();
 	}

@@ -116,7 +116,7 @@ public class Master extends Thread implements Observer {
 		this.et.deleteObserver(this);
 		this.currentRoom = r;
 		this.et = server.getEntityTable(currentRoom);
-		System.out.println(et);
+		
 		this.et.addObserver(this);
 		for (Entity e : et) sendAdd(e);
 		sendRoom();

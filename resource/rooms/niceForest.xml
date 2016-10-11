@@ -4,7 +4,7 @@
 
 <name> NiceForest </name>
 
-<spawnNorth col = "8" row = "0" />
+<spawnNorth col = "7" row = "0" />
 <spawnEast col = "0" row = "3" />
 <spawnSouth col = "6" row = "4" />
 <spawnWest col = "0" row = "2" />
