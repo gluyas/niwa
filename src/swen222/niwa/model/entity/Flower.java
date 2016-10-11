@@ -17,63 +17,73 @@ import swen222.niwa.model.world.Location;
 public class Flower extends Entity{
 
 	private String type;
-	private static SpriteSet sprites;
+	private static SpriteSet[][] SPRITES = {
+			{
+					SpriteLoader.get("redFlower1"),
+					SpriteLoader.get("redFlower2"),
+					SpriteLoader.get("redFlower3")
+			},
+			{
+					SpriteLoader.get("blueFlower1"),
+					SpriteLoader.get("blueFlower2"),
+					SpriteLoader.get("blueFlower3")
+			},
+			{
+					SpriteLoader.get("greenFlower1"),
+					SpriteLoader.get("greenFlower2"),
+					SpriteLoader.get("greenFlower3")
+			},
+			{
+					SpriteLoader.get("blackFlower1"),
+					SpriteLoader.get("blackFlower2"),
+					SpriteLoader.get("blackFlower3")
+			},
+			{
+					SpriteLoader.get("greyFlower1"),
+					SpriteLoader.get("greyFlower2"),
+					SpriteLoader.get("greyFlower3")
+			}
+	};
 
-	public static final SpriteSet[] RED = {
-			SpriteLoader.get("redFlower1"),
-			SpriteLoader.get("redFlower2"),
-			SpriteLoader.get("redFlower3")
-	};
-	public static final SpriteSet[] BLUE = {
-			SpriteLoader.get("blueFlower1"),
-			SpriteLoader.get("blueFlower2"),
-			SpriteLoader.get("blueFlower3")
-	};
-	public static final SpriteSet[] GREEN = {
-			SpriteLoader.get("greenFlower1"),
-			SpriteLoader.get("greenFlower2"),
-			SpriteLoader.get("greenFlower3")
-	};
-	public static final SpriteSet[] BLACK = {
-			SpriteLoader.get("blackFlower1"),
-			SpriteLoader.get("blackFlower2"),
-			SpriteLoader.get("blackFlower3")
-	};
-	public static final SpriteSet[] GREY = {
-			SpriteLoader.get("greyFlower1"),
-			SpriteLoader.get("greyFlower2"),
-			SpriteLoader.get("greyFlower3")
-	};
+	int spriteNum;
+	int spriteCol;
 
 	public Flower(Location loc, String type) {
 		super(loc);
 		this.type = type;
-		this.sprites = getRandomSprite(type);
+		getRandomSprite(type);
 		this.setDescription("What a lovely "+type+" flower.");
 	}
 
-	private SpriteSet getRandomSprite(String type) {
+	private void getRandomSprite(String type) {
 		//generate a random int to append
-		int randInt = new Random().nextInt(3)+1;
+		int randInt = new Random().nextInt(3)-1;
+		spriteNum = randInt;
 		switch(type){
 		case "red":
-			return SpriteLoader.get("redFlower"+randInt);
+			spriteCol = 0;
+			break;
 		case "blue":
-			return SpriteLoader.get("blueFlower"+randInt);
+			spriteCol = 1;
+			break;
 		case "green":
-			return SpriteLoader.get("greenFlower"+randInt);
+			spriteCol = 2;
+			break;
 		case "black":
-			return SpriteLoader.get("blackFlower"+randInt);
+			spriteCol = 3;
+			break;
 		case "grey":
-			return SpriteLoader.get("greyFlower"+randInt);
+			spriteCol = 4;
+			break;
 		default:
-			return SpriteLoader.get("blueFlower"+randInt);
+			spriteCol =0;
+			break;
 		}
 	}
 
 	@Override
 	public Sprite sprite(Direction camera) {
-		return sprites.sprite(camera);
+		return SPRITES[spriteCol][spriteNum].sprite(camera);
 	}
 
 }

@@ -69,15 +69,17 @@ public class Master extends Thread implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.printf("UD: %s: %s%n", o, arg);
+		//System.out.printf("UD: %s: %s%n", o, arg);
 		try {
-			if (o == player && arg instanceof Entity.LocationUpdate) {
-				//System.out.println("maybe not in room");
-				Entity.LocationUpdate ud = (Entity.LocationUpdate) arg;
-				if (ud.to.room != currentRoom){
-					//System.out.println("not in current room");
-					setRoom(ud.to.room);
-					sendUpdate(ud);
+			if (o == player) {
+				if (arg instanceof Entity.LocationUpdate) {
+					//System.out.println("maybe not in room");
+					Entity.LocationUpdate ud = (Entity.LocationUpdate) arg;
+					if (ud.to.room != currentRoom) {
+						//System.out.println("not in current room");
+						setRoom(ud.to.room);
+						sendUpdate(ud);
+					}
 				}
 			} else if (o == et && arg instanceof ObservableEntityTable.ElementUpdate) {
 				// Entity table updates cannot be serialised as the tables themselves are not - we need to control it
@@ -101,6 +103,7 @@ public class Master extends Thread implements Observer {
 		output.write(ADD_ENTITY);
 		output.writeObject(e);
 		output.flush();
+		System.out.println("ADD: "+e);
 	}
 
 	private void sendRemove(Entity e) throws IOException {

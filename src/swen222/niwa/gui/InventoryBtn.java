@@ -34,9 +34,9 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 	static{
 		try {
 			IMAGES.put("seed", ImageIO.read(new File("resource/images/entities/misc/seedThumb.png")));
-			IMAGES.put("circle", ImageIO.read(new File("resource/images/entities/runes/1Thumb.png")));
-			IMAGES.put("cross", ImageIO.read(new File("resource/images/entities/runes/2Thumb.png")));
-			IMAGES.put("lightning", ImageIO.read(new File("resource/images/entities/runes/3Thumb.png")));
+			IMAGES.put("circle rune", ImageIO.read(new File("resource/images/entities/runes/1Thumb.png")));
+			IMAGES.put("cross rune", ImageIO.read(new File("resource/images/entities/runes/2Thumb.png")));
+			IMAGES.put("lightning rune", ImageIO.read(new File("resource/images/entities/runes/3Thumb.png")));
 		} catch (IOException e) {
 			// file reading failed
 			e.printStackTrace();

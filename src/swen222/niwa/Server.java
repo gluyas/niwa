@@ -46,7 +46,7 @@ public class Server {
 	 * @return the PlayerEntity associated with the Master
 	 */
 	public PlayerEntity join(Master client) {
-		PlayerEntity newPlayer = new PlayerEntity(world.getSpawn(), SpriteLoader.get("ghostBlue"), "marc");
+		PlayerEntity newPlayer = new PlayerEntity(world.getSpawn(), SpriteLoader.get("ghostBlue"), "blue");
 		connections.put(client, newPlayer);
 		getEntityTable(world.getSpawn().room).add(newPlayer);
 		return newPlayer;

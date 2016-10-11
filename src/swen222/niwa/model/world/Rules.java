@@ -1,18 +1,12 @@
 package swen222.niwa.model.world;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 
 import swen222.niwa.file.SpriteLoader;
-import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.entity.*;
 import swen222.niwa.model.util.EntityTable;
-import swen222.niwa.model.entity.ObjectEntity;
-import swen222.niwa.model.entity.ChangingEntity;
-import swen222.niwa.model.entity.Door;
-import swen222.niwa.model.entity.PlayerEntity;
-import swen222.niwa.model.entity.Rune;
-import swen222.niwa.model.entity.RuneStone;
-import swen222.niwa.model.entity.Seed;
-import swen222.niwa.model.entity.Statue;
 import swen222.niwa.model.world.Location.InvalidLocationException;
 
 /**
@@ -160,13 +154,21 @@ public class Rules {
 
 	private boolean canMove(PlayerEntity player, Direction dir){
 		try {
-			Location toGo =player.getLocation().move(dir);
-			Location from =player.getLocation();
+			Location toGo = player.getLocation().move(dir);
+			Location from = player.getLocation();
 
 			Set<Entity> entitiesInDirection = getRoomEntities(player).get(toGo);//check for players in direction
 			for(Entity entity: entitiesInDirection){
 				if (entity instanceof PlayerEntity){
 						return false;
+				}
+				if (entity instanceof Door){
+					if(!((Door) entity).isOpen()){
+						return false;
+					}
+				}
+				if (entity instanceof RuneStone){
+					return false;
 				}
 			}
 
@@ -198,6 +200,7 @@ public class Rules {
 				if(player.canPickUp()){
 
 					player.addItem((ObjectEntity)e); // adds item to playerinventory
+					for (Object o : player.getInventory()) System.out.println(o);
 					entities.remove(e); //Is this correct way to handle removing items from map?
 					return true;
 				}
@@ -286,6 +289,7 @@ public class Rules {
 			return false;
 		}
 		player.removeItem(seed);
+		addEntity(new Flower(toPlant,player.getName()));
 		addPoints(player,1);
 		return true;
 	}
