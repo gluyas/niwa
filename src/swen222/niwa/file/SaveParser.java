@@ -35,6 +35,8 @@ import swen222.niwa.model.world.Room;
 
 /**
  * Creates save data in the save file.
+ * Unfortunately there wasn't time to finish this class,
+ * so its in an unfinished state.
  * @author Jack U
  *
  */
