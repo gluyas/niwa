@@ -53,7 +53,7 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 		img = null;
 		hover = false;
 
-		setFocusable(true);
+		setFocusable(false);
 		setContentAreaFilled(false);
 		setBorderPainted(false);
 		setVisible(true);

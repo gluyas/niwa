@@ -164,6 +164,7 @@ public class Client extends Observable implements ActionListener, KeyListener {
 				return;
 				// unknown command
 		}
+		view.requestFocus();
 		//System.out.println("ACTION!");
 		update();
 	}
