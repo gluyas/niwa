@@ -44,6 +44,7 @@ public class Rules {
 	 */
 	public boolean move(PlayerEntity player, Direction dir){
 		setRoom(player);
+		player.updateFacing(dir);
 
 		if(outOfBounds(player,dir)){
 			return tryLeaveRoom(player, dir);
@@ -53,7 +54,6 @@ public class Rules {
 		}
 		player.move(dir);
 		pickUp(player);//pick up anything player is on
-		player.updateFacing(dir);
 		checkStatues();//Update statue states and opens door
 		return true;
 	}
@@ -187,7 +187,8 @@ public class Rules {
 		for(Entity e: entitiesAtPosition){
 			if(e instanceof ObjectEntity){
 				if(player.canPickUp()){
-					player.addItem(e); // adds item to playerinventory
+
+					player.addItem((ObjectEntity)e); // adds item to playerinventory
 					entities.remove(e); //Is this correct way to handle removing items from map?
 					return true;
 				}
@@ -226,6 +227,30 @@ public class Rules {
 
 //----------------------------------------------------------------------------------------------------------------
 
+	public boolean inspect(PlayerEntity player){
+		setRoom(player);
+		if(somethingToSee(player).equals(null)){
+			return false;
+		}
+		return true;
+
+	}
+
+	private String somethingToSee(PlayerEntity player){
+		String description= "";
+		try {
+			Location inFront = player.getLocation().move(player.getFacing());
+			if(!inFront.tile().getProp().equals(null)){
+				description=inFront.tile().getProp().getDescription();
+			}
+			for(Entity e:entities.get(inFront)){
+				description=description+"\n"+e.getDescription();
+			}
+			return description;
+		} catch (InvalidLocationException e) {
+			return null;
+		}
+	}
 	/**
 	 *Performs an action depending on whether the item selected is a seed or a rune
 	 *

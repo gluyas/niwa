@@ -1,11 +1,10 @@
-package swen222.niwa.model.entity;
+package swen222.niwa.model.entity.entities;
 
 import java.util.ArrayList;
 
 import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
@@ -13,20 +12,21 @@ import swen222.niwa.model.world.Location;
  * @author burnshami
  *
  */
-public class PlayerEntity extends Entity{
+public class PlayerEntity extends Entity {
 
 	private String name;
+	private String type;
 	private int points;
-	private ArrayList<Entity> inventory;
+	private ArrayList<ObjectEntity> inventory;
 	private int inventoryCapacity;
 	private Direction facing;
 	private SpriteSet sprites;
 
-	public PlayerEntity(Location loc, SpriteSet sprites) {
+	public PlayerEntity(Location loc, SpriteSet sprites, String type) {
 		super(loc);
 		this.setDescription("What a spooky ghost...");
-		this.inventory= new ArrayList<Entity>();
-		this.inventoryCapacity =3 ;
+		this.inventory = new ArrayList<ObjectEntity>();
+		this.inventoryCapacity = 9;
 		this.points = 0;
 		this.sprites = sprites;
 	}
@@ -74,8 +74,8 @@ public class PlayerEntity extends Entity{
 		notifyObservers((Update)()->this.addPoints(number));
 	}
 
-	public boolean canPickUp(){
-		if(inventory.size()==inventoryCapacity){
+	public boolean canPickUp() {
+		if (inventory.size() == inventoryCapacity) {
 			return false;
 		}
 		return true;

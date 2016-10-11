@@ -11,38 +11,31 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.entity.ObjectEntity;
+
 /**
  * Represents an item in the inventory
- * 
+ *
  * @author Zoe
  *
  */
 public class InventoryBtn extends JToggleButton implements MouseListener {
 
 	public static final int SIZE = 50;
+	private ObjectEntity item;
 	// name of the item in this slot, "Empty" if nothing there
-	private String item;
+	private String name;
 	// image of the item, null if empty
 	private Image img;
 	// how many of this kind of item the player has, 0 if empty
-	private int count;
 	private boolean hover;
 
 	public InventoryBtn() {
-		item = "Empty";
+		item = null;
+		name = "Empty";
 		img = null;
-		count = 0;
 		hover = false;
-		// this is just here to test the drawing, will eventually take img from
-		// sprite
-//		try {
-//			// img = ImageIO.read(new
-//			// File("resource/images/entities/misc/seedThumb.png"));
-//			img = ImageIO.read(new File("resource/images/entities/runes/1Thumb.png"));
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 
 		setFocusable(true);
 		setContentAreaFilled(false);
@@ -50,27 +43,27 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 		setVisible(true);
 		addMouseListener(this);
 
-		setActionCommand(item);
-		setToolTipText(item + ", " + count);
+		setActionCommand(name);
+		setToolTipText(name);
 	}
 
 	/**
-	 * updates the item, img, and count fields, tool tip and action command of the
+	 * updates the item, name, and img fields, tool tip, and action command of the
 	 * button to reflect what is currently stored here
-	 * 
+	 *
 	 * @param item
-	 *            - the new item String
-	 * @param count
-	 *            - the new count integer
-	 * @param img
-	 *            - the image for this item
+	 *            - the new ObjectEntity stored here
 	 */
-	public void updateButton(String item, int count, Image img) {
+	public void updateButton(ObjectEntity item) {
 		this.item = item;
-		this.count = count;
-		this.img = img;
-		setActionCommand(item);
-		setToolTipText(item + ", " + count);
+		this.name = item.getName();
+		this.img = item.getThumbnail();
+		setActionCommand(name);
+		setToolTipText(name);
+	}
+
+	public ObjectEntity getItem(){
+		return item;
 	}
 
 	@Override

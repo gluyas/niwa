@@ -84,7 +84,7 @@ public class SpriteLoader {
 			return new SpriteSet(sprites) {
 				@Override
 				public Sprite sprite(Direction camera) {
-					System.out.println((camera.ordinal()+facing.ordinal())%4);
+					//System.out.println((camera.ordinal()+facing.ordinal())%4);
 					return sprites[facing.relativeTo(camera).ordinal()];
 				}
 			};
@@ -127,7 +127,6 @@ public class SpriteLoader {
 			throw new Error(e);
 		}
 	}
-
 	private static void parseGroup(Node groupNode, Map<String, Sprite> context){
 		Map<String, Sprite> localContext = new HashMap<>(context);
 		NodeList children =  groupNode.getChildNodes();

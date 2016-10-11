@@ -13,14 +13,17 @@ import swen222.niwa.gui.Visible;
  */
 public class Prop implements Visible {
 
+
 	private final String type; // the type of prop
+	private final String description; // flavour text description of this prop
 	private SpriteSet sprites; // the props sprites which can change based on direction
 	private final boolean canOccupy; // whether or not the prop can be occupied by a player
-	
-	public Prop(String type, SpriteSet sprites, boolean canOccupy){
+
+	public Prop(String type, SpriteSet sprites, boolean canOccupy, String description){
 		this.type = type;
+		this.description = description;
 		this.sprites = sprites;
-		this.canOccupy = canOccupy;	
+		this.canOccupy = canOccupy;
 	}
 
 	/**
@@ -29,6 +32,14 @@ public class Prop implements Visible {
 	 */
 	public String getType(){
 		return type;
+	}
+
+	/**
+	 * Returns the description of this prop
+	 * @return
+	 */
+	public String getDescription(){
+		return description;
 	}
 
 	/**

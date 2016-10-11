@@ -120,13 +120,13 @@
 		<group name="trees">
 			<group name="big">
 				<spriteset name="bigTree1">
-					<sprite img="resource/images/props/trees/big/1.png" ay="0.83"/>
+					<sprite img="resource/images/props/trees/big/1.png" ay="0.83" width="1.5"/>
 				</spriteset>
 				<spriteset name="bigTree2">
-					<sprite img="resource/images/props/trees/big/2.png" ay="0.83"/>
+					<sprite img="resource/images/props/trees/big/2.png" ay="0.83" width="1.3"/>
 				</spriteset>
 				<spriteset name="bigTree3">
-					<sprite img="resource/images/props/trees/big/3.png" ay="0.83"/>
+					<sprite img="resource/images/props/trees/big/3.png" ay="0.83" width="1"/>
 				</spriteset>
 			</group>
 			<group name="small">
@@ -255,22 +255,22 @@
 		</group>
 		<group name="runestones">
 			<spriteset name="runestone1">
-				<sprite id="front" img="resource/images/entities/runestones/1/front.png" ay="0.8"/>
-				<sprite id="side" img="resource/images/entities/runestones/1/side.png" ay="0.8"/>
+				<sprite id="left" img="resource/images/entities/runestones/1/front.png" ay="0.8"/>
+				<sprite id="right" img="resource/images/entities/runestones/1/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/1/back.png" ay="0.8"/>
-				<faces n="back" e="back" s="side" w="front"/>			
+				<faces n="back" e="left" s="right" w="back"/>		
 			</spriteset>
 			<spriteset name="runestone2">
-				<sprite id="front" img="resource/images/entities/runestones/2/front.png" ay="0.8"/>
-				<sprite id="side" img="resource/images/entities/runestones/2/side.png" ay="0.8"/>
+				<sprite id="left" img="resource/images/entities/runestones/2/front.png" ay="0.8"/>
+				<sprite id="right" img="resource/images/entities/runestones/2/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/2/back.png" ay="0.8"/>
-				<faces n="back" e="back" s="side" w="front"/>			
+				<faces n="back" e="left" s="right" w="back"/>			
 			</spriteset>
 			<spriteset name="runestone3">
-				<sprite id="front" img="resource/images/entities/runestones/3/front.png" ay="0.8"/>
-				<sprite id="side" img="resource/images/entities/runestones/3/side.png" ay="0.8"/>
+				<sprite id="left" img="resource/images/entities/runestones/3/front.png" ay="0.8"/>
+				<sprite id="right" img="resource/images/entities/runestones/3/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/3/back.png" ay="0.8"/>
-				<faces n="back" e="back" s="side" w="front"/>		
+				<faces n="back" e="left" s="right" w="back"/>		
 			</spriteset>
 		</group>
 		<spriteset name="seed">

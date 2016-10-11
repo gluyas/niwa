@@ -1,5 +1,6 @@
 package swen222.niwa.model.entity;
 
+import swen222.niwa.file.SpriteLoader;
 import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.Sprite;
 import swen222.niwa.model.entity.ChangingEntity;
@@ -13,12 +14,14 @@ import swen222.niwa.model.world.Location;
 public class RuneStone extends ChangingEntity {
 
 	private String type;
-	private SpriteSet sprites;
+	private static SpriteSet sprites;
+	private Direction facing;
 
-	public RuneStone(Location loc, String type, SpriteSet sprites){
+	public RuneStone(Location loc, String type, Direction dir){
 		super(loc);
 		this.type = type;
-		this.sprites = sprites;
+		this.sprites = getSSFromType(type);
+		this.facing = dir;
 		this.setDescription("A large stone with a strange "+type+"-like rune on it.");
 	}
 
@@ -26,9 +29,23 @@ public class RuneStone extends ChangingEntity {
 		return type;
 	}
 
+	private SpriteSet getSSFromType(String type){
+		switch(type){
+		case "circle":
+			return SpriteLoader.get("runestone1");
+		case "cross":
+			return SpriteLoader.get("runestone2");
+		case "lightning":
+			return SpriteLoader.get("runestone3");
+		default:
+			return SpriteLoader.get("runestone1");
+		}
+	}
+
+
 	@Override
 	public Sprite sprite(Direction camera) {
-		return sprites.sprite(camera);
+		return sprites.facing(facing).sprite(camera);
 	}
 
 }
