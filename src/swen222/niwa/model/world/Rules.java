@@ -21,11 +21,14 @@ import swen222.niwa.model.world.Location.InvalidLocationException;
  */
 public class Rules {
 
-	public EntityTable<Entity> entities;
-	public Room room;
-	public Room[][] world;
-	public Rules(Room[][] world){
+	//private EntityTable<Entity> entities;
+	//public Room room;
+	private World world;
+	private EntityTable[][] entities;
+
+	public Rules(World world, EntityTable<Entity>[] ets){
 		this.world = world;
+		this.entities = ets;
 	}
 
 //----------------------------------------------------------------------------------------------------------------
@@ -42,8 +45,7 @@ public class Rules {
 	 * @param dir
 	 * @return
 	 */
-	public boolean move(PlayerEntity player, Direction dir){
-		setRoom(player);
+	public boolean move(PlayerEntity player, Direction dir) {
 		player.updateFacing(dir);
 
 		if(outOfBounds(player,dir)){
@@ -58,55 +60,52 @@ public class Rules {
 		return true;
 	}
 
-	private void setRoom(PlayerEntity player){
-		room= player.getLocation().getRoom();
-		entities =room.entities;
-	}
-
 	private boolean tryLeaveRoom(PlayerEntity player, Direction dir) {
+		Room room = player.getLocation().room;
 		int col = room.worldCol;
 		int row = room.worldRow;
 		Room newRoom;
 		switch(dir){
-		case NORTH:
-			if(row!=0){//Top of map
-				newRoom=world[col][row-1];
-				return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
-			}
-			break;
-		case EAST:
-			if(col!=2){//Right of map
-				newRoom=world[col+1][row];
-				return moveRoom(player,dir.opposite(),newRoom);//Entering from West spawn
-			}
-			break;
-		case SOUTH:
-			if(row!=2){//Bottom of map
-				newRoom=world[col][row+1];
-				return moveRoom(player,dir.opposite(),newRoom);//Entering from north spawn
-			}
-			break;
-		case WEST:
-			if(col!=0){//West of map
-				newRoom=world[col-1][row];
-				return moveRoom(player,dir.opposite(),newRoom);//entering from east spawn
-			}
-			break;
+			case NORTH:
+				if(row!=0){//Top of map
+					newRoom=world.getRoom(col,row-1);
+					return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
+				}
+				break;
+			case EAST:
+				if(col!=2){//Right of map
+					newRoom=world.getRoom(col+1,row);
+					return moveRoom(player,dir.opposite(),newRoom);//Entering from West spawn
+				}
+				break;
+			case SOUTH:
+				if(row!=2){//Bottom of map
+					newRoom=world.getRoom(col,row+1);
+					return moveRoom(player,dir.opposite(),newRoom);//Entering from north spawn
+				}
+				break;
+			case WEST:
+				if(col!=0){//West of map
+					newRoom=world.getRoom(col-1,row);
+					return moveRoom(player,dir.opposite(),newRoom);//entering from east spawn
+				}
+				break;
 		}
 		return false;
-}
+	}
 
 	private boolean outOfBounds(PlayerEntity player, Direction dir){
 		try {
 			player.getLocation().move(dir);
 		} catch (InvalidLocationException e) {
 			return true;
-			}
+		}
 		return false;
 	}
 
 	private boolean moveRoom(PlayerEntity player, Direction entrySide,Room newRoom) {
-		entities.remove(player);
+		Room oldRoom = player.getLocation().room;
+
 		//FIXME
 		//newRoom.addEntity(newRoom.getSpawn(entrySide), player);
 		return true;
@@ -170,7 +169,7 @@ public class Rules {
 				return false;
 			}
 		} catch (InvalidLocationException e1) {
-			e1.printStackTrace();
+			//e1.printStackTrace();
 			return false;
 		}
 		return true;
@@ -205,7 +204,7 @@ public class Rules {
 	 * @return
 	 */
 	public boolean drop(PlayerEntity player,ObjectEntity item){
-		setRoom(player);
+		Room room = player.getLocation().room;
 
 		Set<Entity> entitiesAtPosition = entities.get(player.getLocation()); // All entities at player location
 		for(Entity e: entitiesAtPosition){
@@ -228,12 +227,11 @@ public class Rules {
 //----------------------------------------------------------------------------------------------------------------
 
 	public boolean inspect(PlayerEntity player){
-		setRoom(player);
+		Room room = player.getLocation().room;
 		if(somethingToSee(player).equals(null)){
 			return false;
 		}
 		return true;
-
 	}
 
 	private String somethingToSee(PlayerEntity player){
@@ -259,7 +257,7 @@ public class Rules {
 	 * @return true if seed removed
 	 */
 	public boolean action(PlayerEntity player, ObjectEntity item){
-		setRoom(player);
+		Room room = player.getLocation().room;
 
 		if(item instanceof Seed){//Planting a seed
 			return plantSeed(player,(Seed)item);

@@ -67,6 +67,7 @@ public class HashEntityTable<E extends Entity> extends ObservableEntityTable<E> 
 	@Override
 	public boolean addImpl(E e) {
 		if (entries.add(e)) {
+			System.out.printf("ADDING %s to %s%n", e, this);
 			if (!addToBuckets(e, e.getLocation(), locMap)) {
 				System.err.println(String.format("%s already existed in buckets of %s", e, this));
 			}
@@ -78,6 +79,7 @@ public class HashEntityTable<E extends Entity> extends ObservableEntityTable<E> 
 	@SuppressWarnings("unchecked")
 	public boolean removeImpl(Object o) {
 		if (entries.remove(o)) {
+			System.out.printf("REMVNG %s fm %s%n", o, this);
 			E e = (E) o; // remove won't return true unless o instanceof E
 			if (!removeFromBuckets(e, e.getLocation(), locMap)) {
 				System.err.println(String.format("%s could not be removed from buckets of %s", e, this));

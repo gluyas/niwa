@@ -40,7 +40,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		this.stageName = stageName;
 		Room stage = Room.newFromFile(new File(stageName), 0, 0);
 		world = new World(1,1);
-		rules = new Rules(world.getMap());
+		//rules = new Rules(world.getMap());
 
 		p = new DemoPlayer(Location.at(stage, 0, 0));
 		if (!stage.addEntity(p)) throw new AssertionError();

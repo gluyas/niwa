@@ -6,9 +6,7 @@ import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.entity.PlayerEntity;
 import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.util.ObservableEntityTable;
-import swen222.niwa.model.world.Direction;
-import swen222.niwa.model.world.Room;
-import swen222.niwa.model.world.World;
+import swen222.niwa.model.world.*;
 import swen222.niwa.net.Master;
 
 import java.util.*;
@@ -23,6 +21,7 @@ public class Server {
 
 	public final World world; // immutable object
 	private final ObservableEntityTable<Entity>[][] tables;
+	private final Rules[][] rules;
 	private final Map<Master, PlayerEntity> connections = new HashMap<>(5);
 
 	// Create a server
@@ -30,9 +29,11 @@ public class Server {
 	public Server(World world) {
 		this.world = world;
 		this.tables = (ObservableEntityTable<Entity>[][]) new ObservableEntityTable[world.height][world.width];
+		this.rules = new Rules[world.height][world.width];
 		for (int row = 0; row < world.height; row++) {
 			for (int col = 0; col < world.width; col++) {
 				tables[row][col] = new HashEntityTable<>();
+				rules[row][col] = new Rules(world, tables[row][col]);
 			}
 		}
 	}
@@ -44,7 +45,7 @@ public class Server {
 	 * @param client the Master that wants to join the game.
 	 * @return the PlayerEntity associated with the Master
 	 */
-	public  PlayerEntity join(Master client) {
+	public PlayerEntity join(Master client) {
 		PlayerEntity newPlayer = new PlayerEntity(world.getSpawn(), SpriteLoader.get("ghostBlue"), "marc");
 		connections.put(client, newPlayer);
 		getEntityTable(world.getSpawn().room).add(newPlayer);
@@ -64,15 +65,16 @@ public class Server {
 
 	public void move(Master m, Direction d) {
 		PlayerEntity p = getPlayer(m);
-		if (p != null) p.move(d);
+		Rules r = getRules(p);
+		if (r != null) r.move(p, d);
 	}
 
 	public void action(Master m, int selectedItem) {
-
+		PlayerEntity p = getPlayer(m);
 	}
 
 	public void drop(Master m, int selectedItem) {
-
+		PlayerEntity p = getPlayer(m);
 	}
 
 	// GETTERS
@@ -81,6 +83,13 @@ public class Server {
 	public ObservableEntityTable<Entity> getEntityTable(Room r) {
 		ObservableEntityTable<Entity> et = tables[r.worldRow][r.worldCol];
 		return et != null ? et : null;
+	}
+
+	@Nullable
+	public Rules getRules(PlayerEntity p) {
+		if (p == null) return null;
+		Room r = p.getLocation().room;
+		return rules[r.worldRow][r.worldRow];
 	}
 
 	@Nullable

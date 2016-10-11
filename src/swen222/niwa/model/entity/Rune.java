@@ -32,11 +32,11 @@ public class Rune extends ObjectEntity {
 		Image thumb = null;
 		try {
 			if(type.equals("circle")){
-				thumb = ImageIO.read(new File("resource/images/runes/1Thumb.png"));
+				thumb = ImageIO.read(new File("resource/images/entities/runes/1Thumb.png"));
 			}else if(type.equals("cross")){
-				thumb = ImageIO.read(new File("resource/images/runes/2Thumb.png"));
+				thumb = ImageIO.read(new File("resource/images/entities/runes/2Thumb.png"));
 			}else{
-				thumb = ImageIO.read(new File("resource/images/runes/3Thumb.png"));
+				thumb = ImageIO.read(new File("resource/images/entities/runes/3Thumb.png"));
 			}
 
 		} catch (IOException e) {

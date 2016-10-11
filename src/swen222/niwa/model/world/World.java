@@ -50,7 +50,8 @@ public class World implements Serializable {
 
 	private void initialiseRooms() {
 		File[] maps = new File("resource/rooms").listFiles();
-		for (int col = 0; col < width; col++) {
+		map[0][0] = Room.newFromFile(new File("resource/rooms/spawnRoom.xml"), 0, 0);
+		for (int col = 1; col < width; col++) {
 			for (int row = 0; row < height; row++) {
 				int mapNum = col * height + row;
 				if (mapNum >= maps.length) return;
@@ -103,6 +104,7 @@ public class World implements Serializable {
 	public Room roomAt(int col, int row) {
 		if (col < 0 || col >= map.length || row < 0 || row >= map[0].length) {
 			throw new IllegalArgumentException("Co-ordinates out of bounds");
+			//return null;
 		} else {
 			// assert map[row][col] != null : String.format("Room at (%d, %d) is null", col, row); //TODO: see above
 			return map[row][col];
@@ -111,7 +113,7 @@ public class World implements Serializable {
 
 	//TODO: implement this
 	public Location getSpawn() {
-		return Location.at(roomAt(0, 0), 0, 0);
+		return Location.at(roomAt(0, 0), 4, 4);
 	}
 
 }
