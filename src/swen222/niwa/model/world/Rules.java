@@ -273,8 +273,6 @@ public class Rules {
 		return true;
 	}
 
-
-
 	/**
 	 * Checks whether the player is on soil, if they are the player loses the seed and gets a point
 	 * @param player
