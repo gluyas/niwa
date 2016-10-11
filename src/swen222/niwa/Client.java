@@ -19,8 +19,10 @@ import swen222.niwa.model.entity.PlayerEntity;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.ObservableEntityTable;
 import swen222.niwa.model.world.Direction;
+import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 import swen222.niwa.model.world.World;
+import swen222.niwa.model.world.Location.InvalidLocationException;
 import swen222.niwa.net.Slave;
 
 /**
@@ -85,6 +87,22 @@ public class Client extends Observable implements ActionListener, KeyListener {
 		notifyObservers();
 	}
 
+	public String somethingToSee(PlayerEntity player){
+		String description= "";
+		try {
+			Location inFront = player.getLocation().move(player.getFacing());
+			if(!inFront.tile().getProp().equals(null)){
+				description=inFront.tile().getProp().getDescription();
+			}
+			for(Entity e:currentET.get(inFront)){
+				description=description+"\n"+e.getDescription();
+			}
+			return description;
+		} catch (InvalidLocationException e) {
+			return "";
+		}
+	}
+
 	public void update() {
 		setChanged();
 		notifyObservers();
@@ -109,7 +127,7 @@ public class Client extends Observable implements ActionListener, KeyListener {
 				if (slot != -1){
 					view.gamePanel.updateText(view.invPanel.getItemDescription());
 				}else{
-					// inspect on the world
+					view.gamePanel.updateText(somethingToSee(getPlayer()));
 				}
 				break;
 

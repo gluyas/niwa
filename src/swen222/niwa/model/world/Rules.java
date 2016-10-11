@@ -226,29 +226,6 @@ public class Rules {
 
 //----------------------------------------------------------------------------------------------------------------
 
-	public boolean inspect(PlayerEntity player){
-		Room room = player.getLocation().room;
-		if(somethingToSee(player).equals(null)){
-			return false;
-		}
-		return true;
-	}
-
-	public String somethingToSee(PlayerEntity player){
-		String description= "";
-		try {
-			Location inFront = player.getLocation().move(player.getFacing());
-			if(!inFront.tile().getProp().equals(null)){
-				description=inFront.tile().getProp().getDescription();
-			}
-			for(Entity e:entities.get(inFront)){
-				description=description+"\n"+e.getDescription();
-			}
-			return description;
-		} catch (InvalidLocationException e) {
-			return "";
-		}
-	}
 	/**
 	 *Performs an action depending on whether the item selected is a seed or a rune
 	 *
