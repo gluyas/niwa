@@ -71,6 +71,7 @@ public class RoomRenderer {
 		Random rng = new Random(r.hashCode()*facing.ordinal());
 
 		for (Location loc : new BackToFrontIterator(r, facing)) {
+			if (loc.room != r) return;
 			Tile t = r.tileAt(loc);
 			if (t == null) {
 				System.err.println("null at "+loc.toString());

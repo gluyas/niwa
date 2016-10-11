@@ -85,7 +85,21 @@ public enum Direction {
 			default:
 				throw new AssertionError("Direction not accounted for: " + this); // this should never happen
 		}
+	}
 
+	public Direction relativeToPerspective(Direction to) {
+		switch (to) {
+			case NORTH:
+				return this;
+			case EAST:
+				return this.turnCCW();
+			case SOUTH:
+				return this.opposite();
+			case WEST:
+				return this.turnCW();
+			default:
+				throw new AssertionError("Direction not accounted for: " + this); // this should never happen
+		}
 	}
 
 	/**

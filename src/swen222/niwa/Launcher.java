@@ -109,7 +109,7 @@ public class Launcher {
 				System.out.println(client.getInetAddress() + " HAS CONNECTED.");
 				// TODO: need to create the user ID e.g. int uid = game.registerPlayer()
 				// then pass it into the Master object e.g. new Master(broadcastClock, uid, client)
-				connections[--numOfPlayers] = new Master(client, String.valueOf(numOfPlayers), gameServer);
+				connections[--numOfPlayers] = new Master(client, gameServer);
 				connections[numOfPlayers].start();
 				// If all clients have connected
 			}

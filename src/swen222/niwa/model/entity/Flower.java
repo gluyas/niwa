@@ -57,7 +57,7 @@ public class Flower extends Entity{
 
 	private void getRandomSprite(String type) {
 		//generate a random int to append
-		int randInt = new Random().nextInt(3)-1;
+		int randInt = new Random().nextInt(3);
 		spriteNum = randInt;
 		switch(type){
 		case "red":

@@ -83,6 +83,7 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 		this.item = null;
 		this.name = "Empty";
 		this.img = null;
+		repaint();
 	}
 
 	/**

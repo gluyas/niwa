@@ -111,10 +111,15 @@ public class World implements Serializable {
 			return map[row][col];
 		}
 	}
-
-	//TODO: implement this
+	
 	public Location getSpawn() {
-		return Location.at(roomAt(0, 0), 4, 4);
+		for (int col = 0; col < width; col++) {
+			for (int row = 0; row < height; row++) {
+				Room r = roomAt(col, row);
+				if (r.name.equals(" SpawnRoom ")) return Location.at(r, 4, 5);
+			}
+		}
+		return Location.at(roomAt(0, 0), 4, 6);
 	}
 
 }

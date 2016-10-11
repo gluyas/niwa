@@ -34,8 +34,6 @@ public class Master extends Thread implements Observer {
 
 	public static final int APPLY_UPDATE = 'u';
 
-	public final String name; // username for the player - account will be stored under this.
-
 	private Room currentRoom;
 	private ObservableEntityTable<Entity> et;
 	private PlayerEntity player;
@@ -48,8 +46,7 @@ public class Master extends Thread implements Observer {
 	private ObjectOutputStream output;
 	private boolean close = false;
 
-	public Master(Socket socket, String name, Server server) {
-		this.name = name;
+	public Master(Socket socket, Server server) {
 		this.socket = socket;
 		this.server = server;
 		this.player = server.join(this);

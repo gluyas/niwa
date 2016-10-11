@@ -87,7 +87,7 @@ public class SpriteLoader implements Serializable {
 				@Override
 				public Sprite sprite(Direction camera) {
 					//System.out.println((camera.ordinal()+facing.ordinal())%4);
-					return sprites[facing.relativeTo(camera).ordinal()];
+					return sprites[facing.relativeToPerspective(camera).ordinal()];
 				}
 			};
 		}

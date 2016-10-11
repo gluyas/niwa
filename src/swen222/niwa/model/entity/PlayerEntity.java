@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import swen222.niwa.file.SpriteLoader;
 import swen222.niwa.file.SpriteLoader.SpriteSet;
 import swen222.niwa.gui.graphics.Sprite;
 import swen222.niwa.model.util.Update;
@@ -18,26 +19,54 @@ import swen222.niwa.model.world.Location;
  */
 public class PlayerEntity extends Entity {
 
+	private static final SpriteSet[] SPRITES = {
+			SpriteLoader.get("ghostBlue"),
+			SpriteLoader.get("ghostRed"),
+			SpriteLoader.get("ghostGreen"),
+			SpriteLoader.get("ghostGrey"),
+			SpriteLoader.get("ghostBlack")
+	};
+
 	public final String name;
+	private final int type;
+
 	private int points;
+
 	private ArrayList<ObjectEntity> inventory;
 	private int inventoryCapacity;
 	private Direction facing = Direction.NORTH;
 	private SpriteSet sprites;
 
-	public PlayerEntity(Location loc, SpriteSet sprites, String name) {
+	public PlayerEntity(Location loc, int type) {
 		super(loc);
 		this.setDescription("What a spooky ghost...");
 		this.inventory = new ArrayList<>();
 		this.inventoryCapacity = 9;
 		this.points = 0;
-		this.sprites = sprites;
-		this.name = name;
+		this.type = type;
+		this.name = getNameFromType(type);
+	}
+
+	private static String getNameFromType(int type) {
+		switch (type) {
+			case 0:
+				return "blue";
+			case 1:
+				return "red";
+			case 2:
+				return "green";
+			case 3:
+				return "grey";
+			case 4:
+				return "black";
+			default:
+				return "blue";
+		}
 	}
 
 	@Override
 	public Sprite sprite(Direction camera) {
-		return sprites.facing(facing).sprite(camera);
+		return SPRITES[type].facing(facing).sprite(camera);
 	}
 
 	public void addItem(ObjectEntity item){
