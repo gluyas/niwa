@@ -24,23 +24,23 @@
 </tiles>
 
 
-<prop type = "path2" col = "2" row = "0" />
+<prop type = "woodpathfront" col = "2" row = "0" />
 <prop type = "bigrock" col = "3" row = "0" />
 
 <prop type = "bigrock" col = "0" row = "1" />
-<prop type = "path2" col = "2" row = "1" />
+<prop type = "woodpathfront" col = "2" row = "1" />
 
 <prop type = "bigrock" col = "4" row = "3" />
 
-<prop type = "path2" col = "0" row = "4" />
-<prop type = "path2" col = "1" row = "4" />
-<prop type = "path2" col = "3" row = "4" />
-<prop type = "path2" col = "4" row = "4" />
+<prop type = "woodpathside" col = "0" row = "4" />
+<prop type = "woodpathside" col = "1" row = "4" />
+<prop type = "woodpathside" col = "3" row = "4" />
+<prop type = "woodpathside" col = "4" row = "4" />
 
-<prop type = "path2" col = "2" row = "7" />
+<prop type = "woodpathfront" col = "2" row = "7" />
 
 <prop type = "bigrock" col = "0" row = "8" />
-<prop type = "path2" col = "2" row = "8" />
+<prop type = "woodpathfront" col = "2" row = "8" />
 <prop type = "bigrock" col = "3" row = "8" />
 
 </class>

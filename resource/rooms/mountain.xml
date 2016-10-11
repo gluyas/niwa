@@ -5,6 +5,9 @@
 <name> Mountain </name>
 
 <spawnNorth col = "4" row = "0" />
+<spawnEast col = "9" row = "4"/>
+<spawnSouth col = "5" row = "9"/>
+<spawnWest col = "0" row = "4"/>
 
 <tiles>
 	<line>s9 s9 s8 g7 s5 s3 g1 g0 s0 s0 </line>
@@ -15,14 +18,39 @@
 	<line>g5 g4 s2 w3 q2 w1 w0 q0 w0 g0 </line>
 	<line>s3 g3 g1 w2 w2 w1 w0 w0 w0 g0 </line>
 	<line>s1 g1 g2 g0 g0 w0 w0 w0 g0 g0 </line>
-	<line>s0 s0 g1 s0 g0 g0 g0 g0 g0 s0 </line>
-	<line>s0 s0 s0 s0 s0 s0 s0 s0 s0 s8 </line>
+	<line>s0 s0 g1 g0 g0 g0 g0 g0 g0 s0 </line>
+	<line>s0 s0 g0 g0 s0 s0 s0 s0 s0 s0 </line>
 	
 </tiles>
 
-<prop type="bigrock" col="0" row="0"/>
-<prop type="fencefront" col="5" row="9"/>
-<entity type = "runestone1" col = "1" row = "1"/>
+<prop type="runestone1" col="0" row="0"/>
+<prop type="bigtree" col="7" row="1"/>
+<prop type="bigtree" col="0" row="5"/>
+<prop type="grass" col="4" row="2"/>
+<prop type="grass" col="4" row="1"/>
+<prop type="grass" col="3" row="1"/>
+<prop type="grass" col="5" row="1"/>
+<prop type="grass" col="5" row="2"/>
+<prop type="grass" col="6" row="1"/>
+<prop type="grass" col="7" row="0"/>
+<prop type="grass" col="8" row="1"/>
+<prop type="grass" col="0" row="4"/>
+<prop type="grass" col="1" row="5"/>
+<prop type="grass" col="1" row="7"/>
+<prop type="grass" col="2" row="7"/>
+<prop type="grass" col="7" row="3"/>
+<prop type="grass" col="8" row="8"/>
+<prop type="grass" col="7" row="8"/>
+<prop type="grass" col="9" row="6"/>
+<prop type="bamboo" col="6" row="3"/>
+<prop type="bamboo" col="8" row="4"/>
+<prop type="bamboo" col="4" row="7"/>
+<prop type="bamboo" col="4" row="8"/>
+<prop type="bamboo" col="5" row="8"/>
+<prop type="soil" col="8" row="7"/>
+<entity type = "runestone1" col = "0" row = "0"/>
+<entity type = "seed" col = "2" row = "5"/>
+
 
 
 

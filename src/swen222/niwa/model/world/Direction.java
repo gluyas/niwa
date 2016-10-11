@@ -73,7 +73,19 @@ public enum Direction {
 	 * @return this Direction rotated by the bearing of the other
 	 */
 	public Direction relativeTo(Direction to) {
-		return Direction.values()[Math.abs(this.ordinal()-to.ordinal())%4];
+		switch (to) {
+			case NORTH:
+				return this;
+			case EAST:
+				return this.turnCCW();
+			case SOUTH:
+				return this.opposite();
+			case WEST:
+				return this.turnCW();
+			default:
+				throw new AssertionError("Direction not accounted for: " + this); // this should never happen
+		}
+
 	}
 
 	/**

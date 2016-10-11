@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class DemoPlayer extends PlayerEntity {
 
-	static final SpriteLoader.SpriteSet ss = SpriteLoader.get("ghostBlue");
+	static final SpriteLoader.SpriteSet ss = SpriteLoader.get("ghostRed");
 
 	private Direction facing = Direction.NORTH;
 
@@ -27,7 +27,8 @@ public class DemoPlayer extends PlayerEntity {
 	public Sprite sprite(Direction camera) {
 		//return sprites[0];
 		//return sprites[this.facing.relativeTo(facing).ordinal()];
-		return ss.sprite(camera);
+		//return ss.facing(facing).sprite(camera);
+		return ss.facing(facing).sprite(camera);
 	}
 
 	@Override

@@ -84,7 +84,8 @@ public class SpriteLoader {
 			return new SpriteSet(sprites) {
 				@Override
 				public Sprite sprite(Direction camera) {
-					return sprites[(camera.ordinal()+facing.ordinal())%4];
+					System.out.println((camera.ordinal()+facing.ordinal())%4);
+					return sprites[facing.relativeTo(camera).ordinal()];
 				}
 			};
 		}
@@ -134,7 +135,7 @@ public class SpriteLoader {
 		// iterate over each child
 		for(int i = 0 ; i < children.getLength(); i++){
 			Node currentNode = children.item(i);
-			
+
 			// make sure we're not casting a text node to an Element
 			if(currentNode.getNodeType() == Node.ELEMENT_NODE){
 				Element child = (Element) currentNode;
@@ -165,7 +166,7 @@ public class SpriteLoader {
 			// iterate over children and parse sprites into localContext
 			for(int i = 0 ; i < children.getLength(); i++){
 				Node currentNode = children.item(i);
-				
+
 				// make sure we're not casting a text node to an Element
 				if(currentNode.getNodeType() == Node.ELEMENT_NODE){
 					Element child = (Element) currentNode;
@@ -179,7 +180,7 @@ public class SpriteLoader {
 			// then parse the faces node; add result to SPRITESETS
 			SpriteSet spriteSet = parseFaces(get(children, "faces"), localContext);
 			SPRITESETS.put(ssName, spriteSet);
-		} 
+		}
 		// else create a SpriteSet from the first Sprite element
 		// and add it to SPRITESETS
 		else{
@@ -200,24 +201,24 @@ public class SpriteLoader {
 			}else{
 				img = ImageIO.read(new File(DEFAULT_SPRITE));
 			}
-			
+
 			// now store the other potential attributes; ax, ay, width
 			String axAttr = spriteElement.getAttribute("ax");
 			String ayAttr = spriteElement.getAttribute("ay");
 			String widthAttr =  spriteElement.getAttribute("width");
-			
+
 			// now check which attributes have been specified, if they are
 			// empty then assign them default values.
 			double ax, ay, width;
 			if(axAttr.isEmpty()){ ax = 0.5;}
 			else{ ax = Double.parseDouble(axAttr);}
-			
+
 			if(ayAttr.isEmpty()){ ay = 0.25;}
 			else{ ay = Double.parseDouble(ayAttr);}
-			
+
 			if(widthAttr.isEmpty()){ width = 1;}
 			else{ width = Double.parseDouble(widthAttr);}
-			
+
 			// now create the Sprite
 			return new Sprite(img, ax, ay, width);
 		} catch (IOException e) {
@@ -232,7 +233,7 @@ public class SpriteLoader {
 	private static SpriteSet parseFaces(Node facesNode, Map<String, Sprite> context) {
 		SpriteSet ss = new SpriteSet();
 		Element facesElement = (Element) facesNode;
-		
+
 		// north face
 		String northFace = facesElement.getAttribute("n");
 		Sprite northSprite = context.get(northFace);
@@ -242,17 +243,17 @@ public class SpriteLoader {
 		String eastFace = facesElement.getAttribute("e");
 		Sprite eastSprite = context.get(eastFace);
 		ss.setSprite(Direction.EAST, eastSprite);
-		
+
 		// south face
 		String southFace = facesElement.getAttribute("s");
 		Sprite southSprite = context.get(southFace);
 		ss.setSprite(Direction.SOUTH, southSprite);
-		
+
 		// west face
 		String westFace = facesElement.getAttribute("w");
 		Sprite westSprite = context.get(westFace);
 		ss.setSprite(Direction.WEST, westSprite);
-		
+
 		return ss;
 	}
 
@@ -285,9 +286,9 @@ public class SpriteLoader {
 				return currentNode;
 			}
 		}
-		return null;	
+		return null;
 	}
-	
+
 	// method is here for debugging purposes
 	private Map<String, SpriteSet> getMap(){
 		return SPRITESETS;

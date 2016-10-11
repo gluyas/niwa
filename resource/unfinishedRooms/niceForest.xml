@@ -7,7 +7,7 @@
 <spawnNorth col = "4" row = "0" />
 <spawnEast col = "0" row = "3" />
 <spawnSouth col = "6" row = "4" />
-<spawnWest col = "0" row = "4" />
+<spawnWest col = "0" row = "2" />
 
 <tiles>
 	<line>g0 g0 g1 g0 g0 g1 g0 g0 </line>
@@ -21,17 +21,23 @@
 </tiles>
 
 
-<prop type = "bigTree" col = "1" row = "0"/>
-<prop type = "bigTree" col = "2" row = "0"/>
-<entity type = "runeStone" col = "3" row = "0"/>
+<prop type = "bigtree" col = "1" row = "0"/>
+<prop type = "bigtree" col = "2" row = "0"/>
+<entity type = "runestone2" col = "3" row = "0"/>
 <prop type = "grass" col = "4" row = "0"/>
-<prop type = "bigTree" col = "5" row = "0"/>
+<prop type = "bigtree" col = "5" row = "0"/>
 <prop type = "zen1" col = "7" row = "0"/>
+<prop type = "soil" col = "2" row = "2"/>
+<prop type = "soil" col = "1" row = "1"/>
+<prop type = "soil" col = "3" row = "2"/>
+<prop type = "soil" col = "2" row = "3"/>
+<prop type = "soil" col = "3" row = "3"/>
+<prop type = "soil" col = "5" row = "4"/>
 
-<prop type = "bigTree" col = "0" row = "1"/>
+<prop type = "bigtree" col = "0" row = "1"/>
 <prop type = "bush" col = "2" row = "1"/>
 <prop type = "bush" col = "4" row = "1"/>
-<prop type = "grass" col = "5" row = "1"/>
+<prop type = "soil" col = "5" row = "1"/>
 <prop type = "grass" col = "6" row = "1"/>
 
 <prop type = "grass" col = "0" row = "2"/>

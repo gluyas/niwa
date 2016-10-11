@@ -44,35 +44,35 @@
 			<sprite id="lb" img="resource/images/players/ghosts/blue/leftBack.png" ay="0.8" />
 			<sprite id="rf" img="resource/images/players/ghosts/blue/rightFront.png" ay="0.8" />
 			<sprite id="rb" img="resource/images/players/ghosts/blue/rightBack.png" ay="0.8" />
-			<faces n="rb" e="lf" s="rf" w="lb" />
+			<faces n="rb" e="rf" s="lf" w="lb" />
 		</spriteset>
 		<spriteset name="ghostBlack">
 			<sprite id="lf" img="resource/images/players/ghosts/black/leftFront.png" ay="0.8" />
 			<sprite id="lb" img="resource/images/players/ghosts/black/leftBack.png" ay="0.8" />
 			<sprite id="rf" img="resource/images/players/ghosts/black/rightFront.png" ay="0.8" />
 			<sprite id="rb" img="resource/images/players/ghosts/black/rightBack.png" ay="0.8" />
-			<faces n="rb" e="lf" s="rf" w="lb" />
+			<faces n="rb" e="rf" s="lf" w="lb" />
 		</spriteset>
 		<spriteset name="ghostGreen">
 			<sprite id="lf" img="resource/images/players/ghosts/green/leftFront.png" ay="0.8" />
 			<sprite id="lb" img="resource/images/players/ghosts/green/leftBack.png" ay="0.8" />
 			<sprite id="rf" img="resource/images/players/ghosts/green/rightFront.png" ay="0.8" />
 			<sprite id="rb" img="resource/images/players/ghosts/green/rightBack.png" ay="0.8" />
-			<faces n="rb" e="lf" s="rf" w="lb" />
+			<faces n="rb" e="rf" s="lf" w="lb" />
 		</spriteset>
 		<spriteset name="ghostGrey">
 			<sprite id="lf" img="resource/images/players/ghosts/grey/leftFront.png" ay="0.8" />
 			<sprite id="lb" img="resource/images/players/ghosts/grey/leftBack.png" ay="0.8" />
 			<sprite id="rf" img="resource/images/players/ghosts/grey/rightFront.png" ay="0.8" />
 			<sprite id="rb" img="resource/images/players/ghosts/grey/rightBack.png" ay="0.8" />
-			<faces n="rb" e="lf" s="rf" w="lb" />
+			<faces n="rb" e="rf" s="lf" w="lb" />
 		</spriteset>
 		<spriteset name="ghostRed">
 			<sprite id="lf" img="resource/images/players/ghosts/red/leftFront.png" ay="0.8" />
 			<sprite id="lb" img="resource/images/players/ghosts/red/leftBack.png" ay="0.8" />
 			<sprite id="rf" img="resource/images/players/ghosts/red/rightFront.png" ay="0.8" />
 			<sprite id="rb" img="resource/images/players/ghosts/red/rightBack.png" ay="0.8" />
-			<faces n="rb" e="lf" s="rf" w="lb" />
+			<faces n="rb" e="rf" s="lf" w="lb" />
 		</spriteset>
 	</group>
 	
@@ -258,26 +258,26 @@
 				<sprite id="front" img="resource/images/entities/runestones/1/front.png" ay="0.8"/>
 				<sprite id="side" img="resource/images/entities/runestones/1/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/1/back.png" ay="0.8"/>
-				<faces n="front" e="back" s="back" w="side"/>			
+				<faces n="back" e="back" s="side" w="front"/>			
 			</spriteset>
 			<spriteset name="runestone2">
 				<sprite id="front" img="resource/images/entities/runestones/2/front.png" ay="0.8"/>
 				<sprite id="side" img="resource/images/entities/runestones/2/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/2/back.png" ay="0.8"/>
-				<faces n="front" e="back" s="back" w="side"/>			
+				<faces n="back" e="back" s="side" w="front"/>			
 			</spriteset>
 			<spriteset name="runestone3">
 				<sprite id="front" img="resource/images/entities/runestones/3/front.png" ay="0.8"/>
 				<sprite id="side" img="resource/images/entities/runestones/3/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/3/back.png" ay="0.8"/>
-				<faces n="front" e="back" s="back" w="side"/>		
+				<faces n="back" e="back" s="side" w="front"/>		
 			</spriteset>
 		</group>
 		<spriteset name="seed">
-			<sprite img="resource/images/entities/misc/seed.png" ay="0.8"/>
+			<sprite img="resource/images/entities/misc/seed.png" ay="0.85"/>
 		</spriteset>
 		<spriteset name="soil">
-			<sprite img="resource/images/entities/misc/soil.png"/>
+			<sprite img="resource/images/entities/misc/soil.png" ay="0.83"/>
 		</spriteset>
 		<group name ="statues">
 			<spriteset name="statueActive">
