@@ -13,6 +13,7 @@ import swen222.niwa.gui.Visible;
  */
 public class Prop implements Visible {
 
+
 	private final String type; // the type of prop
 	private final String description; // flavour text description of this prop
 	private SpriteSet sprites; // the props sprites which can change based on direction

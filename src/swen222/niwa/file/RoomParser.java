@@ -12,6 +12,7 @@ import swen222.niwa.model.entity.entities.Seed;
 import swen222.niwa.model.entity.entities.Statue;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.HashEntityTable;
+import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Prop;
 import swen222.niwa.model.world.Room;
@@ -393,14 +394,19 @@ public class RoomParser {
 				String type = el.getAttribute("type");
 				String stringCol = el.getAttribute("col");
 				String stringRow = el.getAttribute("row");
+				String direction = el.getAttribute("dir");
+
+				// get the facing direction
+				Direction facing = Direction.fromString(direction);
 
 				int col = Integer.valueOf(stringCol);
 				int row = Integer.valueOf(stringRow);
-
+				// we assume all the statues are listed before the door
+				ArrayList<Statue> statues = new ArrayList<>();
 				//add the string in the 2D array
 				switch(type){
 				case "door":
-					entities.add(new Door(Location.at(room, col, row), SpriteLoader.get("closedDoor"), null));
+					entities.add(new Door(Location.at(room, col, row), statues, facing));
 					break;
 				case "rune1":
 					entities.add(new Rune(Location.at(room, col, row), "circle", SpriteLoader.get("rune1")));
@@ -412,19 +418,21 @@ public class RoomParser {
 					entities.add(new Rune(Location.at(room, col, row), "lightning", SpriteLoader.get("rune3")));
 					break;
 				case "runestone1":
-					entities.add(new RuneStone(Location.at(room, col, row), "circle", SpriteLoader.get("runestone1")));
+					entities.add(new RuneStone(Location.at(room, col, row), "circle", facing));
 					break;
 				case "runestone2":
-					entities.add(new RuneStone(Location.at(room, col, row), "cross", SpriteLoader.get("runestone2")));
+					entities.add(new RuneStone(Location.at(room, col, row), "cross", facing));
 					break;
 				case "runestone3":
-					entities.add(new RuneStone(Location.at(room, col, row), "lightning", SpriteLoader.get("runestone3")));
+					entities.add(new RuneStone(Location.at(room, col, row), "lightning", facing));
 					break;
 				case "seed":
 					entities.add(new Seed(Location.at(room, col, row), SpriteLoader.get("seed")));
 					break;
 				case "statue":
-					entities.add(new Statue(Location.at(room, col, row), SpriteLoader.get("statueDormant")));
+					Statue statue = new Statue(Location.at(room, col, row));
+					statues.add(statue);
+					entities.add(statue);
 					break;
 				}
 			}
@@ -449,6 +457,8 @@ public class RoomParser {
 
 
 	}
+
+
 
 	public void setLocationRoom(Room room) {
 		this.room = room;
