@@ -26,13 +26,12 @@ public class Server {
 
 	// Create a server
 	@SuppressWarnings("unchecked")
-	public Server(World world) {
+	public Server(World world, ObservableEntityTable<Entity>[][] tables) {
 		this.world = world;
-		this.tables = (ObservableEntityTable<Entity>[][]) new ObservableEntityTable[world.height][world.width];
+		this.tables = tables;
 		this.rules = new Rules[world.height][world.width];
 		for (int row = 0; row < world.height; row++) {
 			for (int col = 0; col < world.width; col++) {
-				tables[row][col] = new HashEntityTable<>();
 				rules[row][col] = new Rules(world, tables[row][col],tables);
 			}
 		}
@@ -65,7 +64,7 @@ public class Server {
 
 	public void move(Master m, Direction d) {
 		PlayerEntity p = getPlayer(m);
-		Rules r = getRules(p);		
+		Rules r = getRules(p);
 		if (r != null) r.move(p, d);
 	}
 

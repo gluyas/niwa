@@ -30,7 +30,7 @@ public class Room implements Serializable { // extends Observable if we make it 
 
 	private final Location[] spawnLocs = new Location[4]; // the locations of the areas the player can enter from, NESW
 
-	public static EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
+	//public static EntityTable<Entity> entities;   // undecided about this one - this would be the only mutable field in this class;
 									// locations store the room they correspond to so it wouldn't complicate much to
 									// just have one big List of EVERY entity in the world - that would also simplify
 									// moving between rooms, only the entity's position would need to be updated,
@@ -48,24 +48,6 @@ public class Room implements Serializable { // extends Observable if we make it 
 			assert tiles[loc.row][loc.col] != null : String.format("Tile at %s is null", loc.toString());
 			return tiles[loc.row][loc.col];
 		}
-	}
-
-	/**
-	 * @return an EntityTable containing all Entities that are currently in this Room.
-	 */
-	public EntityTable<? extends Entity> getEntityTable() {
-		// TODO: implement this - depends on design decisions regarding entity storage
-		//return null;
-		return this.entities;
-	}
-
-	//TODO: javadoc!
-	public boolean addEntity(Entity e) {
-		return entities.add(e);
-	}
-
-	public boolean removeEntity(Object o) {
-		return entities.remove(o);
 	}
 
 	/**
@@ -113,12 +95,11 @@ public class Room implements Serializable { // extends Observable if we make it 
 		this.width = width;
 		this.height = height;
 		this.name = name;
-		this.entities = new HashEntityTable<>();
 	}
 
 	public static class RoomBuilder {
 
-		private static Room buildRoom(RoomParser parser, int worldCol, int worldRow){
+		public static Room buildRoom(RoomParser parser, int worldCol, int worldRow){
 
 			int width = parser.width;
 			int height = parser.height;
@@ -140,9 +121,6 @@ public class Room implements Serializable { // extends Observable if we make it 
 					}
 				}
 			}
-
-			// add the entities
-			entities = parser.getEntities();
 
 			//needs to read through spawns and convert them into locations
 			int[][] spawns = parser.getSpawns();

@@ -62,7 +62,6 @@ public class Rules {
 		player.move(dir);
 		pickUp(player);//pick up anything player is on
 		checkStatues();//Update statue states and opens door
-		System.out.println("moved normally");
 		return true;
 	}
 
@@ -110,12 +109,10 @@ public class Rules {
 	}
 
 	private boolean moveRoom(PlayerEntity player, Direction entrySide,Room newRoom) {
-		System.out.println("current room"+player.getLocation().getRoom().toString());
 		entities.remove(player);
+		ets[newRoom.worldRow][newRoom.worldCol].add(player);
+		System.out.println(ets[newRoom.worldRow][newRoom.worldCol]);
 		player.setLocation(newRoom.getSpawn(entrySide));
-		System.out.println("current room after leaving"+player.getLocation().getRoom().toString());
-		ets[newRoom.worldCol][newRoom.worldRow].add(player);
-		System.out.println("moved room");
 		return true;
 	}
 
@@ -170,9 +167,6 @@ public class Rules {
 				return false;
 			}
 
-			if(from.tile().getHeight()-toGo.tile().getHeight()>1){//to go is two steps lower
-				return false;
-			}
 			if(from.tile().getHeight()-toGo.tile().getHeight()<-1){//togo is two steps higher
 				return false;
 			}

@@ -21,6 +21,11 @@ public class World implements Serializable {
 	public final int width;
 	public final int height;
 
+	public World(Room[][] map) {
+		this.map = map;
+		this.height = map.length;
+		this.width = map.length;
+	}
 
 	public static World newFromRandom(int width, int height) {
 		World world = new World(width, height);
@@ -50,8 +55,8 @@ public class World implements Serializable {
 
 	private void initialiseRooms() {
 		File[] maps = new File("resource/rooms").listFiles();
-		map[0][0] = Room.newFromFile(new File("resource/rooms/spawnRoom.xml"), 0, 0);
-		for (int col = 1; col < width; col++) {
+		//map[0][0] = Room.newFromFile(new File("resource/rooms/spawnRoom.xml"), 0, 0);
+		for (int col = 0; col < width; col++) {
 			for (int row = 0; row < height; row++) {
 				int mapNum = col * height + row;
 				if (mapNum >= maps.length) return;

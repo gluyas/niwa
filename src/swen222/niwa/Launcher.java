@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import swen222.niwa.file.RoomParser;
+import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.util.HashEntityTable;
+import swen222.niwa.model.util.ObservableEntityTable;
 import swen222.niwa.model.world.Room;
 import swen222.niwa.model.world.World;
 import swen222.niwa.net.Master;
@@ -48,7 +52,7 @@ public class Launcher {
 		if(server){
 			// Running in server mode
 			//Room game = Room.newFromFile(new File("resource/rooms/desertBowl.xml"), 0, 0);
-			runServer(port, numOfPlayers);
+			runServer(port, numOfPlayers, 3, 3);
 		}else if(host != null){
 			// Running in client mode
 			runClient(host, port);
@@ -63,12 +67,29 @@ public class Launcher {
 	 * Creates a server socket and listens for connections from client sockets,
 	 * once all clients have connected it starts a game.
 	 */
-	private static void runServer(int port, int numOfPlayers){
+	@SuppressWarnings("unchecked")
+	private static void runServer(int port, int numOfPlayers, int width, int height){
 
 		//Server gameServer = new Server(new World(Room.newFromFile(new File("resource/rooms/mountainpass.xml"), 0, 0)));
-		Server gameServer = new Server(World.newFromRandom(2, 2));
+		ObservableEntityTable<Entity>[][] tables
+				= (ObservableEntityTable<Entity>[][]) new ObservableEntityTable[height][width];
 		// Start listening for connections
 		System.out.println("SERVER LISTENING ON PORT: " +port);
+
+		File[] maps = new File("resource/rooms").listFiles();
+		Room[][] map = new Room[width][height];
+		loop : for (int col = 0; col < width; col++) {
+			for (int row = 0; row < height; row++) {
+				int mapNum = col * height + row;
+				if (mapNum >= maps.length) break loop;
+				RoomParser rp = new RoomParser(maps[mapNum]);
+				map[row][col] = Room.RoomBuilder.buildRoom(rp, col, row);
+				tables[row][col] = new HashEntityTable<>();
+				tables[row][col].addAll(rp.getEntities());
+			}
+		}
+
+		Server gameServer = new Server(new World(map), tables);
 
 		try{
 			Master[] connections = new Master[numOfPlayers];

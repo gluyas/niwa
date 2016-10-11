@@ -57,6 +57,7 @@ public class Master extends Thread implements Observer {
 		this.currentRoom = player.getLocation().room;
 		this.et = server.getEntityTable(currentRoom);
 		et.addObserver(this);
+		player.addObserver(this);
 
 		try {
 			input = new DataInputStream(socket.getInputStream());
@@ -70,12 +71,13 @@ public class Master extends Thread implements Observer {
 	public void update(Observable o, Object arg) {
 		try {
 			if (o == player && arg instanceof Entity.LocationUpdate) {
+				//System.out.println("maybe not in room");
 				Entity.LocationUpdate ud = (Entity.LocationUpdate) arg;
 				if (ud.to.room != currentRoom){
-					System.out.println("not in current room");
+					//System.out.println("not in current room");
 					setRoom(ud.to.room);
+					sendUpdate(ud);
 				}
-
 			} else if (o == et && arg instanceof ObservableEntityTable.ElementUpdate) {
 				// Entity table updates cannot be serialised as the tables themselves are not - we need to control it
 				// via messages over net
@@ -110,7 +112,9 @@ public class Master extends Thread implements Observer {
 		this.et.deleteObserver(this);
 		this.currentRoom = r;
 		this.et = server.getEntityTable(currentRoom);
+		System.out.println(et);
 		this.et.addObserver(this);
+		for (Entity e : et) sendAdd(e);
 		sendRoom();
 		System.out.println("SENDING PLAYER");
 	}

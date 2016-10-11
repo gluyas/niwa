@@ -2,6 +2,7 @@ package swen222.niwa.net;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Collections;
 
 import swen222.niwa.Client;
 import swen222.niwa.model.entity.PlayerEntity;
@@ -160,6 +161,7 @@ public class Slave extends Thread {
 	private void addEntity() throws IOException, ClassNotFoundException {
 		Entity e = (Entity) input.readObject();
 		et.add(e);
+		//System.out.println("ADDING "+e);
 	}
 
 	private void removeEntity() throws IOException, ClassNotFoundException {

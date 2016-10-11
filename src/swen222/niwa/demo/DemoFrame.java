@@ -43,7 +43,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		//rules = new Rules(world.getMap());
 
 		p = new DemoPlayer(Location.at(stage, 0, 0));
-		if (!stage.addEntity(p)) throw new AssertionError();
+		//if (!stage.addEntity(p)) throw new AssertionError();
 		p.addObserver(this);
 
 		EntityTable<Entity> et = new HashEntityTable<>();
