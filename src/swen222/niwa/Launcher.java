@@ -1,11 +1,13 @@
 
 package swen222.niwa;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import swen222.niwa.net.ClockThread;
+import swen222.niwa.model.world.Room;
+import swen222.niwa.model.world.World;
 import swen222.niwa.net.Master;
 import swen222.niwa.net.Slave;
 
@@ -21,13 +23,12 @@ import swen222.niwa.net.Slave;
  */
 public class Launcher {
 
+
 	public static void main(String args[]){
 
 		boolean server = false;
 		String host = null;
 		int port = 32768;
-		int clockPeriod = 20;
-		int broadcastClock = 5;
 		int numOfPlayers = 0;
 
 		// Parse the command line arguments
@@ -46,7 +47,8 @@ public class Launcher {
 		// Check what to do
 		if(server){
 			// Running in server mode
-			runServer(port, clockPeriod, broadcastClock, numOfPlayers);
+			Room game = Room.newFromFile(new File("resource/rooms/testRoom.xml"), 0, 0);
+			runServer(port, numOfPlayers);
 		}else if(host != null){
 			// Running in client mode
 			runClient(host, port);
@@ -64,9 +66,9 @@ public class Launcher {
 	 * Creates a server socket and listens for connections from client sockets,
 	 * once all clients have connected it starts a game.
 	 */
-	private static void runServer(int port, int gameClock, int broadcastClock, int numOfPlayers){
-		// Setup a clock thread
-		ClockThread clock = new ClockThread(gameClock);
+	private static void runServer(int port, int numOfPlayers){
+
+		Server gameServer = new Server(new World(Room.newFromFile(new File("resource/rooms/testRoom.xml"), 0, 0)));
 
 		// Start listening for connections
 		System.out.println("SERVER LISTENING ON PORT: " +port);
@@ -79,21 +81,16 @@ public class Launcher {
 				// Listen for a socket
 				Socket client = server.accept();
 				System.out.println(client.getInetAddress() + " HAS CONNECTED.");
-				// TODO: need to create the user ID e.g. int uid = game.registerPlayer();
+				// TODO: need to create the user ID e.g. int uid = game.registerPlayer()
 				// then pass it into the Master object e.g. new Master(broadcastClock, uid, client)
-				connections[--numOfPlayers] = new Master(broadcastClock, 0, client);
+				connections[--numOfPlayers] = new Master(client, String.valueOf(numOfPlayers), gameServer);
 				connections[numOfPlayers].start();
 				// If all clients have connected
-				if(numOfPlayers == 0){
-					System.out.println("ALL CLIENTS ACCEPTED");
-					startGame(clock);
-				}
 			}
 
 		}catch(IOException e){
 
 		}
-		startGame(clock);
 	}
 
 	/**
@@ -110,13 +107,27 @@ public class Launcher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
 	}
 
-	private static void startGame(ClockThread clock, Master... connections){
-
-		clock.start();
+	private static void startGame(Master... connections){
+		// loop while there is atleast one connection
 	}
+
+
+	/**
+	 * Check whether or not there is at least one connection alive.
+	 *
+	 * @param connections
+	 * @return
+	 */
+	private static boolean atleastOneConnection(Master... connections) {
+		for (Master m : connections) {
+			if (m.isAlive()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 }

@@ -10,7 +10,7 @@ import java.awt.*;
  */
 public class DemoPanel extends JPanel {
 
-	RoomRenderer rr;
+	public RoomRenderer rr;
 
 	public DemoPanel(RoomRenderer rr) {
 		setDoubleBuffered(true);

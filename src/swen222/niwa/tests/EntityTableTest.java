@@ -8,7 +8,6 @@ import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 
-import java.util.Collection;
 import java.util.Set;
 
 import static org.junit.Assert.*;

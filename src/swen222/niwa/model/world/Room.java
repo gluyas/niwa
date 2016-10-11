@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Observer;
 import java.util.Set;
+import java.io.Serializable;
 
 /**
  * Micro-level representation of the world. Stores geometry as an array of Tiles
@@ -22,15 +23,16 @@ import java.util.Set;
  * @author Marc
  * @author Jack U
  */
-public class Room { // extends Observable if we make it mutable, but unlikely
+public class Room implements Serializable { // extends Observable if we make it mutable, but unlikely
 
 	public final String name; //each room needs a name, may display this on GUI possibly
 
+	// Where this room sits w
+	public final int worldRow;
+	public final int worldCol;
+
 	public final int width;  // keep these fields final if we go for Rooms being immutable
 	public final int height; // there doesn't seem like any good use case where these would need to change
-
-	public int col;
-	public int row;
 
 	private Tile[][] tiles; // each location l corresponds to tiles[l.row][l.col]
 
@@ -56,23 +58,13 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 		}
 	}
 
-	public void setPosition(int x, int y){
-		col=x;
-		row=y;
-	}
-
 	/**
-	 *
 	 * @return an EntityTable containing all Entities that are currently in this Room.
 	 */
 	public EntityTable<? extends Entity> getEntityTable() {
 		// TODO: implement this - depends on design decisions regarding entity storage
 		//return null;
 		return this.entities;
-	}
-	
-	public String getName(){
-		return name;
 	}
 
 	//TODO: javadoc!
@@ -89,26 +81,40 @@ public class Room { // extends Observable if we make it mutable, but unlikely
 	 * @param f a File containing XML Room data
 	 * @return the newly created Room
 	 */
+	public static Room newFromFile(File f, int worldCol, int worldRow) {
+
 	public static Room newFromFile(File f) {
 		RoomParser parser = new RoomParser(f);
+		int width = parser.width;
+		int height = parser.height;
+
+		Room room = new Room("Default", worldCol, worldRow, width, height); //TODO: add name to the RoomTuple schema
+
+		room.tiles = parser.getTiles();
+
+		Prop[][] props = parser.getProps();
+		for(int row = 0; row<height; row++){
+			for(int col = 0; col<width; col++){
+				if(props[row][col]!=null){
+					room.tiles[row][col].addProp(props[row][col]);
+				}
+			}
+		}
+
 		Room room = RoomBuilder.buildRoom(parser);
-		
-		
+
+
 		return room;
 	}
 
-
-
 	// TODO: remove this - exists for testing purposes
 	public static Room emptyRoom(int w, int h) {
-		return new Room("Empty Room", w, h);
+		return new Room("Empty Room", 0, 0, w, h);
 	}
 
-	public static void addEntity(Location loc, Entity player){
-		player.setLocation(loc);
-	}
-
-	private Room(String name, int width, int height) {
+	private Room(String name, int worldCol, int worldRow, int width, int height) {
+		this.worldCol = worldCol;
+		this.worldRow = worldRow;
 		this.width = width;
 		this.height = height;
 		this.name = name;

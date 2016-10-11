@@ -2,14 +2,17 @@ package swen222.niwa.model.world;
 
 import com.sun.istack.internal.Nullable;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
  * Top level representation of the game world. Stores all rooms and their geography.
  */
-public class World {
+public class World implements Serializable {
 
 	Room crossroads,niceForest;
 	ArrayList<Room> rooms;
@@ -22,11 +25,23 @@ public class World {
 
 
 	public static World newFromRandom(int width, int height) {
-		World world =new World(width,height);
-		world.rooms= new ArrayList<Room>();
+		World world = new World(width, height);
+		world.rooms = new ArrayList<Room>();
 		world.initialiseRooms();
 		world.assignRooms();
 		return world;
+	}
+
+	public World(Room r) {
+		height = 1;
+		width = 1;
+		map = new Room[1][1];
+		map[0][0] = r;
+	}
+
+	public static World newFromFile(File f) {
+		//TODO
+		return null;
 	}
 
 	public World(int width, int height) {
@@ -73,6 +88,10 @@ public class World {
 
 	public Room getRoom(int x, int y){
 		return map[x][y];
+	private World(int width, int height) {
+		this.width = width;
+		this.height = height;
+		this.map = new Room[width][height];
 	}
 
 	/**
@@ -90,6 +109,11 @@ public class World {
 			// assert map[row][col] != null : String.format("Room at (%d, %d) is null", col, row); //TODO: see above
 			return map[row][col];
 		}
+	}
+
+	//TODO: implement this
+	public Location getSpawn() {
+		return Location.at(roomAt(0, 0), 0, 0);
 	}
 
 }
