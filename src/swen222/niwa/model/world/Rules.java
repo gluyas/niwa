@@ -27,13 +27,19 @@ public class Rules {
 	//private EntityTable<Entity> entities;
 	//public Room room;
 	private World world;
-	private EntityTable<Entity> entities;
 	private EntityTable<Entity> [][] ets;
 
-	public Rules(World world, EntityTable<Entity> et, EntityTable<Entity>[][] ets){
+	public Rules(World world, EntityTable<Entity>[][] ets){
 		this.world = world;
-		this.entities = et;
 		this.ets = ets;
+	}
+
+	public EntityTable<Entity> getRoomEntities(Entity p) {
+		return getRoomEntities(p.getLocation().room);
+	}
+
+	public EntityTable<Entity> getRoomEntities(Room r) {
+		return ets[r.worldRow][r.worldCol];
 	}
 
 //----------------------------------------------------------------------------------------------------------------
@@ -61,7 +67,7 @@ public class Rules {
 		}
 		player.move(dir);
 		pickUp(player);//pick up anything player is on
-		checkStatues();//Update statue states and opens door
+		checkStatues(player.getLocation().room);//Update statue states and opens door
 		return true;
 	}
 
@@ -70,29 +76,30 @@ public class Rules {
 		int col = room.worldCol;
 		int row = room.worldRow;
 		Room newRoom;
+
 		switch(dir){
 			case NORTH:
 				if(row!=0){//Top of map
-					newRoom=world.getRoom(col,row-1);
+					newRoom=world.roomAt(col+dir.relativeX(), row+dir.relativeY());
 					return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 				}
 				break;
 			case EAST:
 				if(col!=2){//Right of map
-					newRoom=world.getRoom(col+1,row);
-					return moveRoom(player,dir.opposite(),newRoom);//Entering from West spawn
+					newRoom=world.roomAt(col+dir.relativeX(), row+dir.relativeY());
+					return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 				}
 				break;
 			case SOUTH:
 				if(row!=2){//Bottom of map
-					newRoom=world.getRoom(col,row+1);
-					return moveRoom(player,dir.opposite(),newRoom);//Entering from north spawn
+					newRoom=world.roomAt(col+dir.relativeX(), row+dir.relativeY());
+					return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 				}
 				break;
 			case WEST:
 				if(col!=0){//West of map
-					newRoom=world.getRoom(col-1,row);
-					return moveRoom(player,dir.opposite(),newRoom);//entering from east spawn
+					newRoom=world.roomAt(col+dir.relativeX(), row+dir.relativeY());
+					return moveRoom(player,dir.opposite(),newRoom);//Entering from south spawn
 				}
 				break;
 		}
@@ -109,15 +116,15 @@ public class Rules {
 	}
 
 	private boolean moveRoom(PlayerEntity player, Direction entrySide,Room newRoom) {
-		entities.remove(player);
+		getRoomEntities(player).remove(player);
 		ets[newRoom.worldRow][newRoom.worldCol].add(player);
 		System.out.println(ets[newRoom.worldRow][newRoom.worldCol]);
 		player.setLocation(newRoom.getSpawn(entrySide));
 		return true;
 	}
 
-	private void checkStatues() {
-		for(Entity e: entities){
+	private void checkStatues(Room r) {
+		for(Entity e: getRoomEntities(r)){
 			if(e instanceof Statue){
 				if(playerOn(e)){
 					((Statue) e).setTriggered(true);
@@ -127,11 +134,11 @@ public class Rules {
 				}
 			}
 		}
-		checkDoors();
+		checkDoors(r);
 	}
 
-	private void checkDoors(){
-		for(Entity e: entities){
+	private void checkDoors(Room r){
+		for(Entity e: getRoomEntities(r)){
 			if(e instanceof Door){
 				if(((Door) e).checkStatues()){//if all the statues connected to this door are triggered
 					((Door) e).setOpen(true);//set the door to open
@@ -141,7 +148,7 @@ public class Rules {
 	}
 
 	private boolean playerOn(Entity statue) {
-		for(Entity e: entities.get(statue.getLocation())){
+		for(Entity e: getRoomEntities(statue).get(statue.getLocation())){
 			if(e instanceof PlayerEntity){
 				return true;
 			}
@@ -156,7 +163,7 @@ public class Rules {
 			Location toGo =player.getLocation().move(dir);
 			Location from =player.getLocation();
 
-			Set<Entity> entitiesInDirection =entities.get(toGo);//check for players in direction
+			Set<Entity> entitiesInDirection = getRoomEntities(player).get(toGo);//check for players in direction
 			for(Entity entity: entitiesInDirection){
 				if (entity instanceof PlayerEntity){
 						return false;
@@ -183,6 +190,7 @@ public class Rules {
 	 * @return
 	 */
 	private boolean pickUp(PlayerEntity player){
+		EntityTable<Entity> entities = getRoomEntities(player);
 		Set<Entity> entitiesAtPosition = entities.get(player.getLocation()); // All entities at player location
 
 		for(Entity e: entitiesAtPosition){
@@ -207,6 +215,7 @@ public class Rules {
 	 */
 	public boolean drop(PlayerEntity player,ObjectEntity item){
 		Room room = player.getLocation().room;
+		EntityTable<Entity> entities = getRoomEntities(room);
 
 		Set<Entity> entitiesAtPosition = entities.get(player.getLocation()); // All entities at player location
 		for(Entity e: entitiesAtPosition){
@@ -235,8 +244,9 @@ public class Rules {
 	 * @param item
 	 * @return true if seed removed
 	 */
-	public boolean action(PlayerEntity player, ObjectEntity item){
+	public boolean action(PlayerEntity player, int slot){
 		Room room = player.getLocation().room;
+		ObjectEntity item = player.getInventory().get(slot);
 
 		if(item instanceof Seed){//Planting a seed
 			return plantSeed(player,(Seed)item);
@@ -316,6 +326,7 @@ public class Rules {
 	 */
 	private RuneStone getRuneStone(PlayerEntity player){
 		Set<Entity> entitiesAtPosition;
+		EntityTable<Entity> entities = getRoomEntities(player);
 			try {
 				entitiesAtPosition = entities.get(player.getLocation().move(player.getFacing()));// All entities in front of player
 				for(Entity e: entitiesAtPosition){
@@ -333,10 +344,10 @@ public class Rules {
 	}
 
 	private void removeEntity(Entity e){
-		entities.remove(e);
+		getRoomEntities(e).remove(e);
 	}
 	private void addEntity(Entity e){
-		entities.add(e);
+		getRoomEntities(e).add(e);
 	}
 
 //----------------------------------------------------------------------------------------------------------------

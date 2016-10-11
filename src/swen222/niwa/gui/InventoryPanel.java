@@ -4,6 +4,7 @@ package swen222.niwa.gui;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,6 +13,7 @@ import javax.swing.JPanel;
 
 import swen222.niwa.Client;
 import swen222.niwa.model.entity.ObjectEntity;
+import swen222.niwa.model.entity.PlayerEntity;
 
 /**
  * Panel for displaying the inventory. Creates and manages the inventory buttons
@@ -53,7 +55,7 @@ public class InventoryPanel extends JPanel implements Observer {
 	 * @param images
 	 *            - map of item name to image
 	 */
-	public void updateInventory(ArrayList<ObjectEntity> items) {
+	public void updateInventory(List<ObjectEntity> items) {
 		// int i = 0;
 		for (int i = 0; i < INV_SIZE; i++) {
 			if (i < items.size()) {
@@ -85,8 +87,8 @@ public class InventoryPanel extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
+		PlayerEntity p = control.getPlayer();
+		if (p != null) updateInventory(p.getInventory());
 	}
 
 }

@@ -108,7 +108,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 				break;
 
 			case VK_R:
-				rules.action(p,p.getInventory().get(0));
+				rules.action(p,0);
 				repaint();
 				break;
 

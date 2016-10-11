@@ -69,6 +69,7 @@ public class Master extends Thread implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		System.out.printf("UD: %s: %s%n", o, arg);
 		try {
 			if (o == player && arg instanceof Entity.LocationUpdate) {
 				//System.out.println("maybe not in room");

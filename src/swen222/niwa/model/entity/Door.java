@@ -15,7 +15,7 @@ import swen222.niwa.model.world.Location;
  * Door that can be opened when all the statues have been occupied in the room
  *
  */
-public class Door extends ObjectEntity {
+public class Door extends ChangingEntity {
 
 	private static final SpriteSet SPRITES_OPEN = SpriteLoader.get("openDoor");
 	private static final SpriteSet SPRITES_CLOSED = SpriteLoader.get("closedDoor");

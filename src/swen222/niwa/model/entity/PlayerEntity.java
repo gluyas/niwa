@@ -43,9 +43,9 @@ public class PlayerEntity extends Entity {
 	public void addItem(ObjectEntity item){
 		if(inventory.add(item)){
 			setChanged();
+			System.out.printf("ADDING %s to inv %s%n", item, this);
 			notifyObservers((Update)()-> this.addItem(item));
 		}
-
 	}
 
 	public List<ObjectEntity> getInventory() {

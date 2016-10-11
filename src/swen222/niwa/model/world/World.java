@@ -94,10 +94,6 @@ public class World implements Serializable {
 		//room.setPosition(col, row);
 	}
 
-	public Room getRoom(int x, int y) {
-		return map[x][y];
-	}
-
 	/**
 	 * Get the Room at the specified co-ordinates
 	 * @param col column

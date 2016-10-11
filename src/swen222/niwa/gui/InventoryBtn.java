@@ -76,6 +76,7 @@ public class InventoryBtn extends JToggleButton implements MouseListener {
 		this.img = IMAGES.get(name);
 		setActionCommand(name);
 		setToolTipText(name);
+		repaint();
 	}
 
 	public void resetButton(){

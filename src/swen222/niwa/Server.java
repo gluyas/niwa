@@ -21,7 +21,7 @@ public class Server {
 
 	public final World world; // immutable object
 	private final ObservableEntityTable<Entity>[][] tables;
-	private final Rules[][] rules;
+	private final Rules rules;
 	private final Map<Master, PlayerEntity> connections = new HashMap<>(5);
 
 	// Create a server
@@ -29,12 +29,13 @@ public class Server {
 	public Server(World world, ObservableEntityTable<Entity>[][] tables) {
 		this.world = world;
 		this.tables = tables;
-		this.rules = new Rules[world.height][world.width];
-		for (int row = 0; row < world.height; row++) {
-			for (int col = 0; col < world.width; col++) {
-				rules[row][col] = new Rules(world, tables[row][col],tables);
-			}
-		}
+//		this.rules = new Rules[world.height][world.width];
+//		for (int row = 0; row < world.height; row++) {
+//			for (int col = 0; col < world.width; col++) {
+//				rules[row][col] = new Rules(world, tables[row][col],tables);
+//			}
+//		}
+		rules = new Rules(world, tables);
 	}
 
 	// MASTER ACTIONS
@@ -64,13 +65,14 @@ public class Server {
 
 	public void move(Master m, Direction d) {
 		PlayerEntity p = getPlayer(m);
-		Rules r = getRules(p);
-		if (r != null) r.move(p, d);
+		if (p != null) rules.move(p, d);
 	}
 
 	public void action(Master m, int selectedItem) {
 		PlayerEntity p = getPlayer(m);
+		rules.action(p, selectedItem);
 	}
+
 
 	public void drop(Master m, int selectedItem) {
 		PlayerEntity p = getPlayer(m);
@@ -83,14 +85,14 @@ public class Server {
 		ObservableEntityTable<Entity> et = tables[r.worldRow][r.worldCol];
 		return et != null ? et : null;
 	}
-
+/*
 	@Nullable
 	public Rules getRules(PlayerEntity p) {
 		if (p == null) return null;
 		Room r = p.getLocation().room;
 		return rules[r.worldRow][r.worldRow];
 	}
-
+*/
 	@Nullable
 	public PlayerEntity getPlayer(Master client) {
 		return connections.get(client);
