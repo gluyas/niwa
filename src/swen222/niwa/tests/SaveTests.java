@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import swen222.niwa.model.entity.entities.PlayerEntity;
+import swen222.niwa.model.entity.entities.Seed;
+import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Prop;
 import swen222.niwa.model.world.Room;
@@ -33,7 +35,8 @@ public class SaveTests {
 	public void testSaving(){
 
 		//testMapSave();
-		testPlayerSave();
+		//testPlayerSave();
+		testEntitySave();
 
 
 	}
@@ -77,6 +80,26 @@ public class SaveTests {
 		System.out.println("players saved");
 
 		p.writeSave();
+
+	}
+
+	public void testEntitySave(){
+
+		Seed s1 = new Seed(Location.at(Room.newFromFile(mountain),2,2),SpriteLoader.get("seed"));
+		Seed s2 = new Seed(Location.at(Room.newFromFile(mountain),2,2),SpriteLoader.get("seed"));
+
+		HashEntityTable entities = new HashEntityTable();
+		entities.add(s1);
+		entities.add(s2);
+
+
+		SaveParser p = new SaveParser();
+
+		p.saveEntities(entities);
+
+
+
+
 
 	}
 

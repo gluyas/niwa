@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <class>
-
-<test>maybe please</test>
+<Player>
+<PlayerName>Donny</PlayerName>
+<Location>
+<Room> Mountain </Room>
+<Col>3</Col>
+<Row>3</Row>
+</Location>
+<PlayerPoints/>
+<Inventory/>
+</Player>
 </class>
