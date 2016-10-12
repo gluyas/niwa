@@ -55,7 +55,7 @@ public class Room implements Serializable { // extends Observable if we make it 
 	 * @param f a File containing XML Room data
 	 * @return the newly created Room
 	 */
-	public static Room newFromFile(File f, int worldCol, int worldRow) {
+	public static Room newFromFile(File f, int worldCol, int worldRow, EntityTable<Entity> et) {
 
 		RoomParser parser = new RoomParser(f);
 		int width = parser.width;
@@ -63,7 +63,9 @@ public class Room implements Serializable { // extends Observable if we make it 
 
 		//Room room = new Room("Default", worldCol, worldRow, width, height); //TODO: add name to the RoomTuple schema
 
-		return RoomBuilder.buildRoom(parser, worldCol, worldRow);
+		Room out = RoomBuilder.buildRoom(parser, worldCol, worldRow);
+		if (et != null) et.addAll(parser.getEntities());
+		return out;
 		/*
 		room.tiles = parser.getTiles();
 
@@ -79,7 +81,12 @@ public class Room implements Serializable { // extends Observable if we make it 
 	*/
 	}
 
-	// TODO: remove this - exists for testing purposes
+	public static Room newFromFile(File f, int worldCol, int worldRow) {
+		return newFromFile(f, worldCol, worldRow, null);
+	}
+
+
+		// TODO: remove this - exists for testing purposes
 	public static Room emptyRoom(int w, int h) {
 		return new Room("Empty Room", 0, 0, w, h);
 	}
