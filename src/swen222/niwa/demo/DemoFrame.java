@@ -69,29 +69,29 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		} else System.err.println("Load failed");
 	}
 
-	private void refresh() {
-		et.remove(p);
-		et.deleteObserver(this);
-		et = new HashEntityTable<>();
+		private void refresh() {
+			et.remove(p);
+			et.deleteObserver(this);
+			et = new HashEntityTable<>();
 
-		Room newRoom = Room.newFromFile(new File(stageName), 0, 0);
-		p = new DemoPlayer(Location.at(newRoom, 0, 0));
-		et.add(p);
-		et.addObserver(this);
+			Room newRoom = Room.newFromFile(new File(stageName), 0, 0, et);
+			p = new DemoPlayer(Location.at(newRoom, 0, 0));
+			et.add(p);
+			et.addObserver(this);
 
-		rr.setRoom(newRoom);
-		rr.setET(et);
+			rr.setRoom(newRoom);
+			rr.setET(et);
 
-		repaint();
-	}
+			repaint();
+		}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		repaint();
-	}
+		@Override
+		public void update(Observable o, Object arg) {
+			repaint();
+		}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
+		@Override
+		public void keyTyped(KeyEvent e) {
 
 	}
 
