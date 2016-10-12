@@ -31,7 +31,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 	DemoPanel panel;
 	RoomRenderer rr;
 	DemoPlayer p;
-	String stageName;
+	String stageName = "resource";
 
 	HashEntityTable<Entity> et = new HashEntityTable<>();
 
@@ -58,7 +58,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 	}
 
 	private void load() {
-		JFileChooser chooser = new JFileChooser("resource");
+		JFileChooser chooser = new JFileChooser(stageName);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"XML map files", "xml");
 		chooser.setFileFilter(filter);
@@ -134,6 +134,11 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 
 			case VK_L:
 				load();
+				break;
+
+			case VK_N:
+				rr.cycleNumbers();
+				repaint();
 				break;
 
 			case VK_F5:

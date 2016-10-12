@@ -26,12 +26,19 @@ public class RoomRenderer {
 	public static final double Z_Y = 2*X_Y/3; //2X_Y/2
 
 	private Room r;
-	private EntityTable<Entity> et;
+	private int heightDiff;
+	private EntityTable<?> et;
+	private int numbers = 0;
+
+	public final int NUMBERS_DISABLED = 0;
+	public final int NUMBERS_WHITE = 2;
+	public final int NUMBERS_BLACK = 1;
 
 	private Direction facing = Direction.NORTH; // the world direction that is northeast from the user's perspective
 
 	public RoomRenderer(Room subject, EntityTable<?> et) {
 		this.r = subject;
+		setET(et);
 	}
 
 	public Direction getFacing() {
@@ -40,10 +47,27 @@ public class RoomRenderer {
 
 	public void setRoom(Room r) {
 		this.r = r;
+		int min = Integer.MAX_VALUE;
+		int max = Integer.MIN_VALUE;
+		for (Tile t : r) {
+			if (t.height < min) min = t.height;
+			else if (t.height > max) max = t.height;
+		}
+		heightDiff = max - min;
+		//System.out.println(heightDiff);
 	}
 
-	public void setET(EntityTable<Entity> et) {
+	public void setET(EntityTable<?> et) {
 		this.et = et;
+	}
+
+	public void setNumbers(int value) {
+		numbers = value;
+	}
+
+	public int cycleNumbers() {
+		numbers = (numbers+1)%3;
+		return numbers;
 	}
 
 	public void rotateCW() {
@@ -89,14 +113,28 @@ public class RoomRenderer {
 					e.sprite(facing).draw(g, pos[0], pos[1], blockSize);
 				}
 			}
+			if (numbers != NUMBERS_DISABLED) {
+				switch (numbers) {
+					case NUMBERS_WHITE:
+						g.setColor(Color.white);
+						break;
+					case NUMBERS_BLACK:
+						g.setColor(Color.black);
+						break;
+				}
+				FontMetrics m = g.getFontMetrics();
+				String coords = loc.toStringCoords();
+				g.drawString(coords, pos[0]-m.stringWidth(coords)/2, pos[1]-m.getHeight()/2+m.getAscent());
+			}
 		}
 	}
 
 	public double getBlockSize(int width, int height) {
+		int roomSize = Math.max(r.height, Math.max(r.width, heightDiff));
 		if (height <= width) {
-			return (height)/(r.height*1);
+			return (height)/(roomSize);
 		} else {
-			return (width)/(r.width*1.3);
+			return (width)/(roomSize*1.3);
 		}
 		//return 50;
 	}
@@ -124,6 +162,7 @@ public class RoomRenderer {
 
 		x -= (r.width-1)/2.0;
 		y -= (r.height-1)/2.0;
+		z -= (heightDiff+1)/2.0;
 
 		double[][] mat = transformationMatrix();
 

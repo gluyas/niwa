@@ -8,6 +8,8 @@ import swen222.niwa.model.util.HashEntityTable;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Micro-level representation of the world. Stores geometry as an array of Tiles
@@ -15,7 +17,7 @@ import java.io.Serializable;
  * @author Marc
  * @author Jack U
  */
-public class Room implements Serializable { // extends Observable if we make it mutable, but unlikely
+public class Room implements Iterable<Tile>, Serializable { // extends Observable if we make it mutable, but unlikely
 
 	public final String name; //each room needs a name, may display this on GUI possibly
 
@@ -138,6 +140,33 @@ public class Room implements Serializable { // extends Observable if we make it 
 			}
 
 			return room;
+		}
+	}
+
+	@Override
+	public Iterator<Tile> iterator() {
+		return new RoomIterator();
+	}
+
+	public class RoomIterator implements Iterator<Tile> {
+
+		int col = 0;
+		int row = 0;
+
+		@Override
+		public boolean hasNext() {
+			return row < height;
+		}
+
+		@Override
+		public Tile next() {
+			if (!hasNext()) throw new NoSuchElementException();
+			Tile out = tiles[row][col];
+			if (++col >= width) {
+				row++;
+				col = 0;
+			}
+			return out;
 		}
 	}
 

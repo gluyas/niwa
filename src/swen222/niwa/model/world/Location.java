@@ -97,7 +97,11 @@ public class Location implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("%s: (%d,%d)", room.toString(), col, row);
+		return String.format("%s: (%d, %d)", room.toString(), col, row);
+	}
+
+	public String toStringCoords() {
+		return String.format("(%d, %d)", col, row);
 	}
 
 	// this is a checked exception because I love watching you suffer. you would actually have to check anyway,
