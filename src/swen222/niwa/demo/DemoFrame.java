@@ -11,6 +11,7 @@ import swen222.niwa.model.world.Rules;
 import swen222.niwa.model.world.World;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -31,28 +32,19 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 	RoomRenderer rr;
 	DemoPlayer p;
 	String stageName;
-	Rules rules;
-	World world;
 
-	public DemoFrame(String stageName) {
+	HashEntityTable<Entity> et = new HashEntityTable<>();
+
+
+	public DemoFrame() {
 		super("Garden Demo");
+		rr = new RoomRenderer(null, null);
 
-		this.stageName = stageName;
-		Room stage = Room.newFromFile(new File(stageName), 0, 0);
-		world = new World(1,1);
-		//rules = new Rules(world.getMap());
-
-		p = new DemoPlayer(Location.at(stage, 0, 0));
-		//if (!stage.addEntity(p)) throw new AssertionError();
-		p.addObserver(this);
-
-		EntityTable<Entity> et = new HashEntityTable<>();
-		et.add(p);
-
-		rr = new RoomRenderer(stage, et);
+		load();
 
 		panel = new DemoPanel(rr);
 		add(panel);
+
 		panel.setEnabled(true);
 		panel.setVisible(true);
 		panel.setPreferredSize(new Dimension(1280, 720));
@@ -61,7 +53,36 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 
 		pack();
 		setVisible(true); // make sure we are visible!
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+	}
+
+	private void load() {
+		JFileChooser chooser = new JFileChooser("resource");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				"XML map files", "xml");
+		chooser.setFileFilter(filter);
+		int returnVal = chooser.showOpenDialog(this);
+		if(returnVal == JFileChooser.APPROVE_OPTION) {
+			stageName = chooser.getSelectedFile().getAbsolutePath();
+			refresh();
+		} else System.err.println("Load failed");
+	}
+
+	private void refresh() {
+		et.remove(p);
+		et.deleteObserver(this);
+		et = new HashEntityTable<>();
+
+		Room newRoom = Room.newFromFile(new File(stageName), 0, 0);
+		p = new DemoPlayer(Location.at(newRoom, 0, 0));
+		et.add(p);
+		et.addObserver(this);
+
+		rr.setRoom(newRoom);
+		rr.setET(et);
+
+		repaint();
 	}
 
 	@Override
@@ -79,22 +100,22 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		int code = e.getKeyCode();
 		switch (code) {
 			case VK_W:
-				rules.move(p,directionRelativeToMap(Direction.NORTH));
+				p.move(directionRelativeToMap(Direction.NORTH));
 				break;
 
 			case VK_A:
 
-				rules.move(p,directionRelativeToMap(Direction.WEST));
+				p.move(directionRelativeToMap(Direction.WEST));
 				break;
 
 			case VK_S:
 
-				rules.move(p,directionRelativeToMap(Direction.SOUTH));
+				p.move(directionRelativeToMap(Direction.SOUTH));
 				break;
 
 			case VK_D:
 
-				rules.move(p,directionRelativeToMap(Direction.EAST));
+				p.move(directionRelativeToMap(Direction.EAST));
 				break;
 
 			case VK_Q:
@@ -108,8 +129,11 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 				break;
 
 			case VK_R:
-				rules.action(p,0);
-				repaint();
+				refresh();
+				break;
+
+			case VK_L:
+				load();
 				break;
 
 			case VK_F5:
@@ -117,17 +141,6 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 				break;
 		}
 		//repaint();
-	}
-
-	private void refresh() {
-		//rr.setRoom(Room.newFromFile(new File(stageName), 0, 0));
-		//rr.r.removeEntity(p);
-//		Room stage = Room.newFromFile(new File(stageName), 0, 0);
-//		rr = new RoomRenderer(stage);
-//		panel.setRR(rr);
-//		p.setLocation(Location.at(stage, 0, 0));
-//		stage.addEntity(p);
-//		repaint();
 	}
 
 	@Override
@@ -165,15 +178,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 	}
 
 	public static void main(String[] args) {
-		if (args.length == 0) {
-			System.err.println("Please provide a map to load in arguments");
-			return;
-		}
-		try {
-			new DemoFrame(args[0]);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		new DemoFrame();
 	}
 
 }

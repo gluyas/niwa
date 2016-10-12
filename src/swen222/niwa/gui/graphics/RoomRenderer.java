@@ -68,7 +68,7 @@ public class RoomRenderer {
 		double blockSize = getBlockSize(width, height);
 		double scalar = blockSize/2.85;
 
-		Random rng = new Random(r.hashCode()*facing.ordinal());
+		Random rng = new Random(r.hashCode()*(facing.ordinal()+1));
 
 		for (Location loc : new BackToFrontIterator(r, facing)) {
 			if (loc.room != r) return;
