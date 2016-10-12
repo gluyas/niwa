@@ -258,19 +258,19 @@
 				<sprite id="left" img="resource/images/entities/runestones/1/front.png" ay="0.8"/>
 				<sprite id="right" img="resource/images/entities/runestones/1/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/1/back.png" ay="0.8"/>
-				<faces n="right" e="left" s="back" w="back"/>
+				<faces n="back" e="left" s="right" w="back"/>
 			</spriteset>
 			<spriteset name="runestone2">
 				<sprite id="left" img="resource/images/entities/runestones/2/front.png" ay="0.8"/>
 				<sprite id="right" img="resource/images/entities/runestones/2/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/2/back.png" ay="0.8"/>
-				<faces n="right" e="left" s="back" w="back"/>
+				<faces n="back" e="left" s="right" w="back"/>
 			</spriteset>
 			<spriteset name="runestone3">
 				<sprite id="left" img="resource/images/entities/runestones/3/front.png" ay="0.8"/>
 				<sprite id="right" img="resource/images/entities/runestones/3/side.png" ay="0.8"/>
 				<sprite id="back" img="resource/images/entities/runestones/3/back.png" ay="0.8"/>
-				<faces n="right" e="left" s="back" w="back"/>
+				<faces n="back" e="left" s="right" w="back"/>
 			</spriteset>
 		</group>
 		<spriteset name="seed">
