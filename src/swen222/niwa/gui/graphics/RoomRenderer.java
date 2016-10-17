@@ -47,6 +47,7 @@ public class RoomRenderer {
 
 	public void setRoom(Room r) {
 		this.r = r;
+		if (r == null) return;
 		int min = Integer.MAX_VALUE;
 		int max = Integer.MIN_VALUE;
 		for (Tile t : r) {
