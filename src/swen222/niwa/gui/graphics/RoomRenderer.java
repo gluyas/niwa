@@ -1,5 +1,7 @@
 package swen222.niwa.gui.graphics;
 
+import org.joml.*;
+
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.world.Direction;
@@ -8,10 +10,9 @@ import swen222.niwa.model.world.Room;
 import swen222.niwa.model.world.Tile;
 
 import java.awt.*;
+import java.lang.Math;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Random;
-import java.util.function.Function;
 
 /**
  * Draws the state of a Room onto a graphics object
@@ -20,14 +21,16 @@ import java.util.function.Function;
  */
 public class RoomRenderer {
 
-	private Room r;
+	private Room room;
 	private int heightDiff;
+	private Vector3d centreOffset;
 	private EntityTable<?> et;
 
 	private Direction facing = Direction.NORTH; // the world direction that is northeast from the user's perspective
+	private double bearing = Math.toRadians(45);
 
 	public RoomRenderer(Room subject, EntityTable<?> et) {
-		this.r = subject;
+		setRoom(subject);
 		setET(et);
 	}
 
@@ -35,38 +38,47 @@ public class RoomRenderer {
 		return facing;
 	}
 
-	public void setRoom(Room r) {
-		this.r = r;
-		if (r == null) return;
-		int min = Integer.MAX_VALUE;
-		int max = Integer.MIN_VALUE;
-		for (Tile t : r) {
-			if (t.height < min) min = t.height;
-			else if (t.height > max) max = t.height;
-		}
-		heightDiff = max - min;
-		//System.out.println(heightDiff);
-	}
-
 	public void setET(EntityTable<?> et) {
 		this.et = et;
 	}
 
-	public void setNumbers(int value) {
-		numbers = value;
+	public void setDebugCoordinates(int value) {
+		debugCoordinates = value;
 	}
 
-	public int cycleNumbers() {
-		numbers = (numbers+1)%3;
-		return numbers;
+	public int cycleDebugCoordinates() {
+		debugCoordinates = (debugCoordinates +1)%3;
+		return debugCoordinates;
 	}
 
 	public void rotateCW() {
 		facing = facing.turnCW();
+		bearing -= Math.toRadians(90);
 	}
 
 	public void rotateCCW() {
 		facing = facing.turnCCW();
+		bearing += Math.toRadians(90);
+	}
+
+	public void setRoom(Room r) {
+		this.room = r;
+		if (r == null) return;
+
+		int minH = Integer.MAX_VALUE;
+		int maxH = Integer.MIN_VALUE;
+		for (Tile t : r) {
+			if (t.height < minH) minH = t.height;
+			if (t.height > maxH) maxH = t.height;
+		}
+
+		heightDiff = maxH - minH;
+
+		centreOffset = new Vector3d(
+				(r.width - 1) / 2.0,
+				(r.height - 1) / 2.0,
+				0							// TODO: get correct offset
+		).negate();
 	}
 
 	/**
@@ -77,45 +89,55 @@ public class RoomRenderer {
 	 */
 	public void draw(Graphics g, int width, int height) {
 
-		if (r == null || et == null) return;
+		if (room == null || et == null) return;
+
+		double scale = getRoomScale(width, height);
+		double blockSize = scale * Math.sqrt(2);
 
 		g.translate(width/2, height/2);
-		double blockSize = getBlockSize(width, height);
-		double scalar = blockSize/2.85;
 
-		Random rng = new Random(r.hashCode()*(facing.ordinal()+1));
+		Matrix4d projection = new Matrix4d()					// orthographic projection matrix
+				.rotate(ELEVATION_ANGLE, 1, 0, 0)
+				.rotate(bearing, 0, 0, 1)
+				.translate(centreOffset)						// centred around centroid of level
+				.scale(1, 1, HEIGHT_TO_WIDTH);			// scale block height to be a fraction of width
 
-		for (Location loc : new BackToFrontIterator(r, facing)) {
-			if (loc.room != r) return;
-			Tile t = r.tileAt(loc);
-			if (t == null) {
-				System.err.println("null at "+loc.toString());
-				continue;
-			}
+		for (Location loc : new BackToFrontIterator(room, facing)) {
+			Tile tile = room.tileAt(loc);
 
-			double[] jitter = getJitter(rng);
-			int[] pos = project(loc.col+jitter[0], loc.row+jitter[1], t.height+jitter[2], scalar);
-			t.drawSprite(g, facing, pos[0], pos[1], blockSize);
-			if (t.prop != null) t.prop.drawSprite(g, facing, pos[0], pos[1], blockSize);
+			Vector4d pos = new Vector4d(loc.col, loc.row, tile.height, 1);
+			projection.transform(pos);
+
+			pos.mul(pos.w * scale);								// convert from hg coordinates & apply block scale
+			pos.w = 1;
+
+			tile.drawSprite(g, facing, (int) pos.x, (int) pos.y, blockSize);
+			if (tile.prop != null) tile.prop.drawSprite(g, facing, (int) pos.x, (int) pos.y, blockSize);
 
 			if (et != null) {
-				//System.out.println(et.get(loc));
 				for (Entity e : et.get(loc)) {
-					e.sprite(facing).draw(g, pos[0], pos[1], blockSize);
+					e.sprite(facing).draw(g, (int) pos.x, (int) pos.y, blockSize);
 				}
 			}
-			if (numbers != NUMBERS_DISABLED) {
-				switch (numbers) {
-					case NUMBERS_WHITE:
+
+			// EDITOR MODE
+
+			if (debugCoordinates != DEBUG_COORDS_DISABLED) {
+				switch (debugCoordinates) {
+					case DEBUG_COORDS_WHITE:
 						g.setColor(Color.white);
 						break;
-					case NUMBERS_BLACK:
+					case DEBUG_COORDS_BLACK:
 						g.setColor(Color.black);
 						break;
 				}
 				FontMetrics m = g.getFontMetrics();
 				String coords = loc.toStringCoords();
-				g.drawString(coords, pos[0]-m.stringWidth(coords)/2, pos[1]-m.getHeight()/2+m.getAscent());
+				g.drawString(
+					coords,
+					(int) pos.x - m.stringWidth(coords) / 2,
+					(int) pos.y - m.getHeight() / 2 + m.getAscent()
+				);
 			}
 		}
 	}
@@ -123,100 +145,22 @@ public class RoomRenderer {
 	// GRAPHICS CODE
 
 	public static final double JITTER = 0.14;
+	public static final double HEIGHT_TO_WIDTH = 1 / 4.0;
+	public static final double ELEVATION_ANGLE = Math.atan(Math.sqrt(2));
+
 	public static final double X_Y = Math.sqrt(3)/2; // 3D X to 2D Y
 	//public static final double X_Y = 0.5; // 3D X to 2D Y
 	public static final double Y_Y = X_Y; // 3D Y to 2D Y
 	public static final double Z_Y = 2*X_Y/3; //2X_Y/2
 
-	private int numbers = 0;
+	private int debugCoordinates = 0;
 
-	public final int NUMBERS_DISABLED = 0;
-	public final int NUMBERS_WHITE = 2;
-	public final int NUMBERS_BLACK = 1;
+	public final int DEBUG_COORDS_DISABLED = 0;
+	public final int DEBUG_COORDS_WHITE = 2;
+	public final int DEBUG_COORDS_BLACK = 1;
 
-	public double getBlockSize(int width, int height) {
-		int roomSize = Math.max(r.height, Math.max(r.width, heightDiff));
-		if (height <= width) {
-			return (height)/(roomSize);
-		} else {
-			return (width)/(roomSize*1.3);
-		}
-		//return 50;
-	}
-
-	private double[] getJitter(Random rng) {
-		double[] out = new double[3];
-		out[0] = rng.nextDouble() * JITTER;
-		out[1] = rng.nextDouble() * JITTER;
-		out[2] = rng.nextDouble() * JITTER;
-		return out;
-	}
-
-	/**
-	 * Converts real-world co-ordinates into screen co-ordinates. Takes view Direction into account.
-	 * Scales based on the scale field; centres based on the centre field. TODO: update this with final impl.
-	 * @param x real-world x (column)
-	 * @param y real-world y (row)
-	 * @param z real-world z (height)
-	 * @return 2-length array: [0] = x, [1] = y
-	 */
-	public int[] project(double x, double y, double z, double scale) {
-
-		// first, translate x and y into co-ordinates that are more useful to us:
-		int[] out = new int[2];
-
-		x -= (r.width-1)/2.0;
-		y -= (r.height-1)/2.0;
-		z -= (heightDiff+1)/2.0;
-
-		double[][] mat = transformationMatrix();
-
-		out[0] = (int) (scale * (x*mat[0][0] + y*mat[0][1] + z*mat[0][2]));
-		out[1] = (int) (scale * (x*mat[1][0] + y*mat[1][1] + z*mat[1][2]));
-
-		return out;
-	}
-
-	public int[] project(double x, double y, double scale) {
-		return project(x, y, 0, scale);
-	}
-
-	/**
-	 *
-	 * @return 2x3 matrix A such that s = Aw for screen co-ordinate s and world co-ordinate w
-	 */
-	private double[][] transformationMatrix() {
-		// factors of each position in matrix A - this allows the matricies below to simply look like +ve or -ve factors
-		double a11 = Math.sqrt(2);
-		double a12 = Math.sqrt(2);
-		double a21 = X_Y;
-		double a22 = Y_Y;
-		switch (facing) {
-			// pretty horrible to use discrete cases, but it's ultimately more simmple and easier to read than
-			// using the magic direction numbers
-			case NORTH:
-				return new double[][] {
-						{ a11,-a12, 0},
-						{ a21, a22,-Z_Y}
-				};
-			case EAST:
-				return new double[][] {
-						{ a11, a12, 0},
-						{-a21, a22,-Z_Y}
-				};
-			case SOUTH:
-				return new double[][] {
-						{-a11, a12, 0},
-						{-a21,-a22,-Z_Y}
-				};
-			case WEST:
-				return new double[][] {
-						{-a11,-a12, 0},
-						{ a21,-a22,-Z_Y}
-				};
-			default:
-				throw new AssertionError("facing unknown direction");
-		}
+	public double getRoomScale(int width, int height) {
+		return 75;	// TODO: scale correctly
 	}
 
 	/**

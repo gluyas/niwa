@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<class>
+<width>3</width> <height>3</height>
+
+<name> TestRoom2 </name>
+<spawnNorth col = "2" row = "0" />
+
+<tiles>
+	<line>g9 g9 g9 </line>
+	<line>g9 g9 g9 </line>
+	<line>g9 g9 g9 </line>
+</tiles>
+
+</class>
