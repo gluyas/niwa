@@ -11,6 +11,7 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.function.Function;
 
 /**
  * Draws the state of a Room onto a graphics object
@@ -19,20 +20,9 @@ import java.util.Random;
  */
 public class RoomRenderer {
 
-	public static final double JITTER = 0.14;
-	public static final double X_Y = Math.sqrt(3)/2; // 3D X to 2D Y
-	//public static final double X_Y = 0.5; // 3D X to 2D Y
-	public static final double Y_Y = X_Y; // 3D Y to 2D Y
-	public static final double Z_Y = 2*X_Y/3; //2X_Y/2
-
 	private Room r;
 	private int heightDiff;
 	private EntityTable<?> et;
-	private int numbers = 0;
-
-	public final int NUMBERS_DISABLED = 0;
-	public final int NUMBERS_WHITE = 2;
-	public final int NUMBERS_BLACK = 1;
 
 	private Direction facing = Direction.NORTH; // the world direction that is northeast from the user's perspective
 
@@ -80,7 +70,7 @@ public class RoomRenderer {
 	}
 
 	/**
-	 * Renders this Room in a rectangle on a given //todo: cbf this rn
+	 * Renders this Room in a rectangle on a given swing graphics object
 	 * @param g
 	 * @param width
 	 * @param height
@@ -129,6 +119,20 @@ public class RoomRenderer {
 			}
 		}
 	}
+
+	// GRAPHICS CODE
+
+	public static final double JITTER = 0.14;
+	public static final double X_Y = Math.sqrt(3)/2; // 3D X to 2D Y
+	//public static final double X_Y = 0.5; // 3D X to 2D Y
+	public static final double Y_Y = X_Y; // 3D Y to 2D Y
+	public static final double Z_Y = 2*X_Y/3; //2X_Y/2
+
+	private int numbers = 0;
+
+	public final int NUMBERS_DISABLED = 0;
+	public final int NUMBERS_WHITE = 2;
+	public final int NUMBERS_BLACK = 1;
 
 	public double getBlockSize(int width, int height) {
 		int roomSize = Math.max(r.height, Math.max(r.width, heightDiff));
