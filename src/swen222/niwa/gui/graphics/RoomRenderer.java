@@ -332,7 +332,7 @@ public class RoomRenderer implements Observer {
 			int startRowDir = facing.relativeY() + left.relativeY();
 			int startColDir = facing.relativeX() + left.relativeX();
 
-			// start outside bounds so that we iterate onto first one
+			// run outside bounds so that we iterate onto first one
 			this.row = startRowDir < 0 ? 0 : r.height-1;
 			this.col = startColDir < 0 ? -1 : r.width;
 

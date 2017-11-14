@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -148,7 +150,7 @@ public class Client extends Observable implements ActionListener, KeyListener {
 				break;
 
 			case "New Game":
-				// start a new game
+				// run a new game
 				break;
 
 			case "Save":
@@ -225,5 +227,22 @@ public class Client extends Observable implements ActionListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 
+	}
+
+	/**
+	 * Creates a client socket and then starts running the client on a slave
+	 * connection.
+	 */
+	public static void run(String host, int port){
+		try {
+			// Create the client's socket
+			Socket socket = new Socket(host, port);
+			System.out.println("CLIENT HAS BEEN CONNECTED TO " + host + " : " + port);
+			Slave s = new Slave(socket);
+			new Client(s);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
