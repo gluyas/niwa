@@ -104,18 +104,18 @@ public class RoomRenderer {
 	}
 
 	public void rotateCW() {
-		rotationAnimation(facing.turnCW(), true);
+		animations.add(rotationAnimation(facing.turnCW(), true));
 //		facing = facing.turnCW();
 //		bearing -= Math.toRadians(90);
 	}
 
 	public void rotateCCW() {
-		rotationAnimation(facing.turnCCW(), false);
+		animations.add(rotationAnimation(facing.turnCCW(), false));
 //		facing = facing.turnCCW();
 //		bearing += Math.toRadians(90);
 	}
 
-	private void rotationAnimation(Direction target, boolean clockwise) {
+	private Animator rotationAnimation(Direction target, boolean clockwise) {
 		double e0 = explodeFactor;
 		double b0 = bearing;
 		double b1 = Math.toRadians((target.bearingDeg() + 45));
@@ -129,7 +129,7 @@ public class RoomRenderer {
 			b1v = b1;
 		}
 
-		animations.add(new Animator(ANIM_ROT_DURATION, (t) -> {
+		return new Animator(ANIM_ROT_DURATION, (t) -> {
 			if (t >= 1) {
 				this.bearing = b1;
 				this.explodeFactor = 1;
@@ -143,7 +143,7 @@ public class RoomRenderer {
 
 			if (t >= 0.5) this.facing = target;
 			return false;
-		}));
+		});
 	}
 
 	public boolean animationsPending() {
