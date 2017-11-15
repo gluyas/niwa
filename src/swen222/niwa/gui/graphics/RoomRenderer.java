@@ -26,11 +26,17 @@ public class RoomRenderer {
 	public static final double 	ANIM_ROT_EXPLODE_FACTOR = 1.15;
 	public static final double	ANIM_ROT_EXPLODE_EXPONENT = 0.3;
 
+	public static final double	JITTER_MAG_MIN = 0.05;
+	public static final double	JITTER_MAG_MAX = 0.10;
+	public static final double	JITTER_Z_SCALE = 3.00;
+
 	private Room room;
 	private EntityTable<?> et;
 
 	private int heightDiff;
 	private Vector3d centreOffset;
+
+	private Vector3d[][] jitter;
 
 	private Direction facing = Direction.NORTH; // the world direction that is northeast from the user's perspective
 	private double bearing = Math.toRadians(45);
@@ -50,6 +56,42 @@ public class RoomRenderer {
 
 	public void setET(EntityTable<?> et) {
 		this.et = et;
+	}
+
+
+	public void setRoom(Room r) {
+		this.room = r;
+		if (r == null) return;
+
+		int minH = Integer.MAX_VALUE;
+		int maxH = Integer.MIN_VALUE;
+		for (Tile t : r) {
+			if (t.height < minH) minH = t.height;
+			if (t.height > maxH) maxH = t.height;
+		}
+
+		heightDiff = maxH - minH;
+
+		centreOffset = new Vector3d(
+				(r.width - 1) / 2.0,
+				(r.height - 1) / 2.0,
+				0							// TODO: get correct offset
+		).negate();
+
+		// JITTER GENERATION
+
+		Random rng = new Random();
+		jitter = new Vector3d[r.width][r.height];
+		
+		for (int row = 0; row < r.height; row++) {
+			for (int col = 0; col < r.width; col++) {
+				Vector3d offset = new Vector3d(0, 0, lerp(rng.nextDouble(), JITTER_MAG_MIN, JITTER_MAG_MAX))
+						.rotateX(rng.nextDouble() * Math.PI*2)
+						.rotateY(rng.nextDouble() * Math.PI*2)
+						.mul(1, 1, JITTER_Z_SCALE);
+				jitter[col][row] = offset;
+			}
+		}
 	}
 
 	public void setDebugCoordinates(int value) {
@@ -80,9 +122,9 @@ public class RoomRenderer {
 
 		double b1v;									// 'virtual' bearing endpoint to ensure correct lerp direction
 		if (clockwise && b1 > b0) {
-			b1v = b1 - 2*Math.PI;
+			b1v = b1 - Math.PI*2;
 		} else if (!clockwise && b1 < b0) {
-			b1v = b1 + 2*Math.PI;
+			b1v = b1 + Math.PI*2;
 		} else {
 			b1v = b1;
 		}
@@ -102,26 +144,6 @@ public class RoomRenderer {
 			if (t >= 0.5) this.facing = target;
 			return false;
 		}));
-	}
-
-	public void setRoom(Room r) {
-		this.room = r;
-		if (r == null) return;
-
-		int minH = Integer.MAX_VALUE;
-		int maxH = Integer.MIN_VALUE;
-		for (Tile t : r) {
-			if (t.height < minH) minH = t.height;
-			if (t.height > maxH) maxH = t.height;
-		}
-
-		heightDiff = maxH - minH;
-
-		centreOffset = new Vector3d(
-				(r.width - 1) / 2.0,
-				(r.height - 1) / 2.0,
-				0							// TODO: get correct offset
-		).negate();
 	}
 
 	public boolean animationsPending() {
@@ -156,6 +178,8 @@ public class RoomRenderer {
 			Tile tile = room.tileAt(loc);
 
 			Vector4d pos = new Vector4d(loc.col, loc.row, tile.height, 1);
+			pos.add(new Vector4d(jitter[loc.col][loc.row], 0));	// apply jitter
+
 			projection.transform(pos);
 
 			pos.mul(pos.w * scale);								// convert from hg coordinates & apply block scale
