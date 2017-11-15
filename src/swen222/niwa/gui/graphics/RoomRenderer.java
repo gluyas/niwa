@@ -21,7 +21,10 @@ import java.util.List;
  */
 public class RoomRenderer {
 
-	public static final long ANIM_ROT_DURATION = 250;
+	public static final long 	ANIM_ROT_DURATION = 300;
+	public static final double 	ANIM_ROT_EXPONENT = 3;
+	public static final double 	ANIM_ROT_EXPLODE_FACTOR = 1.15;
+	public static final double	ANIM_ROT_EXPLODE_EXPONENT = 0.3;
 
 	private Room room;
 	private EntityTable<?> et;
@@ -31,6 +34,8 @@ public class RoomRenderer {
 
 	private Direction facing = Direction.NORTH; // the world direction that is northeast from the user's perspective
 	private double bearing = Math.toRadians(45);
+
+	private double explodeFactor = 1;
 
 	private List<Animator> animations = new LinkedList<>();
 
@@ -69,24 +74,29 @@ public class RoomRenderer {
 	}
 
 	private void rotationAnimation(Direction target, boolean clockwise) {
-
+		double e0 = explodeFactor;
 		double b0 = bearing;
 		double b1 = Math.toRadians((target.bearingDeg() + 45));
 
-		double b1v = b1;								// 'virtual' bearing endpoint to ensure correct lerp direction
+		double b1v;									// 'virtual' bearing endpoint to ensure correct lerp direction
 		if (clockwise && b1 > b0) {
-			b1v -= 2*Math.PI;
+			b1v = b1 - 2*Math.PI;
 		} else if (!clockwise && b1 < b0) {
-			b1v += 2*Math.PI;
+			b1v = b1 + 2*Math.PI;
+		} else {
+			b1v = b1;
 		}
-
-		double d = b1v - b0;
 
 		animations.add(new Animator(ANIM_ROT_DURATION, (t) -> {
 			if (t >= 1) {
 				this.bearing = b1;
+				this.explodeFactor = 1;
 			} else {
-				this.bearing = b0 + t * d;
+				this.bearing = lerp(easeInOutPoly(t, ANIM_ROT_EXPONENT), b0, b1v);
+				this.explodeFactor = lerp(
+						easeOutPoly(1 - 2 * Math.abs(t - 0.5), ANIM_ROT_EXPLODE_EXPONENT),
+						e0, ANIM_ROT_EXPLODE_FACTOR
+				);
 			}
 
 			if (t >= 0.5) this.facing = target;
@@ -131,6 +141,8 @@ public class RoomRenderer {
 
 		double scale = getRoomScale(width, height);
 		double blockSize = scale * Math.sqrt(2);
+
+		scale *= explodeFactor;
 
 		g.translate(width/2, height/2);
 
@@ -194,6 +206,34 @@ public class RoomRenderer {
 
 	public double getRoomScale(int width, int height) {
 		return 75;	// TODO: scale correctly
+	}
+
+	// EASINGS - based on https://github.com/warrenm/AHEasing
+
+	private static double lerp(double t, double x0, double x1) {
+		return x0 + t * (x1 - x0);
+	}
+
+	private static double clamp(double x, double min, double max) {
+		if	    (x < min) x = min;
+		else if (x > max) x = max;
+		return x;
+	}
+
+	private static double easeInPoly(double t, double p) {
+		return Math.pow(t, p);
+	}
+
+	private static double easeOutPoly(double t, double p) {
+		return 1 - Math.pow(1 - t, p);
+	}
+
+	private static double easeInOutPoly(double t, double p) {
+		if (t < 0.5) {
+			return easeInPoly(2 * t, p) / 2;
+		} else {
+			return easeOutPoly(2 * (t - 0.5), p) / 2 + 0.5;
+		}
 	}
 
 	/**
