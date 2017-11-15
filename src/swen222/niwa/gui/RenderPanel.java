@@ -11,7 +11,7 @@ import java.awt.Graphics2D;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * panel containing the render window that displays the game world
@@ -19,6 +19,8 @@ import javax.swing.JPanel;
  *
  */
 public class RenderPanel extends JPanel implements Observer {
+
+	public static final int REFRESH_RATE = 1000 / 120;
 
 	private Client control;
 	private RoomRenderer rr;
@@ -31,6 +33,12 @@ public class RenderPanel extends JPanel implements Observer {
 		addKeyListener(control);
 
 		setPreferredSize(new Dimension(1280, 630));
+
+		Timer refresh = new Timer(REFRESH_RATE, (e) -> {
+			if (rr.animationsPending()) this.repaint();
+		});
+		refresh.setRepeats(true);
+		refresh.start();
 	}
 
 	@Override

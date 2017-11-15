@@ -132,6 +132,25 @@ public enum Direction {
 		}
 	}
 
+	public int bearingDeg() {
+		switch (this) {				// somewhere down the line someone got confused with the directions...
+			case NORTH:				// so from now on the bearings go in ccw rather than cw
+				return 0;			// otherwise we would have to change all of the sprites and their code
+			case WEST:
+				return 90;
+			case SOUTH:
+				return 180;
+			case EAST:
+				return 270;
+			default:
+				throw new AssertionError("Direction not accounted for: " + this); // this should never happen
+		}
+	}
+
+	public double bearingRad() {
+		return Math.toRadians(bearingDeg());
+	}
+
 	public static Direction fromString(String dir){
 		switch(dir.toLowerCase()){
 		case "n":

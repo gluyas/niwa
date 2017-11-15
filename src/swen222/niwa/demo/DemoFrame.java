@@ -51,10 +51,10 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		pack();
 		setVisible(true); // make sure we are visible!
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//
-//		Timer timer = new Timer(10, (e) -> this.repaint());
-//		timer.setRepeats(true);
-//		timer.start();
+
+		Timer refresh = new Timer(1000 / 120, (e) -> { if (rr.animationsPending()) this.repaint();});
+		refresh.setRepeats(true);
+		refresh.start();
 	}
 
 	private void load() {

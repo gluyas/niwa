@@ -11,8 +11,8 @@ import swen222.niwa.model.world.Tile;
 
 import java.awt.*;
 import java.lang.Math;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.List;
 
 /**
  * Draws the state of a Room onto a graphics object
@@ -21,13 +21,18 @@ import java.util.NoSuchElementException;
  */
 public class RoomRenderer {
 
+	public static final long ANIM_ROT_DURATION = 250;
+
 	private Room room;
+	private EntityTable<?> et;
+
 	private int heightDiff;
 	private Vector3d centreOffset;
-	private EntityTable<?> et;
 
 	private Direction facing = Direction.NORTH; // the world direction that is northeast from the user's perspective
 	private double bearing = Math.toRadians(45);
+
+	private List<Animator> animations = new LinkedList<>();
 
 	public RoomRenderer(Room subject, EntityTable<?> et) {
 		setRoom(subject);
@@ -52,13 +57,41 @@ public class RoomRenderer {
 	}
 
 	public void rotateCW() {
-		facing = facing.turnCW();
-		bearing -= Math.toRadians(90);
+		rotationAnimation(facing.turnCW(), true);
+//		facing = facing.turnCW();
+//		bearing -= Math.toRadians(90);
 	}
 
 	public void rotateCCW() {
-		facing = facing.turnCCW();
-		bearing += Math.toRadians(90);
+		rotationAnimation(facing.turnCCW(), false);
+//		facing = facing.turnCCW();
+//		bearing += Math.toRadians(90);
+	}
+
+	private void rotationAnimation(Direction target, boolean clockwise) {
+
+		double b0 = bearing;
+		double b1 = Math.toRadians((target.bearingDeg() + 45));
+
+		double b1v = b1;								// 'virtual' bearing endpoint to ensure correct lerp direction
+		if (clockwise && b1 > b0) {
+			b1v -= 2*Math.PI;
+		} else if (!clockwise && b1 < b0) {
+			b1v += 2*Math.PI;
+		}
+
+		double d = b1v - b0;
+
+		animations.add(new Animator(ANIM_ROT_DURATION, (t) -> {
+			if (t >= 1) {
+				this.bearing = b1;
+			} else {
+				this.bearing = b0 + t * d;
+			}
+
+			if (t >= 0.5) this.facing = target;
+			return false;
+		}));
 	}
 
 	public void setRoom(Room r) {
@@ -81,6 +114,10 @@ public class RoomRenderer {
 		).negate();
 	}
 
+	public boolean animationsPending() {
+		return !animations.isEmpty();
+	}
+
 	/**
 	 * Renders this Room in a rectangle on a given swing graphics object
 	 * @param g
@@ -88,8 +125,9 @@ public class RoomRenderer {
 	 * @param height
 	 */
 	public void draw(Graphics g, int width, int height) {
-
 		if (room == null || et == null) return;
+
+		animations.removeIf(Animator::apply);					// advance and cull all animations
 
 		double scale = getRoomScale(width, height);
 		double blockSize = scale * Math.sqrt(2);
@@ -145,13 +183,8 @@ public class RoomRenderer {
 	// GRAPHICS CODE
 
 	public static final double JITTER = 0.14;
-	public static final double HEIGHT_TO_WIDTH = 1 / 4.0;
+	public static final double HEIGHT_TO_WIDTH = 1 / 3.0;
 	public static final double ELEVATION_ANGLE = Math.atan(Math.sqrt(2));
-
-	public static final double X_Y = Math.sqrt(3)/2; // 3D X to 2D Y
-	//public static final double X_Y = 0.5; // 3D X to 2D Y
-	public static final double Y_Y = X_Y; // 3D Y to 2D Y
-	public static final double Z_Y = 2*X_Y/3; //2X_Y/2
 
 	private int debugCoordinates = 0;
 
