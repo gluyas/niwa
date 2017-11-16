@@ -80,7 +80,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		et.addObserver(this);
 
 		rr.setRoom(newRoom);
-		rr.setET(et);
+		rr.setEntityTable(et);
 
 		repaint();
 	}

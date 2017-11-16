@@ -6,9 +6,9 @@
 <spawnNorth col = "2" row = "0" />
 
 <tiles>
-	<line>g9 g9 g9 </line>
-	<line>g9 g9 g9 </line>
-	<line>g9 g9 g9 </line>
+	<line>g1 g2 g3 </line>
+	<line>g6 g5 g4 </line>
+	<line>g7 g8 g9 </line>
 </tiles>
 
 </class>

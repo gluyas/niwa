@@ -1,5 +1,9 @@
 package swen222.niwa.model.world;
 
+import org.joml.Vector2d;
+import org.joml.Vector3d;
+import org.joml.Vector4d;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.Serializable;
@@ -93,6 +97,18 @@ public class Location implements Serializable {
 			Location loc = (Location) obj;
 			return loc.room == this.room && loc.col == this.col && loc.row == this.row;
 		} else return false;
+	}
+
+	public Vector2d toVector2() {
+		return new Vector2d(col, row);
+	}
+
+	public Vector3d toVector3() {
+		return new Vector3d(col, row, tile().height);
+	}
+
+	public Vector4d toVector4() {
+		return new Vector4d(col, row, tile().height, 1);
 	}
 
 	@Override

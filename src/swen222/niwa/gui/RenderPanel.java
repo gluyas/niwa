@@ -72,7 +72,7 @@ public class RenderPanel extends JPanel implements Observer {
 	public void update(Observable o, Object arg) {
 		if (arg == control) {
 			rr.setRoom(control.getRoom());
-			rr.setET(control.getEntityTable());
+			rr.setEntityTable(control.getEntityTable());
 		}
 		repaint();
 	}

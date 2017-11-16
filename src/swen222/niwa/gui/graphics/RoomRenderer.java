@@ -4,6 +4,7 @@ import org.joml.*;
 
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.util.EntityTable;
+import swen222.niwa.model.util.ObservableEntityTable;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
@@ -19,24 +20,27 @@ import java.util.List;
  *
  * @author Marc
  */
-public class RoomRenderer {
+public class RoomRenderer implements Observer {
 
 	public static final long 	ANIM_ROT_DURATION = 300;
 	public static final double 	ANIM_ROT_EXPONENT = 3;
 	public static final double 	ANIM_ROT_EXPLODE_FACTOR = 1.15;
-	public static final double	ANIM_ROT_EXPLODE_EXPONENT = 0.3;
+	public static final double	ANIM_ROT_EXPLODE_EXPONENT = 0.2;
+
+	public static final long	ANIM_MOV_DURATION = 75;
 
 	public static final double	JITTER_MAG_MIN = 0.05;
 	public static final double	JITTER_MAG_MAX = 0.10;
 	public static final double	JITTER_Z_SCALE = 3.00;
 
 	private Room room;
-	private EntityTable<?> et;
+	private ObservableEntityTable<?> et;
 
 	private int heightDiff;
 	private Vector3d centreOffset;
 
 	private Vector3d[][] jitter;
+	private Map<Entity, Vector4d> entityOffset = new HashMap<>();	// using hg coordinates
 
 	private Direction facing = Direction.NORTH; // the world direction that is northeast from the user's perspective
 	private double bearing = Math.toRadians(45);
@@ -45,19 +49,20 @@ public class RoomRenderer {
 
 	private List<Animator> animations = new LinkedList<>();
 
-	public RoomRenderer(Room subject, EntityTable<?> et) {
+	public RoomRenderer(Room subject, ObservableEntityTable<?> et) {
 		setRoom(subject);
-		setET(et);
+		setEntityTable(et);
 	}
 
 	public Direction getFacing() {
 		return facing;
 	}
 
-	public void setET(EntityTable<?> et) {
+	public void setEntityTable(ObservableEntityTable<?> et) {
+		if (this.et != null) this.et.deleteObserver(this);
 		this.et = et;
+		if (et != null) et.addObserver(this);
 	}
-
 
 	public void setRoom(Room r) {
 		this.room = r;
@@ -91,6 +96,27 @@ public class RoomRenderer {
 						.mul(1, 1, JITTER_Z_SCALE);
 				jitter[col][row] = offset;
 			}
+		}
+	}
+
+	@Override
+	// Update is called whenever an Entity in the Room is updated - listen for animations here
+	public void update(Observable o, Object arg) {
+		if (arg instanceof Entity.LocationUpdate) {		// move animation
+			Entity.LocationUpdate update = (Entity.LocationUpdate) arg;
+
+			Vector4d move = update.from.toVector4().sub(update.to.toVector4());
+			move.w = 1;
+			entityOffset.put(update.subject(), move);
+
+			animations.add(new Animator(ANIM_MOV_DURATION, (t) -> {
+				if (t >= 1) {
+					entityOffset.remove(update.subject());
+				} else {
+					move.w = 1 - t;								// using hg coords to interpolate for us!
+				}
+				return false;
+			}));
 		}
 	}
 
@@ -171,16 +197,19 @@ public class RoomRenderer {
 		Matrix4d projection = new Matrix4d()					// orthographic projection matrix
 				.rotate(ELEVATION_ANGLE, 1, 0, 0)
 				.rotate(bearing, 0, 0, 1)
-				.translate(centreOffset)						// centred around centroid of level
 				.scale(1, 1, HEIGHT_TO_WIDTH);			// scale block height to be a fraction of width
+
+		Matrix4d camera = projection							// camera position
+				.translate(centreOffset, new Matrix4d());		// translate to centroid of level
+
 
 		for (Location loc : new BackToFrontIterator(room, facing)) {
 			Tile tile = room.tileAt(loc);
 
-			Vector4d pos = new Vector4d(loc.col, loc.row, tile.height, 1);
+			Vector4d pos = loc.toVector4();
 			pos.add(new Vector4d(jitter[loc.col][loc.row], 0));	// apply jitter
 
-			projection.transform(pos);
+			camera.transform(pos);
 
 			pos.mul(pos.w * scale);								// convert from hg coordinates & apply block scale
 			pos.w = 1;
@@ -189,8 +218,18 @@ public class RoomRenderer {
 			if (tile.prop != null) tile.prop.drawSprite(g, facing, (int) pos.x, (int) pos.y, blockSize);
 
 			if (et != null) {
-				for (Entity e : et.get(loc)) {
-					e.sprite(facing).draw(g, (int) pos.x, (int) pos.y, blockSize);
+				for (Entity entity : et.get(loc)) {
+					Vector4d entPos = pos;
+
+					if (entityOffset.containsKey(entity)) {		// apply entity offset vector if present
+						entPos = projection.transform(entityOffset.get(entity), new Vector4d());
+
+						entPos.mul(entPos.w * scale);			// convert from hg coordinates & apply block scale
+						entPos.add(pos);
+						entPos.w = 1;
+					}
+
+					entity.sprite(facing).draw(g, (int) entPos.x, (int) entPos.y, blockSize);
 				}
 			}
 
@@ -234,8 +273,19 @@ public class RoomRenderer {
 
 	// EASINGS - based on https://github.com/warrenm/AHEasing
 
-	private static double lerp(double t, double x0, double x1) {
-		return x0 + t * (x1 - x0);
+	private static double lerp(double t, double v0, double v1) {
+		return v0 + t * (v1 - v0);
+	}
+
+	private static Vector3d lerp(double t, Vector3d v0, Vector3d v1) {
+		return lerp(t, v0, v1, new Vector3d());
+	}
+
+	private static Vector3d lerp(double t, Vector3d v0, Vector3d v1, Vector3d dest) {
+		dest.x = lerp(t, v0.x, v1.x);
+		dest.y = lerp(t, v0.y, v1.y);
+		dest.x = lerp(t, v0.z, v1.z);
+		return dest;
 	}
 
 	private static double clamp(double x, double min, double max) {
