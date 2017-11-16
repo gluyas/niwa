@@ -3,7 +3,6 @@ package swen222.niwa.gui.graphics;
 import org.joml.*;
 
 import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.ObservableEntityTable;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
@@ -22,16 +21,19 @@ import java.util.List;
  */
 public class RoomRenderer implements Observer {
 
-	public static final long 	ANIM_ROT_DURATION = 300;
-	public static final double 	ANIM_ROT_EXPONENT = 3;
-	public static final double 	ANIM_ROT_EXPLODE_FACTOR = 1.15;
-	public static final double	ANIM_ROT_EXPLODE_EXPONENT = 0.2;
-
-	public static final long	ANIM_MOV_DURATION = 75;
+	public static final double 	Z_SCALE = 1 / 3.0;
+	public static final double	VIEW_ANGLE = Math.atan(Math.sqrt(2));
 
 	public static final double	JITTER_MAG_MIN = 0.05;
 	public static final double	JITTER_MAG_MAX = 0.10;
 	public static final double	JITTER_Z_SCALE = 3.00;
+
+	public static final long 	ANIM_ROT_DURATION = 350;
+	public static final double 	ANIM_ROT_EXPONENT = 3;
+	public static final double 	ANIM_ROT_EXPLODE_FACTOR = 1.15;
+	public static final double	ANIM_ROT_EXPLODE_EXPONENT = 1.2;
+
+	public static final long	ANIM_MOV_DURATION = 75;
 
 	private Room room;
 	private ObservableEntityTable<?> et;
@@ -113,7 +115,7 @@ public class RoomRenderer implements Observer {
 				if (t >= 1) {
 					entityOffset.remove(update.subject());
 				} else {
-					move.w = 1 - t;								// using hg coords to interpolate for us!
+					move.w = 1 - t;					// using hg coords to interpolate for us!
 				}
 				return false;
 			}));
@@ -162,7 +164,7 @@ public class RoomRenderer implements Observer {
 			} else {
 				this.bearing = lerp(easeInOutPoly(t, ANIM_ROT_EXPONENT), b0, b1v);
 				this.explodeFactor = lerp(
-						easeOutPoly(1 - 2 * Math.abs(t - 0.5), ANIM_ROT_EXPLODE_EXPONENT),
+						easeInOutPoly(1 - 2 * Math.abs(t - 0.5), ANIM_ROT_EXPLODE_EXPONENT),
 						e0, ANIM_ROT_EXPLODE_FACTOR
 				);
 			}
@@ -195,9 +197,9 @@ public class RoomRenderer implements Observer {
 		g.translate(width/2, height/2);
 
 		Matrix4d projection = new Matrix4d()					// orthographic projection matrix
-				.rotate(ELEVATION_ANGLE, 1, 0, 0)
+				.rotate(VIEW_ANGLE, 1, 0, 0)
 				.rotate(bearing, 0, 0, 1)
-				.scale(1, 1, HEIGHT_TO_WIDTH);			// scale block height to be a fraction of width
+				.scale(1, 1, Z_SCALE);			// scale block height to be a fraction of width
 
 		Matrix4d camera = projection							// camera position
 				.translate(centreOffset, new Matrix4d());		// translate to centroid of level
@@ -257,10 +259,6 @@ public class RoomRenderer implements Observer {
 
 	// GRAPHICS CODE
 
-	public static final double JITTER = 0.14;
-	public static final double HEIGHT_TO_WIDTH = 1 / 3.0;
-	public static final double ELEVATION_ANGLE = Math.atan(Math.sqrt(2));
-
 	private int debugCoordinates = 0;
 
 	public final int DEBUG_COORDS_DISABLED = 0;
@@ -270,8 +268,6 @@ public class RoomRenderer implements Observer {
 	public double getRoomScale(int width, int height) {
 		return 75;	// TODO: scale correctly
 	}
-
-	// EASINGS - based on https://github.com/warrenm/AHEasing
 
 	private static double lerp(double t, double v0, double v1) {
 		return v0 + t * (v1 - v0);
@@ -294,19 +290,24 @@ public class RoomRenderer implements Observer {
 		return x;
 	}
 
+	// EASING FUNCTIONS - see here for diagram: https://www.desmos.com/calculator/5ufledm5fp
+
+	// ease-in: smooth at t0 (start); +ve p: ascending acceleration
 	private static double easeInPoly(double t, double p) {
 		return Math.pow(t, p);
 	}
 
+	// ease-out: smooth at t1 (end); +ve p: descending acceleration
 	private static double easeOutPoly(double t, double p) {
 		return 1 - Math.pow(1 - t, p);
 	}
 
+	// ease-in-out: +ve p: start slow, fast through middle; -ve p: start fast, slow through middle
 	private static double easeInOutPoly(double t, double p) {
 		if (t < 0.5) {
-			return easeInPoly(2 * t, p) / 2;
+			return Math.pow(t * 2, p) / 2;
 		} else {
-			return easeOutPoly(2 * (t - 0.5), p) / 2 + 0.5;
+			return 1 - Math.pow((1 - t) * 2, p) / 2;
 		}
 	}
 
