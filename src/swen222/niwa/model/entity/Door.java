@@ -2,9 +2,9 @@ package swen222.niwa.model.entity;
 
 import java.util.ArrayList;
 
-import swen222.niwa.file.SpriteLoader;
+import swen222.niwa.gui.graphics.SpriteSet;
 
-import swen222.niwa.file.SpriteLoader.SpriteSet;
+import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.gui.graphics.Sprite;
 import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
@@ -17,8 +17,8 @@ import swen222.niwa.model.world.Location;
  */
 public class Door extends ChangingEntity {
 
-	private static final SpriteSet SPRITES_OPEN = SpriteLoader.get("openDoor");
-	private static final SpriteSet SPRITES_CLOSED = SpriteLoader.get("closedDoor");
+	private static final SpriteSet SPRITES_OPEN = SpriteSet.get("openDoor");
+	private static final SpriteSet SPRITES_CLOSED = SpriteSet.get("closedDoor");
 	private ArrayList<Statue> statues;
 	private final String closedDesc = "This door is shut tight.";
 	private final String openDesc = "An open door can mean a world of possibilities.";

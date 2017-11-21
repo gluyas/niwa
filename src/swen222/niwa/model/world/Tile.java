@@ -3,7 +3,7 @@ package swen222.niwa.model.world;
 import java.io.Serializable;
 import java.util.Random;
 
-import swen222.niwa.file.SpriteLoader.SpriteSet;
+import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.gui.graphics.Sprite;
 import swen222.niwa.gui.graphics.Visible;
 import swen222.niwa.model.entity.Entity;

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import swen222.niwa.file.SpriteLoader;
-import swen222.niwa.file.SpriteLoader.SpriteSet;
+import swen222.niwa.gui.graphics.SpriteSet;
+import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.gui.graphics.Sprite;
 import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
@@ -20,11 +20,11 @@ import swen222.niwa.model.world.Location;
 public class PlayerEntity extends Entity {
 
 	private static final SpriteSet[] SPRITES = {
-			SpriteLoader.get("ghostBlue"),
-			SpriteLoader.get("ghostRed"),
-			SpriteLoader.get("ghostGreen"),
-			SpriteLoader.get("ghostGrey"),
-			SpriteLoader.get("ghostBlack")
+			SpriteSet.get("ghostBlue"),
+			SpriteSet.get("ghostRed"),
+			SpriteSet.get("ghostGreen"),
+			SpriteSet.get("ghostGrey"),
+			SpriteSet.get("ghostBlack")
 	};
 
 	public final String name;

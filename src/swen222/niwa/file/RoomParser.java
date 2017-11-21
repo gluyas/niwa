@@ -3,7 +3,7 @@ package swen222.niwa.file;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
-import swen222.niwa.file.SpriteLoader.SpriteSet;
+import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.entity.Door;
 import swen222.niwa.model.entity.Rune;
@@ -236,23 +236,23 @@ public class RoomParser {
 				switch(s){
 				case 'g':
 					randInt = new Random().nextInt(3)+1;
-					t = new Tile("grassBlock", blockHeight, SpriteLoader.get("grassBlock"+randInt), true);
+					t = new Tile("grassBlock", blockHeight, SpriteSet.get("grassBlock"+randInt), true);
 					break;
 				case 's':
-					t = new Tile("stoneBlock", blockHeight, SpriteLoader.get("stoneBlock"), true);
+					t = new Tile("stoneBlock", blockHeight, SpriteSet.get("stoneBlock"), true);
 					break;
 				case 'a':
-					t = new Tile("sandBlock", blockHeight, SpriteLoader.get("sandBlock"), true);
+					t = new Tile("sandBlock", blockHeight, SpriteSet.get("sandBlock"), true);
 					break;
 				case 'd':
-					t = new Tile("dirtBlock", blockHeight, SpriteLoader.get("dirtBlock"), true);
+					t = new Tile("dirtBlock", blockHeight, SpriteSet.get("dirtBlock"), true);
 					break;
 				case 'w':
 					randInt = new Random().nextInt(2)+1;
-					t = new Tile("waterBlock", blockHeight, SpriteLoader.get("waterBlock"+randInt), false);
+					t = new Tile("waterBlock", blockHeight, SpriteSet.get("waterBlock"+randInt), false);
 					break;
 				case 'q':
-					t = new Tile("koi", blockHeight, SpriteLoader.get("koi"), false);
+					t = new Tile("koi", blockHeight, SpriteSet.get("koi"), false);
 					break;
 				}
 				// add the tile to the rest of the room tiles
@@ -300,66 +300,66 @@ public class RoomParser {
 				switch(type){
 				case "bamboo":
 					des = "A stand of bamboo sways in the wind.";
-					props[row][col] = new Prop("bamboo", SpriteLoader.get("bamboo"), false, des);
+					props[row][col] = new Prop("bamboo", SpriteSet.get("bamboo"), false, des);
 					break;
 				case "bigrock":
 					randInt = new Random().nextInt(2)+1;
 					des = "A mighty boulder stands in your path.";
-					props[row][col] = new Prop("bigRock", SpriteLoader.get("bigRock"+randInt), false, des);
+					props[row][col] = new Prop("bigRock", SpriteSet.get("bigRock"+randInt), false, des);
 					break;
 				case "bigtree":
 					randInt = new Random().nextInt(3)+1;
 					des = "The graceful boughs of this tree fill you with a sense of peace.";
-					props[row][col] = new Prop("bigTree", SpriteLoader.get("bigTree"+randInt), false, des);
+					props[row][col] = new Prop("bigTree", SpriteSet.get("bigTree"+randInt), false, des);
 					break;
 				case "bush":
 					des = "What a cheery little bush!";
-					props[row][col] = new Prop("bush", SpriteLoader.get("bush"), false, des);
+					props[row][col] = new Prop("bush", SpriteSet.get("bush"), false, des);
 					break;
 				case "fenceside":
 					des = "It's just a fence.";
-					props[row][col] = new Prop("fenceSide", SpriteLoader.get("fenceSide"), false, des);
+					props[row][col] = new Prop("fenceSide", SpriteSet.get("fenceSide"), false, des);
 					break;
 				case "fencefront":
 					des = "It's just a fence.";
-					props[row][col] = new Prop("fenceFront", SpriteLoader.get("fenceFront"), false, des);
+					props[row][col] = new Prop("fenceFront", SpriteSet.get("fenceFront"), false, des);
 					break;
 				case "grass":
 					des = "A lush stand of tall grass.";
-					props[row][col] = new Prop("grass", SpriteLoader.get("grass"), true, des);
+					props[row][col] = new Prop("grass", SpriteSet.get("grass"), true, des);
 					break;
 				case "stonepathfront":
 					des = "A stone path, but where does it lead?";
-					props[row][col] = new Prop("stonePathFront", SpriteLoader.get("stonePathFront"), true, des);
+					props[row][col] = new Prop("stonePathFront", SpriteSet.get("stonePathFront"), true, des);
 					break;
 				case "stonepathside":
 					des = "A stone path, but where does it lead?";
-					props[row][col] = new Prop("stonePathSide", SpriteLoader.get("stonePathSide"), true, des);
+					props[row][col] = new Prop("stonePathSide", SpriteSet.get("stonePathSide"), true, des);
 					break;
 				case "woodpathfront":
 					des = "A wooden path to guide your way.";
-					props[row][col] = new Prop("woodPathFront", SpriteLoader.get("woodPathFront"), true, des);
+					props[row][col] = new Prop("woodPathFront", SpriteSet.get("woodPathFront"), true, des);
 					break;
 				case "woodpathside":
 					des = "A wooden path to guide your way.";
-					props[row][col] = new Prop("woodPathSide", SpriteLoader.get("woodPathSide"), true, des);
+					props[row][col] = new Prop("woodPathSide", SpriteSet.get("woodPathSide"), true, des);
 					break;
 				case "soil":
 					des = "A little patch of soil. It looks very fertile.";
-					props[row][col] = new Prop("soil", SpriteLoader.get("soil"), true, des);
+					props[row][col] = new Prop("soil", SpriteSet.get("soil"), true, des);
 					break;
 				case "smalltree":
 					randInt = new Random().nextInt(3)+1;
 					des = "Like big trees, but smaller!";
-					props[row][col] = new Prop("smallTree", SpriteLoader.get("smallTree"+randInt), false, des);
+					props[row][col] = new Prop("smallTree", SpriteSet.get("smallTree"+randInt), false, des);
 					break;
 				case "zen1":
 					des = "There's something inscribed on the stone: 古池や蛙飛びこむ水のおと";
-					props[row][col] = new Prop("zen1", SpriteLoader.get("zen1"), false, des);
+					props[row][col] = new Prop("zen1", SpriteSet.get("zen1"), false, des);
 					break;
 				case "zen2":
 					des = "There's something inscribed on the stone: 初しぐれ猿も小蓑をほしげ也";
-					props[row][col] = new Prop("zen2", SpriteLoader.get("zen2"), false, des);
+					props[row][col] = new Prop("zen2", SpriteSet.get("zen2"), false, des);
 					break;
 				}
 			}
@@ -409,13 +409,13 @@ public class RoomParser {
 					entities.add(new Door(Location.at(room, col, row), statues, facing));
 					break;
 				case "rune1":
-					entities.add(new Rune(Location.at(room, col, row), "circle", SpriteLoader.get("rune1")));
+					entities.add(new Rune(Location.at(room, col, row), "circle", SpriteSet.get("rune1")));
 					break;
 				case "rune2":
-					entities.add(new Rune(Location.at(room, col, row), "cross", SpriteLoader.get("rune2")));
+					entities.add(new Rune(Location.at(room, col, row), "cross", SpriteSet.get("rune2")));
 					break;
 				case "rune3":
-					entities.add(new Rune(Location.at(room, col, row), "lightning", SpriteLoader.get("rune3")));
+					entities.add(new Rune(Location.at(room, col, row), "lightning", SpriteSet.get("rune3")));
 					break;
 				case "runestone1":
 					entities.add(new RuneStone(Location.at(room, col, row), "circle", facing));
@@ -427,7 +427,7 @@ public class RoomParser {
 					entities.add(new RuneStone(Location.at(room, col, row), "lightning", facing));
 					break;
 				case "seed":
-					entities.add(new Seed(Location.at(room, col, row), SpriteLoader.get("seed")));
+					entities.add(new Seed(Location.at(room, col, row), SpriteSet.get("seed")));
 					break;
 				case "statue":
 					Statue statue = new Statue(Location.at(room, col, row));

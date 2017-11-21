@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
  *
  * @author Marc
  */
-public class Sprite implements Serializable{
+public class Sprite {
 
 	private transient Image img; // need to make transient + custom encoding/decoding methods
 	private final double width;
@@ -86,17 +86,4 @@ public class Sprite implements Serializable{
 
 		g.drawImage(img, x - pixelAX, y - pixelAY, pixelWidth, pixelHeight, null);
 	}
-
-	private void writeObject(ObjectOutputStream out) throws IOException {
-		out.defaultWriteObject();
-		ImageIO.write((RenderedImage)img, "png", out); // png is lossless
-
-	}
-
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-		in.defaultReadObject();
-		img = ImageIO.read(in);
-
-	}
-
 }

@@ -1,7 +1,6 @@
 package swen222.niwa.model.entity;
 
-import swen222.niwa.file.SpriteLoader;
-import swen222.niwa.file.SpriteLoader.SpriteSet;
+import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.gui.graphics.Sprite;
 import swen222.niwa.model.util.Update;
 import swen222.niwa.model.world.Direction;
@@ -17,8 +16,8 @@ import swen222.niwa.model.world.Location;
  */
 public class Statue extends ChangingEntity {
 
-	private static SpriteSet SS_DORMANT = SpriteLoader.get("statueDormant");
-	private static SpriteSet SS_ACTIVE = SpriteLoader.get("statueActive");
+	private static SpriteSet SS_DORMANT = SpriteSet.get("statueDormant");
+	private static SpriteSet SS_ACTIVE = SpriteSet.get("statueActive");
 	private SpriteSet ss;
 	private boolean triggered;
 	private final String dormantDesc = "A stone statue. It looks like it's sleeping.";
