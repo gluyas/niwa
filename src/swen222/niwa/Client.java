@@ -67,14 +67,14 @@ public class Client extends Observable implements ActionListener, KeyListener {
 	}
 
 	public EntityTable<Entity> getEntityTable() {
-		return EntityTable.unmodifiable(currentET);
+		return currentET;
 	}
 
 	public void setRoom(Room newRoom, EntityTable<Entity> newET) {
 		this.currentRoom = newRoom;
 		this.currentET = newET;
 		setChanged();
-		notifyObservers();
+		notifyObservers(this);
 	}
 
 	public PlayerEntity getPlayer() {
