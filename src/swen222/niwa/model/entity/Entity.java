@@ -16,6 +16,7 @@ import java.util.Observable;
  */
 public abstract class Entity extends Observable implements Visible, Serializable{
 
+	private final boolean fixedPosition;
 	private Location loc; // private so that notifyObservers in moveTo cannot be omitted
 	private String description; // the flavour text description of this Entity
 
@@ -24,6 +25,12 @@ public abstract class Entity extends Observable implements Visible, Serializable
 	 * @param loc starting Location for the Entity
 	 */
 	public Entity(Location loc) {
+		this.fixedPosition = false;
+		this.loc = loc;
+	}
+
+	public Entity(Location loc, boolean fixedPosition) {
+		this.fixedPosition = fixedPosition;
 		this.loc = loc;
 	}
 
@@ -36,6 +43,7 @@ public abstract class Entity extends Observable implements Visible, Serializable
 	// this should probably remain as a lower access base method though - responsible for some important functions.
 	// perhaps make a MovementRule strategy or something, that each Entity can have reference to, and easily check here.
 	public final Location setLocation(Location newLoc) { // final method to prevent notifyObservers omission
+		if (fixedPosition) throw new AssertionError("Attempted to move fixed Entity" + this);
 		//System.out.println("setting location "+this);
 		if (newLoc.equals(loc)) return loc; // don't want to update if nothing happens
 		Location oldLoc = loc;
