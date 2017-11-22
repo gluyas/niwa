@@ -97,6 +97,10 @@ public abstract class Entity extends Observable implements Visible, Serializable
 			this.to = to;
 		}
 
+		public Entity subject() {
+			return Entity.this;
+		}
+
 		@Override
 		public void apply() {
 			Entity.this.setLocation(to);

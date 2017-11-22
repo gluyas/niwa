@@ -2,13 +2,10 @@ package swen222.niwa.demo;
 
 import swen222.niwa.gui.graphics.RoomRenderer;
 import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
-import swen222.niwa.model.world.Rules;
-import swen222.niwa.model.world.World;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -55,6 +52,9 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		setVisible(true); // make sure we are visible!
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+		Timer refresh = new Timer(1000 / 120, (e) -> { if (rr.animationsPending()) this.repaint();});
+		refresh.setRepeats(true);
+		refresh.start();
 	}
 
 	private void load() {
@@ -69,29 +69,29 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		} else System.err.println("Load failed");
 	}
 
-		private void refresh() {
-			et.remove(p);
-			et.deleteObserver(this);
-			et = new HashEntityTable<>();
+	private void refresh() {
+		et.remove(p);
+		et.deleteObserver(this);
+		et = new HashEntityTable<>();
 
-			Room newRoom = Room.newFromFile(new File(stageName), 0, 0, et);
-			p = new DemoPlayer(Location.at(newRoom, 0, 0));
-			et.add(p);
-			et.addObserver(this);
+		Room newRoom = Room.newFromFile(new File(stageName), 0, 0, et);
+		p = new DemoPlayer(Location.at(newRoom, 0, 0));
+		et.add(p);
+		et.addObserver(this);
 
-			rr.setRoom(newRoom);
-			rr.setET(et);
+		rr.setRoom(newRoom);
+		rr.setEntityTable(et);
 
-			repaint();
-		}
+		repaint();
+	}
 
-		@Override
-		public void update(Observable o, Object arg) {
-			repaint();
-		}
+	@Override
+	public void update(Observable o, Object arg) {
+		repaint();
+	}
 
-		@Override
-		public void keyTyped(KeyEvent e) {
+	@Override
+	public void keyTyped(KeyEvent e) {
 
 	}
 
@@ -137,7 +137,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 				break;
 
 			case VK_N:
-				rr.cycleNumbers();
+				rr.cycleDebugCoordinates();
 				repaint();
 				break;
 

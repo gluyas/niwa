@@ -1,217 +1,313 @@
 package swen222.niwa.gui.graphics;
 
+import org.joml.*;
+
 import swen222.niwa.model.entity.Entity;
-import swen222.niwa.model.util.EntityTable;
+import swen222.niwa.model.util.ObservableEntityTable;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 import swen222.niwa.model.world.Tile;
 
 import java.awt.*;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.lang.Math;
+import java.util.*;
+import java.util.List;
 
 /**
  * Draws the state of a Room onto a graphics object
  *
  * @author Marc
  */
-public class RoomRenderer {
+public class RoomRenderer implements Observer {
 
-	public static final double JITTER = 0.14;
-	public static final double X_Y = Math.sqrt(3)/2; // 3D X to 2D Y
-	//public static final double X_Y = 0.5; // 3D X to 2D Y
-	public static final double Y_Y = X_Y; // 3D Y to 2D Y
-	public static final double Z_Y = 2*X_Y/3; //2X_Y/2
+	public static final double 	Z_SCALE = 1 / 3.0;
+	public static final double	VIEW_ANGLE = Math.atan(Math.sqrt(2));
 
-	private Room r;
+	public static final double	JITTER_MAG_MIN = 0.05;
+	public static final double	JITTER_MAG_MAX = 0.10;
+	public static final double	JITTER_Z_SCALE = 3.00;
+
+	public static final long 	ANIM_ROT_DURATION = 350;
+	public static final double 	ANIM_ROT_EXPONENT = 3;
+	public static final double 	ANIM_ROT_EXPLODE_FACTOR = 1.15;
+	public static final double	ANIM_ROT_EXPLODE_EXPONENT = 1.2;
+
+	public static final long	ANIM_MOV_DURATION = 75;
+
+	private Room room;
+	private ObservableEntityTable<?> et;
+
 	private int heightDiff;
-	private EntityTable<?> et;
-	private int numbers = 0;
+	private Vector3d centreOffset;
 
-	public final int NUMBERS_DISABLED = 0;
-	public final int NUMBERS_WHITE = 2;
-	public final int NUMBERS_BLACK = 1;
+	private Vector3d[][] jitter;
+	private Map<Entity, Vector4d> entityOffset = new HashMap<>();	// using hg coordinates
 
 	private Direction facing = Direction.NORTH; // the world direction that is northeast from the user's perspective
+	private double bearing = Math.toRadians(45);
 
-	public RoomRenderer(Room subject, EntityTable<?> et) {
-		this.r = subject;
-		setET(et);
+	private double explodeFactor = 1;
+
+	private List<Animator> animations = new LinkedList<>();
+
+	public RoomRenderer(Room subject, ObservableEntityTable<?> et) {
+		setRoom(subject);
+		setEntityTable(et);
 	}
 
 	public Direction getFacing() {
 		return facing;
 	}
 
-	public void setRoom(Room r) {
-		this.r = r;
-		if (r == null) return;
-		int min = Integer.MAX_VALUE;
-		int max = Integer.MIN_VALUE;
-		for (Tile t : r) {
-			if (t.height < min) min = t.height;
-			else if (t.height > max) max = t.height;
-		}
-		heightDiff = max - min;
-		//System.out.println(heightDiff);
-	}
-
-	public void setET(EntityTable<?> et) {
+	public void setEntityTable(ObservableEntityTable<?> et) {
+		if (this.et != null) this.et.deleteObserver(this);
 		this.et = et;
+		if (et != null) et.addObserver(this);
 	}
 
-	public void setNumbers(int value) {
-		numbers = value;
+	public void setRoom(Room r) {
+		this.room = r;
+		if (r == null) return;
+
+		int minH = Integer.MAX_VALUE;
+		int maxH = Integer.MIN_VALUE;
+		for (Tile t : r) {
+			if (t.height < minH) minH = t.height;
+			if (t.height > maxH) maxH = t.height;
+		}
+
+		heightDiff = maxH - minH;
+
+		centreOffset = new Vector3d(
+				(r.width - 1) / 2.0,
+				(r.height - 1) / 2.0,
+				0							// TODO: get correct offset
+		).negate();
+
+		// JITTER GENERATION
+
+		Random rng = new Random();
+		jitter = new Vector3d[r.width][r.height];
+		
+		for (int row = 0; row < r.height; row++) {
+			for (int col = 0; col < r.width; col++) {
+				Vector3d offset = new Vector3d(0, 0, lerp(rng.nextDouble(), JITTER_MAG_MIN, JITTER_MAG_MAX))
+						.rotateX(rng.nextDouble() * Math.PI*2)
+						.rotateY(rng.nextDouble() * Math.PI*2)
+						.mul(1, 1, JITTER_Z_SCALE);
+				jitter[col][row] = offset;
+			}
+		}
 	}
 
-	public int cycleNumbers() {
-		numbers = (numbers+1)%3;
-		return numbers;
+	@Override
+	// Update is called whenever an Entity in the Room is updated - listen for animations here
+	public void update(Observable o, Object arg) {
+		if (arg instanceof Entity.LocationUpdate) {		// move animation
+			Entity.LocationUpdate update = (Entity.LocationUpdate) arg;
+
+			Vector4d move = update.from.toVector4().sub(update.to.toVector4());
+			move.w = 1;
+			entityOffset.put(update.subject(), move);
+
+			animations.add(new Animator(ANIM_MOV_DURATION, (t) -> {
+				if (t >= 1) {
+					entityOffset.remove(update.subject());
+				} else {
+					move.w = 1 - t;					// using hg coords to interpolate for us!
+				}
+				return false;
+			}));
+		}
+	}
+
+	public void setDebugCoordinates(int value) {
+		debugCoordinates = value;
+	}
+
+	public int cycleDebugCoordinates() {
+		debugCoordinates = (debugCoordinates +1)%3;
+		return debugCoordinates;
 	}
 
 	public void rotateCW() {
-		facing = facing.turnCW();
+		animations.add(rotationAnimation(facing.turnCW(), true));
+//		facing = facing.turnCW();
+//		bearing -= Math.toRadians(90);
 	}
 
 	public void rotateCCW() {
-		facing = facing.turnCCW();
+		animations.add(rotationAnimation(facing.turnCCW(), false));
+//		facing = facing.turnCCW();
+//		bearing += Math.toRadians(90);
+	}
+
+	private Animator rotationAnimation(Direction target, boolean clockwise) {
+		double e0 = explodeFactor;
+		double b0 = bearing;
+		double b1 = Math.toRadians((target.bearingDeg() + 45));
+
+		double b1v;									// 'virtual' bearing endpoint to ensure correct lerp direction
+		if (clockwise && b1 > b0) {
+			b1v = b1 - Math.PI*2;
+		} else if (!clockwise && b1 < b0) {
+			b1v = b1 + Math.PI*2;
+		} else {
+			b1v = b1;
+		}
+
+		return new Animator(ANIM_ROT_DURATION, (t) -> {
+			if (t >= 1) {
+				this.bearing = b1;
+				this.explodeFactor = 1;
+			} else {
+				this.bearing = lerp(easeInOutPoly(t, ANIM_ROT_EXPONENT), b0, b1v);
+				this.explodeFactor = lerp(
+						easeInOutPoly(1 - 2 * Math.abs(t - 0.5), ANIM_ROT_EXPLODE_EXPONENT),
+						e0, ANIM_ROT_EXPLODE_FACTOR
+				);
+			}
+
+			if (t >= 0.5) this.facing = target;
+			return false;
+		});
+	}
+
+	public boolean animationsPending() {
+		return !animations.isEmpty();
 	}
 
 	/**
-	 * Renders this Room in a rectangle on a given //todo: cbf this rn
+	 * Renders this Room in a rectangle on a given swing graphics object
 	 * @param g
 	 * @param width
 	 * @param height
 	 */
 	public void draw(Graphics g, int width, int height) {
+		if (room == null || et == null) return;
 
-		if (r == null || et == null) return;
+		animations.removeIf(Animator::apply);					// advance and cull all animations
+
+		double scale = getRoomScale(width, height);
+		double blockSize = scale * Math.sqrt(2);
+
+		scale *= explodeFactor;
 
 		g.translate(width/2, height/2);
-		double blockSize = getBlockSize(width, height);
-		double scalar = blockSize/2.85;
 
-		Random rng = new Random(r.hashCode()*(facing.ordinal()+1));
+		Matrix4d projection = new Matrix4d()					// orthographic projection matrix
+				.rotate(VIEW_ANGLE, 1, 0, 0)
+				.rotate(bearing, 0, 0, 1)
+				.scale(1, 1, Z_SCALE);			// scale block height to be a fraction of width
 
-		for (Location loc : new BackToFrontIterator(r, facing)) {
-			if (loc.room != r) return;
-			Tile t = r.tileAt(loc);
-			if (t == null) {
-				System.err.println("null at "+loc.toString());
-				continue;
-			}
+		Matrix4d camera = projection							// camera position
+				.translate(centreOffset, new Matrix4d());		// translate to centroid of level
 
-			double[] jitter = getJitter(rng);
-			int[] pos = project(loc.col+jitter[0], loc.row+jitter[1], t.height+jitter[2], scalar);
-			t.drawSprite(g, facing, pos[0], pos[1], blockSize);
-			if (t.prop != null) t.prop.drawSprite(g, facing, pos[0], pos[1], blockSize);
+
+		for (Location loc : new BackToFrontIterator(room, facing)) {
+			Tile tile = room.tileAt(loc);
+
+			Vector4d pos = loc.toVector4();
+			pos.add(new Vector4d(jitter[loc.col][loc.row], 0));	// apply jitter
+
+			camera.transform(pos);
+
+			pos.mul(pos.w * scale);								// convert from hg coordinates & apply block scale
+			pos.w = 1;
+
+			tile.drawSprite(g, facing, (int) pos.x, (int) pos.y, blockSize);
+			if (tile.prop != null) tile.prop.drawSprite(g, facing, (int) pos.x, (int) pos.y, blockSize);
 
 			if (et != null) {
-				//System.out.println(et.get(loc));
-				for (Entity e : et.get(loc)) {
-					e.sprite(facing).draw(g, pos[0], pos[1], blockSize);
+				for (Entity entity : et.get(loc)) {
+					Vector4d entPos = pos;
+
+					if (entityOffset.containsKey(entity)) {		// apply entity offset vector if present
+						entPos = projection.transform(entityOffset.get(entity), new Vector4d());
+
+						entPos.mul(entPos.w * scale);			// convert from hg coordinates & apply block scale
+						entPos.add(pos);
+						entPos.w = 1;
+					}
+
+					entity.sprite(facing).draw(g, (int) entPos.x, (int) entPos.y, blockSize);
 				}
 			}
-			if (numbers != NUMBERS_DISABLED) {
-				switch (numbers) {
-					case NUMBERS_WHITE:
+
+			// EDITOR MODE
+
+			if (debugCoordinates != DEBUG_COORDS_DISABLED) {
+				switch (debugCoordinates) {
+					case DEBUG_COORDS_WHITE:
 						g.setColor(Color.white);
 						break;
-					case NUMBERS_BLACK:
+					case DEBUG_COORDS_BLACK:
 						g.setColor(Color.black);
 						break;
 				}
 				FontMetrics m = g.getFontMetrics();
 				String coords = loc.toStringCoords();
-				g.drawString(coords, pos[0]-m.stringWidth(coords)/2, pos[1]-m.getHeight()/2+m.getAscent());
+				g.drawString(
+					coords,
+					(int) pos.x - m.stringWidth(coords) / 2,
+					(int) pos.y - m.getHeight() / 2 + m.getAscent()
+				);
 			}
 		}
 	}
 
-	public double getBlockSize(int width, int height) {
-		int roomSize = Math.max(r.height, Math.max(r.width, heightDiff));
-		if (height <= width) {
-			return (height)/(roomSize);
+	// GRAPHICS CODE
+
+	private int debugCoordinates = 0;
+
+	public final int DEBUG_COORDS_DISABLED = 0;
+	public final int DEBUG_COORDS_WHITE = 2;
+	public final int DEBUG_COORDS_BLACK = 1;
+
+	public double getRoomScale(int width, int height) {
+		return 75;	// TODO: scale correctly
+	}
+
+	private static double lerp(double t, double v0, double v1) {
+		return v0 + t * (v1 - v0);
+	}
+
+	private static Vector3d lerp(double t, Vector3d v0, Vector3d v1) {
+		return lerp(t, v0, v1, new Vector3d());
+	}
+
+	private static Vector3d lerp(double t, Vector3d v0, Vector3d v1, Vector3d dest) {
+		dest.x = lerp(t, v0.x, v1.x);
+		dest.y = lerp(t, v0.y, v1.y);
+		dest.x = lerp(t, v0.z, v1.z);
+		return dest;
+	}
+
+	private static double clamp(double x, double min, double max) {
+		if	    (x < min) x = min;
+		else if (x > max) x = max;
+		return x;
+	}
+
+	// EASING FUNCTIONS - see here for diagram: https://www.desmos.com/calculator/5ufledm5fp
+
+	// ease-in: smooth at t0 (start); +ve p: ascending acceleration
+	private static double easeInPoly(double t, double p) {
+		return Math.pow(t, p);
+	}
+
+	// ease-out: smooth at t1 (end); +ve p: descending acceleration
+	private static double easeOutPoly(double t, double p) {
+		return 1 - Math.pow(1 - t, p);
+	}
+
+	// ease-in-out: +ve p: start slow, fast through middle; -ve p: start fast, slow through middle
+	private static double easeInOutPoly(double t, double p) {
+		if (t < 0.5) {
+			return Math.pow(t * 2, p) / 2;
 		} else {
-			return (width)/(roomSize*1.3);
-		}
-		//return 50;
-	}
-
-	private double[] getJitter(Random rng) {
-		double[] out = new double[3];
-		out[0] = rng.nextDouble() * JITTER;
-		out[1] = rng.nextDouble() * JITTER;
-		out[2] = rng.nextDouble() * JITTER;
-		return out;
-	}
-
-	/**
-	 * Converts real-world co-ordinates into screen co-ordinates. Takes view Direction into account.
-	 * Scales based on the scale field; centres based on the centre field. TODO: update this with final impl.
-	 * @param x real-world x (column)
-	 * @param y real-world y (row)
-	 * @param z real-world z (height)
-	 * @return 2-length array: [0] = x, [1] = y
-	 */
-	public int[] project(double x, double y, double z, double scale) {
-
-		// first, translate x and y into co-ordinates that are more useful to us:
-		int[] out = new int[2];
-
-		x -= (r.width-1)/2.0;
-		y -= (r.height-1)/2.0;
-		z -= (heightDiff+1)/2.0;
-
-		double[][] mat = transformationMatrix();
-
-		out[0] = (int) (scale * (x*mat[0][0] + y*mat[0][1] + z*mat[0][2]));
-		out[1] = (int) (scale * (x*mat[1][0] + y*mat[1][1] + z*mat[1][2]));
-
-		return out;
-	}
-
-	public int[] project(double x, double y, double scale) {
-		return project(x, y, 0, scale);
-	}
-
-	/**
-	 *
-	 * @return 2x3 matrix A such that s = Aw for screen co-ordinate s and world co-ordinate w
-	 */
-	private double[][] transformationMatrix() {
-		// factors of each position in matrix A - this allows the matricies below to simply look like +ve or -ve factors
-		double a11 = Math.sqrt(2);
-		double a12 = Math.sqrt(2);
-		double a21 = X_Y;
-		double a22 = Y_Y;
-		switch (facing) {
-			// pretty horrible to use discrete cases, but it's ultimately more simmple and easier to read than
-			// using the magic direction numbers
-			case NORTH:
-				return new double[][] {
-						{ a11,-a12, 0},
-						{ a21, a22,-Z_Y}
-				};
-			case EAST:
-				return new double[][] {
-						{ a11, a12, 0},
-						{-a21, a22,-Z_Y}
-				};
-			case SOUTH:
-				return new double[][] {
-						{-a11, a12, 0},
-						{-a21,-a22,-Z_Y}
-				};
-			case WEST:
-				return new double[][] {
-						{-a11,-a12, 0},
-						{ a21,-a22,-Z_Y}
-				};
-			default:
-				throw new AssertionError("facing unknown direction");
+			return 1 - Math.pow((1 - t) * 2, p) / 2;
 		}
 	}
 

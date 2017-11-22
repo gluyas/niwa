@@ -41,7 +41,7 @@ public class Client extends Observable implements ActionListener, KeyListener {
 	private World currentWorld;
 	private PlayerEntity currentPlayer;
 	private Room currentRoom;
-	private EntityTable<Entity> currentET;
+	private ObservableEntityTable<Entity> currentET;
 
 	public Client(Slave slave) {
 		this.slave = slave;
@@ -66,11 +66,11 @@ public class Client extends Observable implements ActionListener, KeyListener {
 		return currentRoom;
 	}
 
-	public EntityTable<Entity> getEntityTable() {
+	public ObservableEntityTable<Entity> getEntityTable() {
 		return currentET;
 	}
 
-	public void setRoom(Room newRoom, EntityTable<Entity> newET) {
+	public void setRoom(Room newRoom, ObservableEntityTable<Entity> newET) {
 		this.currentRoom = newRoom;
 		this.currentET = newET;
 		setChanged();
