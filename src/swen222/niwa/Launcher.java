@@ -1,6 +1,7 @@
 
 package swen222.niwa;
 
+import swen222.niwa.demo.DemoFrame;
 import swen222.niwa.net.Master;
 import swen222.niwa.net.Slave;
 import swen222.niwa.gui.graphics.SpriteSet;
@@ -36,6 +37,9 @@ public class Launcher {
 					numOfPlayers = Integer.parseInt(args[++i]);
 				}else if(argument.equals("-connect")){
 					host = args[++i];
+				} else if (argument.equals("-editor")) {
+					DemoFrame.main(args);
+					return;
 				}
 			}
 		}
