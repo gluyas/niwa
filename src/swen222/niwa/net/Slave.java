@@ -133,7 +133,7 @@ public class Slave extends Thread {
 		System.out.print("RECEIVING ROOM ... ");
 		Room r = (Room) input.readObject();
 		et = new HashEntityTable<>();
-		client.setRoom(r, ObservableEntityTable.unmodifiable(et));
+		client.setRoom(r, et);
 		System.out.println("DONE");
 	}
 

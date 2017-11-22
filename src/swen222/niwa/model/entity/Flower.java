@@ -8,8 +8,8 @@ import java.util.Random;
  * @author Hamish m
  */
 
-import swen222.niwa.file.SpriteLoader;
-import swen222.niwa.file.SpriteLoader.SpriteSet;
+import swen222.niwa.gui.graphics.SpriteSet;
+import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.gui.graphics.Sprite;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
@@ -19,29 +19,29 @@ public class Flower extends Entity{
 	private String type;
 	private static SpriteSet[][] SPRITES = {
 			{
-					SpriteLoader.get("redFlower1"),
-					SpriteLoader.get("redFlower2"),
-					SpriteLoader.get("redFlower3")
+					SpriteSet.get("redFlower1"),
+					SpriteSet.get("redFlower2"),
+					SpriteSet.get("redFlower3")
 			},
 			{
-					SpriteLoader.get("blueFlower1"),
-					SpriteLoader.get("blueFlower2"),
-					SpriteLoader.get("blueFlower3")
+					SpriteSet.get("blueFlower1"),
+					SpriteSet.get("blueFlower2"),
+					SpriteSet.get("blueFlower3")
 			},
 			{
-					SpriteLoader.get("greenFlower1"),
-					SpriteLoader.get("greenFlower2"),
-					SpriteLoader.get("greenFlower3")
+					SpriteSet.get("greenFlower1"),
+					SpriteSet.get("greenFlower2"),
+					SpriteSet.get("greenFlower3")
 			},
 			{
-					SpriteLoader.get("blackFlower1"),
-					SpriteLoader.get("blackFlower2"),
-					SpriteLoader.get("blackFlower3")
+					SpriteSet.get("blackFlower1"),
+					SpriteSet.get("blackFlower2"),
+					SpriteSet.get("blackFlower3")
 			},
 			{
-					SpriteLoader.get("greyFlower1"),
-					SpriteLoader.get("greyFlower2"),
-					SpriteLoader.get("greyFlower3")
+					SpriteSet.get("greyFlower1"),
+					SpriteSet.get("greyFlower2"),
+					SpriteSet.get("greyFlower3")
 			}
 	};
 

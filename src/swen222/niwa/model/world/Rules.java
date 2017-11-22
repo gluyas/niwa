@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 
-import swen222.niwa.file.SpriteLoader;
+import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.model.entity.*;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.world.Location.InvalidLocationException;
@@ -327,7 +327,7 @@ public class Rules {
 	 */
 	private void transformRuneStone(PlayerEntity player){
 		RuneStone stone =getRuneStone(player);//will never be null otherwise sameRuneType would return false above.
-		addEntity(new Seed(stone.getLocation(), SpriteLoader.get("seed")));
+		addEntity(new Seed(stone.getLocation(), SpriteSet.get("seed")));
 		removeEntity(stone);
 	}
 

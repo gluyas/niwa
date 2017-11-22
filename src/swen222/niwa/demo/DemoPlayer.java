@@ -1,6 +1,6 @@
 package swen222.niwa.demo;
 
-import swen222.niwa.file.SpriteLoader;
+import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.gui.graphics.Sprite;
 import swen222.niwa.model.entity.PlayerEntity;
 import swen222.niwa.model.world.Direction;
@@ -11,7 +11,7 @@ import swen222.niwa.model.world.Location;
  */
 public class DemoPlayer extends PlayerEntity {
 
-	static final SpriteLoader.SpriteSet ss = SpriteLoader.get("ghostRed");
+	static final SpriteSet ss = SpriteSet.get("ghostRed");
 
 	private Direction facing = Direction.NORTH;
 

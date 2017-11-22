@@ -16,6 +16,7 @@ import swen222.niwa.model.world.Room;
 import swen222.niwa.model.world.World;
 import swen222.niwa.net.Master;
 import swen222.niwa.net.Slave;
+import swen222.niwa.gui.graphics.SpriteSet;
 
 /**
  * The Launcher class is used to set up and run an instance of the game. It reads
@@ -31,6 +32,8 @@ public class Launcher {
 
 
 	public static void main(String args[]){
+
+		SpriteSet.loadSprites();
 
 		boolean server = false;
 		String host = null;

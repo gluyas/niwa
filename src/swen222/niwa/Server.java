@@ -1,7 +1,7 @@
 package swen222.niwa;
 
 import com.sun.istack.internal.Nullable;
-import swen222.niwa.file.SpriteLoader;
+import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.entity.PlayerEntity;
 import swen222.niwa.model.util.HashEntityTable;
