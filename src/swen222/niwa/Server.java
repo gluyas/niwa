@@ -1,6 +1,7 @@
 package swen222.niwa;
 
 import com.sun.istack.internal.Nullable;
+import swen222.niwa.file.RoomParser;
 import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.entity.PlayerEntity;
@@ -9,6 +10,10 @@ import swen222.niwa.model.util.ObservableEntityTable;
 import swen222.niwa.model.world.*;
 import swen222.niwa.net.Master;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.*;
 
 /**
@@ -157,5 +162,72 @@ public class Server {
 				notifyObservers(arg);
 			}
 		}
+	}
+
+	/**
+	 * Creates a server socket and listens for connections from client sockets,
+	 * once all clients have connected it starts a game.
+	 */
+	@SuppressWarnings("unchecked")
+	public static void run(int port, int numOfPlayers, int width, int height){
+
+		//Server gameServer = new Server(new World(Room.newFromFile(new File("resource/rooms/mountainpass.xml"), 0, 0)));
+		ObservableEntityTable<Entity>[][] tables
+				= (ObservableEntityTable<Entity>[][]) new ObservableEntityTable[height][width];
+		// Start listening for connections
+		System.out.println("SERVER LISTENING ON PORT: " +port);
+
+		File[] maps = new File("resource/rooms").listFiles();
+		ArrayList<File> randomMaps = new ArrayList<>();
+		for(File f: maps) randomMaps.add(f);
+		Collections.shuffle(randomMaps);
+		Room[][] map = new Room[width][height];
+		loop : for (int col = 0; col < width; col++) {
+			for (int row = 0; row < height; row++) {
+				int mapNum = col * height + row;
+				if (mapNum >= maps.length) break loop;
+				//RoomParser rp = new RoomParser(maps[mapNum]);
+				RoomParser rp = new RoomParser(randomMaps.get(mapNum));
+				map[row][col] = Room.RoomBuilder.buildRoom(rp, col, row);
+				tables[row][col] = new HashEntityTable<>();
+				tables[row][col].addAll(rp.getEntities());
+			}
+		}
+
+		Server gameServer = new Server(new World(map), tables);
+
+		try{
+			Master[] connections = new Master[numOfPlayers];
+			// Create the server socket
+			ServerSocket server = new ServerSocket(port);
+			while(true){
+				// Listen for a socket
+				Socket client = server.accept();
+				System.out.println(client.getInetAddress() + " HAS CONNECTED.");
+				// TODO: need to create the user ID e.g. int uid = game.registerPlayer()
+				// then pass it into the Master object e.g. new Master(broadcastClock, uid, client)
+				connections[--numOfPlayers] = new Master(client, gameServer);
+				connections[numOfPlayers].start();
+				// If all clients have connected
+			}
+
+		}catch(IOException e) {
+
+		}
+	}
+
+	/**
+	 * Check whether or not there is at least one connection alive.
+	 *
+	 * @param connections
+	 * @return
+	 */
+	private static boolean atleastOneConnection(Master... connections) {
+		for (Master m : connections) {
+			if (m.isAlive()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
