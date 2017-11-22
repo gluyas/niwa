@@ -2,8 +2,6 @@
 package swen222.niwa;
 
 import swen222.niwa.demo.DemoFrame;
-import swen222.niwa.net.Master;
-import swen222.niwa.net.Slave;
 import swen222.niwa.gui.graphics.SpriteSet;
 
 /**
@@ -57,20 +55,5 @@ public class Launcher {
 			// TODO: Deal with these more elegantly
 			System.out.println("Please use the command '-server'");
 		}
-	}
-
-	/**
-	 * Check whether or not there is at least one connection alive.
-	 *
-	 * @param connections
-	 * @return
-	 */
-	private static boolean atleastOneConnection(Master... connections) {
-		for (Master m : connections) {
-			if (m.isAlive()) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

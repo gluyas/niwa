@@ -215,4 +215,19 @@ public class Server {
 
 		}
 	}
+
+	/**
+	 * Check whether or not there is at least one connection alive.
+	 *
+	 * @param connections
+	 * @return
+	 */
+	private static boolean atleastOneConnection(Master... connections) {
+		for (Master m : connections) {
+			if (m.isAlive()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
