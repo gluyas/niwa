@@ -68,10 +68,10 @@
 			<faces n="rb" e="rf" s="lf" w="lb" />
 		</spriteset>
 		<spriteset name="ghostRed">
-			<sprite id="lf" img="resource/images/players/ghosts/red/leftFront.png" ay="0.8" />
-			<sprite id="lb" img="resource/images/players/ghosts/red/leftBack.png" ay="0.8" />
-			<sprite id="rf" img="resource/images/players/ghosts/red/rightFront.png" ay="0.8" />
-			<sprite id="rb" img="resource/images/players/ghosts/red/rightBack.png" ay="0.8" />
+			<sprite id="lf" img="resource/images/players/tender/leftFront.png" ay="0.8" />
+			<sprite id="lb" img="resource/images/players/tender/leftFront.png" ay="0.8" />
+			<sprite id="rf" img="resource/images/players/tender/rightFront.png" ay="0.8" />
+			<sprite id="rb" img="resource/images/players/tender/rightFront.png" ay="0.8" />
 			<faces n="rb" e="rf" s="lf" w="lb" />
 		</spriteset>
 	</group>
