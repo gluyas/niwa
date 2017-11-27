@@ -69,9 +69,9 @@
 		</spriteset>
 		<spriteset name="ghostRed">
 			<sprite id="lf" img="resource/images/players/tender/leftFront.png" ay="0.8" />
-			<sprite id="lb" img="resource/images/players/tender/leftFront.png" ay="0.8" />
+			<sprite id="lb" img="resource/images/players/tender/leftBack.png" ay="0.8" />
 			<sprite id="rf" img="resource/images/players/tender/rightFront.png" ay="0.8" />
-			<sprite id="rb" img="resource/images/players/tender/rightFront.png" ay="0.8" />
+			<sprite id="rb" img="resource/images/players/tender/rightBack.png" ay="0.8" />
 			<faces n="rb" e="rf" s="lf" w="lb" />
 		</spriteset>
 	</group>
