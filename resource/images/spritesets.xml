@@ -242,6 +242,20 @@
 				</spriteset>
 			</group>
 		</group>
+		<group name="specialFlowers">
+			<spriteset name="pinwheel">
+				<sprite img="resource/images/entities/flowers/pinwheel.png" ay="0.8"/>
+			</spriteset>
+			<spriteset name="lotus">
+				<sprite img="resource/images/entities/flowers/lotus.png" ay="0.8"/>
+			</spriteset>
+			<spriteset name="orchid">
+				<sprite img="resource/images/entities/flowers/orchid.png" ay="0.8"/>
+			</spriteset>
+			<spriteset name="iris">
+				<sprite img="resource/images/entities/flowers/iris.png" ay="0.8"/>
+			</spriteset>
+		</group>
 		<group name="runes">
 			<spriteset name="rune1">
 				<sprite img="resource/images/entities/runes/1.png" ay="0.8"/>
