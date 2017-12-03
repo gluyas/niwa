@@ -236,23 +236,23 @@ public class RoomParser {
 				switch(s){
 				case 'g':
 					randInt = new Random().nextInt(3)+1;
-					t = new Tile("grassBlock", blockHeight, SpriteSet.get("grassBlock"+randInt), true);
+					t = new Tile(Tile.Type.GRASS, blockHeight, SpriteSet.get("grassBlock"+randInt), true);
 					break;
 				case 's':
-					t = new Tile("stoneBlock", blockHeight, SpriteSet.get("stoneBlock"), true);
+					t = new Tile(Tile.Type.STONE, blockHeight, SpriteSet.get("stoneBlock"), true);
 					break;
 				case 'a':
-					t = new Tile("sandBlock", blockHeight, SpriteSet.get("sandBlock"), true);
+					t = new Tile(Tile.Type.SAND, blockHeight, SpriteSet.get("sandBlock"), true);
 					break;
 				case 'd':
-					t = new Tile("dirtBlock", blockHeight, SpriteSet.get("dirtBlock"), true);
+					t = new Tile(Tile.Type.DIRT, blockHeight, SpriteSet.get("dirtBlock"), true);
 					break;
 				case 'w':
 					randInt = new Random().nextInt(2)+1;
-					t = new Tile("waterBlock", blockHeight, SpriteSet.get("waterBlock"+randInt), false);
+					t = new Tile(Tile.Type.WATER, blockHeight, SpriteSet.get("waterBlock"+randInt), false);
 					break;
 				case 'q':
-					t = new Tile("koi", blockHeight, SpriteSet.get("koi"), false);
+					t = new Tile(Tile.Type.WATER, blockHeight, SpriteSet.get("koi"), false);
 					break;
 				}
 				// add the tile to the rest of the room tiles

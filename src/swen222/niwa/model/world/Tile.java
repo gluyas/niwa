@@ -18,7 +18,7 @@ public class Tile implements Visible, Serializable {
 
 	public final Type type;
 	public final int height;
-	private Prop prop;
+	public Prop prop;
 	public final boolean canOccupy;
 
 	private SpriteSet sprites;
