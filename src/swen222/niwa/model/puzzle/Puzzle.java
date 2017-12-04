@@ -6,11 +6,13 @@ import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Iterator;
 import java.util.List;
 
-public final class Puzzle {
+public final class Puzzle implements Iterable<Puzzle.Cell>, Serializable {
 
 	private static final SpriteSet testSprite = SpriteSet.get("blackFlower1");
 
@@ -45,6 +47,11 @@ public final class Puzzle {
 		if (state == State.CAPTURED && cells.stream().allMatch(Cell::activated)) {
 			state = State.COMPLETE;
 		}
+	}
+
+	@Override
+	public Iterator<Cell> iterator() {
+		return cells.iterator();
 	}
 
 	/**
