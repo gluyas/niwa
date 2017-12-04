@@ -1,4 +1,4 @@
-package swen222.niwa.demo;
+package swen222.niwa.editor;
 
 import swen222.niwa.gui.graphics.RoomRenderer;
 import swen222.niwa.model.entity.Entity;
@@ -23,23 +23,23 @@ import static java.awt.event.KeyEvent.*;
  *
  * @author Marc
  */
-public class DemoFrame extends JFrame implements Observer, KeyListener {
+public class EditorFrame extends JFrame implements Observer, KeyListener {
 
-	DemoPanel panel;
+	EditorPanel panel;
 	RoomRenderer rr;
-	DemoPlayer p;
+	EditorPlayer p;
 	String stageName = "resource";
 
 	HashEntityTable<Entity> et = new HashEntityTable<>();
 
 
-	public DemoFrame() {
+	public EditorFrame() {
 		super("Garden Demo");
 		rr = new RoomRenderer(null, null);
 
 		load();
 
-		panel = new DemoPanel(rr);
+		panel = new EditorPanel(rr);
 		add(panel);
 
 		panel.setEnabled(true);
@@ -75,7 +75,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 		et = new HashEntityTable<>();
 
 		Room newRoom = Room.newFromFile(new File(stageName), 0, 0, et);
-		p = new DemoPlayer(Location.at(newRoom, 0, 0));
+		p = new EditorPlayer(Location.at(newRoom, 0, 0));
 		et.add(p);
 		et.addObserver(this);
 
@@ -104,17 +104,14 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 				break;
 
 			case VK_A:
-
 				p.move(directionRelativeToMap(Direction.WEST));
 				break;
 
 			case VK_S:
-
 				p.move(directionRelativeToMap(Direction.SOUTH));
 				break;
 
 			case VK_D:
-
 				p.move(directionRelativeToMap(Direction.EAST));
 				break;
 
@@ -128,6 +125,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 				repaint();
 				break;
 
+			case VK_F5:
 			case VK_R:
 				refresh();
 				break;
@@ -139,10 +137,6 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 			case VK_N:
 				rr.cycleDebugCoordinates();
 				repaint();
-				break;
-
-			case VK_F5:
-				refresh();
 				break;
 		}
 		//repaint();
@@ -183,7 +177,7 @@ public class DemoFrame extends JFrame implements Observer, KeyListener {
 	}
 
 	public static void main(String[] args) {
-		new DemoFrame();
+		new EditorFrame();
 	}
 
 }
