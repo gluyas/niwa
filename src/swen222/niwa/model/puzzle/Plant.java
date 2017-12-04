@@ -5,12 +5,13 @@ import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.gui.graphics.Visible;
 import swen222.niwa.model.world.Direction;
 
+import java.io.Serializable;
 import java.util.function.Function;
 
 /**
  * Plant class provides overridable behaviour.
  */
-public class Plant implements Visible {
+public class Plant implements Visible, Serializable {
 	public final Type type;
 	int hits = 0;
 
