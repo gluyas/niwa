@@ -4,11 +4,12 @@ import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
-public class PuzzleBuilder {
+public class PuzzleBuilder implements Serializable {
 
 	private BuilderCell[][] cells;
 
@@ -62,7 +63,7 @@ public class PuzzleBuilder {
 		cells[col][row] = cell;
 	}
 
-	private class BuilderCell {
+	private class BuilderCell implements Serializable {
 		private BitSet edges = new BitSet(Direction.values().length);
 		private Plant.Type plant;
 		private boolean rooted;
