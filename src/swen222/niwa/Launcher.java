@@ -1,7 +1,7 @@
 
 package swen222.niwa;
 
-import swen222.niwa.demo.DemoFrame;
+import swen222.niwa.editor.EditorFrame;
 import swen222.niwa.gui.graphics.SpriteSet;
 
 /**
@@ -36,7 +36,7 @@ public class Launcher {
 				}else if(argument.equals("-connect")){
 					host = args[++i];
 				} else if (argument.equals("-editor")) {
-					DemoFrame.main(args);
+					EditorFrame.main(args);
 					return;
 				}
 			}

@@ -1,4 +1,4 @@
-package swen222.niwa.demo;
+package swen222.niwa.editor;
 
 import swen222.niwa.gui.graphics.RoomRenderer;
 
@@ -8,11 +8,11 @@ import java.awt.*;
 /**
  * Created by Marc on 30/09/2016.
  */
-public class DemoPanel extends JPanel {
+public class EditorPanel extends JPanel {
 
 	RoomRenderer rr;
 
-	public DemoPanel(RoomRenderer rr) {
+	public EditorPanel(RoomRenderer rr) {
 		setDoubleBuffered(true);
 		this.rr = rr;
 	}
