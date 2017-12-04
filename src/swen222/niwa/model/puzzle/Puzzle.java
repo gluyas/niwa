@@ -62,9 +62,9 @@ public final class Puzzle implements Iterable<Puzzle.Cell>, Serializable {
 		private final BitSet walls = new BitSet(Direction.values().length);
 		private final boolean rooted;
 
-		private Plant plant;
+		Plant plant;
 
-		private Cell(Location loc, boolean rooted, Direction ... walls) {
+		Cell(Location loc, boolean rooted, Direction ... walls) {
 			super(loc, true);
 			cells.add(this);
 
