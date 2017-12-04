@@ -11,6 +11,7 @@ import swen222.niwa.model.entity.RuneStone;
 import swen222.niwa.model.entity.Seed;
 import swen222.niwa.model.entity.Statue;
 import swen222.niwa.model.puzzle.Puzzle;
+import swen222.niwa.model.puzzle.PuzzleBuilder;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Direction;
@@ -433,21 +434,39 @@ public class RoomParser {
 
 		// PUZZLE OBJECTS - read base64 serial data
 
-		list = doc.getElementsByTagName("puzzle");
-
-		if (list.getLength() > 0) {
-			for (int i = 0; i < list.getLength(); i++) {
-				try {
-					byte[] puzzleData = Base64.getDecoder().decode(list.item(i).getTextContent());
-					Puzzle puzzle = (Puzzle) new ObjectInputStream(new ByteArrayInputStream(puzzleData)).readObject();
-					for (Puzzle.Cell cell : puzzle) entities.add(cell);
-				} catch (IOException | ClassNotFoundException | ClassCastException e) {
-					continue;
-				}
+		for (PuzzleBuilder builder : getPuzzleBuilders()) {
+			for (Puzzle.Cell cell : builder.build(room)) {
+				entities.add(cell);
 			}
 		}
 
 		return entities;
+	}
+
+	public PuzzleBuilder[] getPuzzleBuilders() {
+		NodeList list = doc.getElementsByTagName("puzzle");
+
+		if (list.getLength() > 0) {
+
+			PuzzleBuilder[] builders = new PuzzleBuilder[list.getLength()];
+
+			for (int i = 0; i < list.getLength(); i++) {
+				try {
+					byte[] puzzleData = Base64.getDecoder().decode(list.item(i).getTextContent());
+					ObjectInputStream obj = new ObjectInputStream(new ByteArrayInputStream(puzzleData));
+
+					builders[i] = (PuzzleBuilder) obj.readObject();
+
+				} catch (IOException | ClassCastException e) {
+					continue;
+				} catch (ClassNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			return builders;
+		} else {
+			return new PuzzleBuilder[0];
+		}
 	}
 
 	private int [] getCoordsFromElement(Element el){
