@@ -2,10 +2,23 @@ package swen222.niwa.editor;
 
 import swen222.niwa.gui.graphics.RoomRenderer;
 import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.puzzle.Puzzle;
+import swen222.niwa.model.puzzle.PuzzleBuilder;
 import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
 import swen222.niwa.model.world.Room;
+
+import java.awt.datatransfer.StringSelection;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Base64;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -13,8 +26,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -26,20 +37,24 @@ import static java.awt.event.KeyEvent.*;
 public class EditorFrame extends JFrame implements Observer, KeyListener {
 
 	EditorPanel panel;
-	RoomRenderer rr;
-	EditorPlayer p;
+	RoomRenderer renderer;
+	Room room;
+	EditorPlayer player;
 	String stageName = "resource";
 
-	HashEntityTable<Entity> et = new HashEntityTable<>();
+	HashEntityTable<Entity> displayEntities = new HashEntityTable<>();
 
+	boolean puzzleMode = false;
+	PuzzleBuilder puzzleBuilder;
+	Puzzle puzzleOutput;
 
 	public EditorFrame() {
 		super("Garden Demo");
-		rr = new RoomRenderer(null, null);
+		renderer = new RoomRenderer(null, null);
 
 		load();
 
-		panel = new EditorPanel(rr);
+		panel = new EditorPanel(renderer);
 		add(panel);
 
 		panel.setEnabled(true);
@@ -52,7 +67,7 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 		setVisible(true); // make sure we are visible!
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		Timer refresh = new Timer(1000 / 120, (e) -> { if (rr.animationsPending()) this.repaint();});
+		Timer refresh = new Timer(1000 / 120, (e) -> { if (renderer.animationsPending()) this.repaint();});
 		refresh.setRepeats(true);
 		refresh.start();
 	}
@@ -70,17 +85,19 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 	}
 
 	private void refresh() {
-		et.remove(p);
-		et.deleteObserver(this);
-		et = new HashEntityTable<>();
+		displayEntities.remove(player);
+		displayEntities.deleteObserver(this);
+		displayEntities = new HashEntityTable<>();
 
-		Room newRoom = Room.newFromFile(new File(stageName), 0, 0, et);
-		p = new EditorPlayer(Location.at(newRoom, 0, 0));
-		et.add(p);
-		et.addObserver(this);
+		Room newRoom = Room.newFromFile(new File(stageName), 0, 0, displayEntities);
+		player = new EditorPlayer(Location.at(newRoom, 0, 0));
+		displayEntities.add(player);
+		displayEntities.addObserver(this);
 
-		rr.setRoom(newRoom);
-		rr.setEntityTable(et);
+		renderer.setRoom(newRoom);
+		renderer.setEntityTable(displayEntities);
+		room = newRoom;
+		puzzleMode = false;
 
 		repaint();
 	}
@@ -100,28 +117,28 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 		int code = e.getKeyCode();
 		switch (code) {
 			case VK_W:
-				p.move(directionRelativeToMap(Direction.NORTH));
+				player.move(directionRelativeToMap(Direction.NORTH));
 				break;
 
 			case VK_A:
-				p.move(directionRelativeToMap(Direction.WEST));
+				player.move(directionRelativeToMap(Direction.WEST));
 				break;
 
 			case VK_S:
-				p.move(directionRelativeToMap(Direction.SOUTH));
+				player.move(directionRelativeToMap(Direction.SOUTH));
 				break;
 
 			case VK_D:
-				p.move(directionRelativeToMap(Direction.EAST));
+				player.move(directionRelativeToMap(Direction.EAST));
 				break;
 
 			case VK_Q:
-				rr.rotateCW();
+				renderer.rotateCW();
 				repaint();
 				break;
 
 			case VK_E:
-				rr.rotateCCW();
+				renderer.rotateCCW();
 				repaint();
 				break;
 
@@ -135,11 +152,71 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 				break;
 
 			case VK_N:
-				rr.cycleDebugCoordinates();
+				renderer.cycleDebugCoordinates();
 				repaint();
 				break;
+
+			case VK_P:				// toggle puzzle mode
+				puzzleMode = !puzzleMode;
+				if (puzzleMode) {
+					puzzleBuilder = new PuzzleBuilder(room);
+				} else {
+					if (puzzleOutput != null) {
+						for (Puzzle.Cell cell : puzzleOutput) {
+							displayEntities.remove(cell);
+						}
+						puzzleOutput = null;
+					}
+				}
+				break;
+		}
+
+		// PUZZLE EDITOR CONTROLS
+		if (puzzleMode) switch (code) {
+			case VK_OPEN_BRACKET: 		// [ - insert cell
+				puzzleBuilder.addCell(player.getLocation().col, player.getLocation().row, null, false);
+				previewPuzzleOutput();
+				break;
+
+			case VK_CLOSE_BRACKET: 		// ] - delete cell
+				puzzleBuilder.deleteCell(player.getLocation().col, player.getLocation().row);
+				previewPuzzleOutput();
+				break;
+
+			case VK_Z:					// Z - dump serial data
+				try {
+					ByteArrayOutputStream raw = new ByteArrayOutputStream();
+					new ObjectOutputStream(raw).writeObject(puzzleBuilder);
+
+					String encoded = new String(Base64.getEncoder().encode(raw.toByteArray()));
+
+					Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(encoded), null);
+					System.out.printf("PUZZLE SERIAL COPIED TO CLIPBOARD (%s)%n%s%n",
+							LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME),
+							encoded
+					);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+
 		}
 		//repaint();
+	}
+
+	private void previewPuzzleOutput() {
+		if (puzzleOutput != null) {
+			for (Puzzle.Cell cell : puzzleOutput) {
+				displayEntities.remove(cell);
+			}
+		}
+		if (puzzleBuilder != null) {
+			puzzleOutput = puzzleBuilder.build(room);
+			for (Puzzle.Cell cell : puzzleOutput) {
+				displayEntities.add(cell);
+			}
+		} else {
+			puzzleOutput = null;
+		}
 	}
 
 	@Override
@@ -155,7 +232,7 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 	 */
 	public Direction directionRelativeToMap(Direction d){
 
-		Direction roomDirection = rr.getFacing();
+		Direction roomDirection = renderer.getFacing();
 
 		switch(roomDirection){
 
