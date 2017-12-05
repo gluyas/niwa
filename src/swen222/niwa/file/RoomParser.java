@@ -452,7 +452,7 @@ public class RoomParser {
 
 			for (int i = 0; i < list.getLength(); i++) {
 				try {
-					byte[] puzzleData = Base64.getDecoder().decode(list.item(i).getTextContent());
+					byte[] puzzleData = Base64.getDecoder().decode(list.item(i).getTextContent().trim());
 					ObjectInputStream obj = new ObjectInputStream(new ByteArrayInputStream(puzzleData));
 
 					builders[i] = (PuzzleBuilder) obj.readObject();
