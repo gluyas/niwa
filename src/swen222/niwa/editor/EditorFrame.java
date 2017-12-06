@@ -30,6 +30,8 @@ import java.io.File;
 
 import static java.awt.event.KeyEvent.*;
 
+
+
 /**
  * Scrap class for demonstrating at the lab.
  *
@@ -48,6 +50,7 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 	boolean puzzleMode = false;
 	PuzzleBuilder puzzleBuilder;
 	Puzzle puzzleOutput;
+
 
 	public EditorFrame() {
 		super("Garden Demo");
@@ -174,6 +177,7 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 						puzzleOutput = null;
 					}
 				}
+				this.panel.setMode(puzzleMode);
 				break;
 		}
 
@@ -208,6 +212,8 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 		}
 		//repaint();
 	}
+
+
 
 	private void previewPuzzleOutput() {
 		if (puzzleOutput != null) {

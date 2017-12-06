@@ -12,7 +12,10 @@ public class EditorPanel extends JPanel {
 
 	RoomRenderer rr;
 
+	boolean puzzleMode;
+
 	public EditorPanel(RoomRenderer rr) {
+		puzzleMode= false;
 		setDoubleBuffered(true);
 		this.rr = rr;
 	}
@@ -26,7 +29,31 @@ public class EditorPanel extends JPanel {
 		((Graphics2D) g).setPaint(grad);
 		g.fillRect(0,0,getWidth(), getHeight());
 		rr.draw(g, this.getWidth(), this.getHeight());
+		this.drawMode(g);
+
 	}
+
+	public void setMode(boolean puzzleMode){
+		this.puzzleMode = puzzleMode;
+		repaint();
+	}
+
+	private void drawMode(Graphics g){
+
+		g.setFont(new Font("font",Font.PLAIN, 20));
+		g.setColor(Color.BLACK);
+		String debugText;
+		if(!puzzleMode){
+			debugText = "normalMode";
+		}
+		else{
+			debugText = "puzzleMode";
+		}
+		g.drawString(debugText,(int)(-this.getWidth()/2.2),(int)(-this.getHeight()/2.5));
+
+	}
+
+
 
 	public void setRR(RoomRenderer rr) {
 		this.rr = rr;
