@@ -45,16 +45,23 @@ public class Spell implements Iterable<Spell> {
 	 */
 	public static Spell invoke(EntityTable<? super Entity> entities, Location origin, Direction direction) {
 		Spell fringe = new Spell(null, direction, origin, null, null);
+																	// TILE LOGIC
+		if (!validTile(fringe)) return fringe;						// no previous tile on 0th iteration
 
-		while (true) { 												// TILE LOGIC
-			if (!validTile(fringe)) return undoAll(fringe);			// check spell can be conducted
-
+		while (true) {
 			Puzzle.Cell cell = entities.getAny(fringe.loc, Puzzle.Cell.class);
 			if (cell != null) {
 				Location oldLoc = fringe.loc;
 				fringe = cell.trigger(fringe);						// perform cell and plant logic
 
-				if (fringe.loc != oldLoc) continue;					// if fringe was moved, skip movement logic
+				if (fringe.loc != oldLoc) {                        	// if fringe was moved, skip movement logic
+					if (validTile(fringe)) {
+						continue;
+					} else {
+						undoAll(fringe);
+						return fringe;								// return bad position to show Plant-induced move
+					}
+				}
 
 				if (cell.wall(fringe.dir)) {						// MOVEMENT LOGIC
 					if (cell.puzzle().capture(fringe)) {
@@ -62,12 +69,18 @@ public class Spell implements Iterable<Spell> {
 					}
 				}
 			}
+
 			try {													// advance the iteration
 				Location nextLoc = fringe.loc.move(fringe.dir);
 				fringe = fringe.child(fringe.dir, nextLoc);
 
+				if (!validTile(fringe)) {
+					undoAll(fringe);
+					return fringe.parent;							// return Spell from before it goes onto bad tile
+				}
 			} catch (Location.InvalidLocationException e) {
-				return undoAll(fringe);								// spell fails if it can't move
+				undoAll(fringe);									// spell fails if it can't move
+				return fringe;
 			}
 		}
 	}
@@ -76,11 +89,10 @@ public class Spell implements Iterable<Spell> {
 		return Arrays.stream(SPELL_CONDUCTORS).anyMatch(t -> t == fringe.loc.tile().type);
 	}
 
-	private static Spell undoAll(Spell fringe) {
+	private static void undoAll(Spell fringe) {
 		for (Spell spell : fringe) {								// applied in reverse chronological order
 			if (spell.undo != null) spell.undo.accept(spell);
 		}
-		return fringe;
 	}
 
 	// PSEUDO-BUILDER METHODS (for use in Plant effects)
