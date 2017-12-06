@@ -3,6 +3,7 @@ package swen222.niwa.gui.graphics;
 import org.joml.*;
 
 import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.puzzle.Spell;
 import swen222.niwa.model.util.ObservableEntityTable;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
@@ -35,6 +36,12 @@ public class RoomRenderer implements Observer {
 
 	public static final long	ANIM_MOV_DURATION = 75;
 
+	public static final long 	ANIM_SPL_DURATION = 100;
+	public static final double	ANIM_SPL_DELAY = 0.75;
+
+	public static final Visible ANIM_SPL_GOOD = SpriteSet.get("spellBlue");
+	public static final Visible ANIM_SPL_FAIL = SpriteSet.get("spellOrange");
+
 	private Room room;
 	private ObservableEntityTable<?> et;
 
@@ -44,12 +51,15 @@ public class RoomRenderer implements Observer {
 	private Vector3d[][] jitter;
 	private Map<Entity, Vector4d> entityOffset = new HashMap<>();	// using hg coordinates
 
+	private Visible[][] tileOverride;
+
 	private Direction facing = Direction.NORTH; // the world direction that is northeast from the user's perspective
 	private double bearing = Math.toRadians(45);
 
 	private double explodeFactor = 1;
 
 	private List<Animator> animations = new LinkedList<>();
+	private List<Animator> animationQueue = new ArrayList<>();
 
 	public RoomRenderer(Room subject, ObservableEntityTable<?> et) {
 		setRoom(subject);
@@ -85,6 +95,8 @@ public class RoomRenderer implements Observer {
 				0							// TODO: get correct offset
 		).negate();
 
+		tileOverride = new Visible[r.width][r.height];
+
 		// JITTER GENERATION
 
 		Random rng = new Random();
@@ -99,6 +111,31 @@ public class RoomRenderer implements Observer {
 				jitter[col][row] = offset;
 			}
 		}
+	}
+
+	public void drawSpell(Spell spell) {
+		Stack<Spell> stack = new Stack<>();
+		spell.forEach(stack::add);
+		animations.add(spellAnimation(stack));
+	}
+
+	private Animator spellAnimation(Stack<Spell> stack) {
+		Spell spell = stack.peek();
+		tileOverride[spell.loc.col][spell.loc.row] = ANIM_SPL_GOOD;
+
+		return new Animator(ANIM_SPL_DURATION, (t) -> {
+			if (!stack.empty() && stack.peek() == spell && t >= ANIM_SPL_DELAY) {
+				stack.pop();
+				if (!stack.isEmpty()) {
+					animationQueue.add(spellAnimation(stack));
+				} else {
+					if (spell.terminal == null) tileOverride[spell.loc.col][spell.loc.row] = ANIM_SPL_FAIL;
+				}
+			} else if (t == 1) {
+				tileOverride[spell.loc.col][spell.loc.row] = null;
+			}
+			return false;
+		});
 	}
 
 	@Override
@@ -187,7 +224,9 @@ public class RoomRenderer implements Observer {
 	public void draw(Graphics g, int width, int height) {
 		if (room == null || et == null) return;
 
-		animations.removeIf(Animator::apply);					// advance and cull all animations
+		animations.removeIf(Animator::apply);					// advance and cull animations
+		animations.addAll(animationQueue);
+		animationQueue.clear();
 
 		double scale = getRoomScale(width, height);
 		double blockSize = scale * Math.sqrt(2);
@@ -199,7 +238,7 @@ public class RoomRenderer implements Observer {
 		Matrix4d projection = new Matrix4d()					// orthographic projection matrix
 				.rotate(VIEW_ANGLE, 1, 0, 0)
 				.rotate(bearing, 0, 0, 1)
-				.scale(1, 1, Z_SCALE);			// scale block height to be a fraction of width
+				.scale(1, 1, Z_SCALE);					// scale block height to be a fraction of width
 
 		Matrix4d camera = projection							// camera position
 				.translate(centreOffset, new Matrix4d());		// translate to centroid of level
@@ -216,7 +255,12 @@ public class RoomRenderer implements Observer {
 			pos.mul(pos.w * scale);								// convert from hg coordinates & apply block scale
 			pos.w = 1;
 
-			tile.drawSprite(g, facing, (int) pos.x, (int) pos.y, blockSize);
+			if (tileOverride[loc.col][loc.row] == null) {
+				tile.drawSprite(g, facing, (int) pos.x, (int) pos.y, blockSize);
+			} else {
+				tileOverride[loc.col][loc.row].drawSprite(g, facing, (int) pos.x, (int) pos.y, blockSize);
+			}
+
 			if (tile.prop != null) tile.prop.drawSprite(g, facing, (int) pos.x, (int) pos.y, blockSize);
 
 			if (et != null) {

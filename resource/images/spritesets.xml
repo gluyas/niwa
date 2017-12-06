@@ -36,6 +36,17 @@
 			<sprite img="resource/images/tiles/misc/stoneBlock.png"/>
 		</spriteset>
 
+		<group name ="spells">
+			<spriteset name="spellBlue">
+				<sprite img="resource/images/tiles/spell/blue.png"/>
+			</spriteset>
+			<spriteset name="spellOrange">
+				<sprite img="resource/images/tiles/spell/orange.png"/>
+			</spriteset>
+			<spriteset name="spellGreen">
+				<sprite img="resource/images/tiles/spell/green.png"/>
+			</spriteset>
+		</group>
 	</group>
 
 	<group name="players">

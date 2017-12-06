@@ -13,8 +13,6 @@ public class EditorPlayer extends PlayerEntity {
 
 	static final SpriteSet ss = SpriteSet.get("ghostRed");
 
-	private Direction facing = Direction.NORTH;
-
 	public EditorPlayer(Location loc) {
 		super(loc, 2);
 	}
@@ -24,12 +22,12 @@ public class EditorPlayer extends PlayerEntity {
 		//return sprites[0];
 		//return sprites[this.facing.relativeTo(facing).ordinal()];
 		//return ss.facing(facing).sprite(camera);
-		return ss.facing(facing).sprite(camera);
+		return ss.facing(getFacing()).sprite(camera);
 	}
 
 	@Override
 	public boolean move(Direction d) {
-		facing = d;
+		updateFacing(d);
 		return super.move(d);
 	}
 }
