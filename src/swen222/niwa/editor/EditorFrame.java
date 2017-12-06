@@ -4,6 +4,7 @@ import swen222.niwa.gui.graphics.RoomRenderer;
 import swen222.niwa.model.entity.Entity;
 import swen222.niwa.model.puzzle.Puzzle;
 import swen222.niwa.model.puzzle.PuzzleBuilder;
+import swen222.niwa.model.puzzle.Spell;
 import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Direction;
 import swen222.niwa.model.world.Location;
@@ -140,6 +141,11 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 			case VK_E:
 				renderer.rotateCCW();
 				repaint();
+				break;
+
+			case VK_F:
+				Spell spell = Spell.invoke(displayEntities, player.getLocation(), player.getFacing());
+				renderer.drawSpell(spell);
 				break;
 
 			case VK_F5:
