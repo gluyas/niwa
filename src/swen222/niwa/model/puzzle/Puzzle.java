@@ -14,11 +14,12 @@ import java.util.List;
 
 public final class Puzzle implements Iterable<Puzzle.Cell>, Serializable {
 
-	private static final SpriteSet testSprite = SpriteSet.get("blackFlower1");
+	private static final SpriteSet CELL_VIRGIN = SpriteSet.get("soil");
+	private static final SpriteSet CELL_CAPTURED = SpriteSet.get("soilBlue");
 
 	private final List<Cell> cells = new ArrayList<>();
 
-	private State state;
+	private State state = State.VIRGIN;
 
 	public State state() {
 		return state;
@@ -118,7 +119,11 @@ public final class Puzzle implements Iterable<Puzzle.Cell>, Serializable {
 
 		@Override
 		public Sprite sprite(Direction camera) {
-			return testSprite.sprite(camera);
+			if (Puzzle.this.state == State.VIRGIN) {
+				return CELL_VIRGIN.sprite(camera);
+			} else {
+				return CELL_CAPTURED.sprite(camera);
+			}
 		}
 	}
 
