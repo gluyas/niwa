@@ -16,22 +16,21 @@ import swen222.niwa.model.entity.Entity;
  */
 public class Tile implements Visible, Serializable {
 
-	private String type;
+	public final Type type;
 	public final int height;
-	private SpriteSet sprites;
 	public Prop prop;
-	public boolean canOccupy;
+	public final boolean canOccupy;
 
-	private Random random;
+	private SpriteSet sprites;
 
-	public Tile( String type, int height, SpriteSet ss, boolean canOccupy) {
+	public Tile(Type type, int height, SpriteSet ss, boolean canOccupy) {
 		this.type = type;
 		this.height = height;
 		this.sprites = ss;
 		this.canOccupy = canOccupy;
 	}
 
-	public Tile(String type, int height, SpriteSet ss, boolean canOccupy, Prop prop) {
+	public Tile(Type type, int height, SpriteSet ss, boolean canOccupy, Prop prop) {
 		this.type = type;
 		this.height = height;
 		this.sprites = ss;
@@ -52,7 +51,7 @@ public class Tile implements Visible, Serializable {
 	 * Gets the type of the tile
 	 * @return
 	 */
-	public String getType(){
+	public Type getType(){
 		return this.type;
 	}
 
@@ -90,6 +89,13 @@ public class Tile implements Visible, Serializable {
 		return sprites.sprite(camera);
 	}
 
+	public enum Type {
+		GRASS,
+		DIRT,
+		SAND,
+		STONE,
+		WATER,
+	}
 }
 
 

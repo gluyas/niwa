@@ -36,6 +36,17 @@
 			<sprite img="resource/images/tiles/misc/stoneBlock.png"/>
 		</spriteset>
 
+		<group name ="spells">
+			<spriteset name="spellBlue">
+				<sprite img="resource/images/tiles/spell/blue.png"/>
+			</spriteset>
+			<spriteset name="spellOrange">
+				<sprite img="resource/images/tiles/spell/orange.png"/>
+			</spriteset>
+			<spriteset name="spellGreen">
+				<sprite img="resource/images/tiles/spell/green.png"/>
+			</spriteset>
+		</group>
 	</group>
 
 	<group name="players">
@@ -290,9 +301,14 @@
 		<spriteset name="seed">
 			<sprite img="resource/images/entities/misc/seed.png" ay="0.85"/>
 		</spriteset>
+
 		<spriteset name="soil">
 			<sprite img="resource/images/entities/misc/soil.png" ay="0.83"/>
 		</spriteset>
+		<spriteset name="soilBlue">
+			<sprite img="resource/images/entities/misc/soilBlue.png" ay="0.83"/>
+		</spriteset>
+
 		<group name ="statues">
 			<spriteset name="statueActive">
 				<sprite img="resource/images/entities/misc/statues/activated.png" ay="0.8" width="1.5"/>

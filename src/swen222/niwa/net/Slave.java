@@ -213,7 +213,7 @@ public class Slave extends Thread {
 							currentRoom = (Room) input.readObject();
 							// no current room
 							if(gameWindow == null){
-								gameWindow = new DemoFrame(currentRoom, this);
+								gameWindow = new EditorFrame(currentRoom, this);
 							}else{ // update the room to render
 								gameWindow.panel.rr = new RoomRenderer(currentRoom);
 							}
@@ -222,7 +222,7 @@ public class Slave extends Thread {
 						case 'p':
 							// TODO: updated player state
 							System.out.println("received a player");
-							DemoPlayer p = (DemoPlayer) input.readObject();;
+							EditorPlayer p = (EditorPlayer) input.readObject();;
 							System.out.println(p);
 							et.add(p);
 							for (Entity e : et) System.out.println(e.toString());

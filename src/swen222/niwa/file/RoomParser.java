@@ -10,6 +10,8 @@ import swen222.niwa.model.entity.Rune;
 import swen222.niwa.model.entity.RuneStone;
 import swen222.niwa.model.entity.Seed;
 import swen222.niwa.model.entity.Statue;
+import swen222.niwa.model.puzzle.Puzzle;
+import swen222.niwa.model.puzzle.PuzzleBuilder;
 import swen222.niwa.model.util.EntityTable;
 import swen222.niwa.model.util.HashEntityTable;
 import swen222.niwa.model.world.Direction;
@@ -20,13 +22,7 @@ import swen222.niwa.model.world.Tile;
 
 import javax.xml.parsers.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Parses in a specified file and adds the tiles
@@ -236,23 +232,23 @@ public class RoomParser {
 				switch(s){
 				case 'g':
 					randInt = new Random().nextInt(3)+1;
-					t = new Tile("grassBlock", blockHeight, SpriteSet.get("grassBlock"+randInt), true);
+					t = new Tile(Tile.Type.GRASS, blockHeight, SpriteSet.get("grassBlock"+randInt), true);
 					break;
 				case 's':
-					t = new Tile("stoneBlock", blockHeight, SpriteSet.get("stoneBlock"), true);
+					t = new Tile(Tile.Type.STONE, blockHeight, SpriteSet.get("stoneBlock"), true);
 					break;
 				case 'a':
-					t = new Tile("sandBlock", blockHeight, SpriteSet.get("sandBlock"), true);
+					t = new Tile(Tile.Type.SAND, blockHeight, SpriteSet.get("sandBlock"), true);
 					break;
 				case 'd':
-					t = new Tile("dirtBlock", blockHeight, SpriteSet.get("dirtBlock"), true);
+					t = new Tile(Tile.Type.DIRT, blockHeight, SpriteSet.get("dirtBlock"), true);
 					break;
 				case 'w':
 					randInt = new Random().nextInt(2)+1;
-					t = new Tile("waterBlock", blockHeight, SpriteSet.get("waterBlock"+randInt), false);
+					t = new Tile(Tile.Type.WATER, blockHeight, SpriteSet.get("waterBlock"+randInt), false);
 					break;
 				case 'q':
-					t = new Tile("koi", blockHeight, SpriteSet.get("koi"), false);
+					t = new Tile(Tile.Type.WATER, blockHeight, SpriteSet.get("koi"), false);
 					break;
 				}
 				// add the tile to the rest of the room tiles
@@ -381,9 +377,7 @@ public class RoomParser {
 		EntityTable<Entity> entities = new HashEntityTable<Entity>();
 
 		NodeList list = rootElement.getElementsByTagName("entity");
-		if(list.getLength()==0){
-			return entities;
-		}
+
 		ArrayList<Statue> statues = new ArrayList<>();
 		//go through all the elements with the name 'entity'
 		for (int i = 0; i < list.getLength(); i++) {
@@ -438,8 +432,41 @@ public class RoomParser {
 			}
 		}
 
-		return entities;
+		// PUZZLE OBJECTS - read base64 serial data
 
+		for (PuzzleBuilder builder : getPuzzleBuilders()) {
+			for (Puzzle.Cell cell : builder.build(room)) {
+				entities.add(cell);
+			}
+		}
+
+		return entities;
+	}
+
+	public PuzzleBuilder[] getPuzzleBuilders() {
+		NodeList list = doc.getElementsByTagName("puzzle");
+
+		if (list.getLength() > 0) {
+
+			PuzzleBuilder[] builders = new PuzzleBuilder[list.getLength()];
+
+			for (int i = 0; i < list.getLength(); i++) {
+				try {
+					byte[] puzzleData = Base64.getDecoder().decode(list.item(i).getTextContent().trim());
+					ObjectInputStream obj = new ObjectInputStream(new ByteArrayInputStream(puzzleData));
+
+					builders[i] = (PuzzleBuilder) obj.readObject();
+
+				} catch (IOException | ClassCastException e) {
+					continue;
+				} catch (ClassNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			return builders;
+		} else {
+			return new PuzzleBuilder[0];
+		}
 	}
 
 	private int [] getCoordsFromElement(Element el){
