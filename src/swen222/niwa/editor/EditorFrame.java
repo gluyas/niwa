@@ -15,7 +15,6 @@ import java.awt.datatransfer.StringSelection;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
@@ -45,17 +44,20 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 	Room room;
 	EditorPlayer player;
 	String stageName = "resource";
+	Plant previewPlant;
+
 
 	HashEntityTable<Entity> displayEntities = new HashEntityTable<>();
 
-	boolean puzzleMode = false;
+	boolean puzzleMode = true;
 	PuzzleBuilder puzzleBuilder;
 	Puzzle puzzleOutput;
 
 
 	public EditorFrame() {
-		super("Garden Demo");
+		super("Level Editor");
 		renderer = new RoomRenderer(null, null);
+		previewPlant = new Plant(Plant.Type.BASIC);
 
 		load();
 
@@ -211,9 +213,19 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 					ex.printStackTrace();
 				}
 			case VK_BACK_SLASH: 		// [ - create new flower
-				puzzleBuilder.addCell(player.getLocation().col, player.getLocation().row, Plant.Type.PINWHEEL, false);
+				puzzleBuilder.addCell(player.getLocation().col, player.getLocation().row, previewPlant.type, false);
 				previewPuzzleOutput();
 				break;
+			case VK_SEMICOLON: 		// [ - change flower type to the right
+				previewPlant = previewPlant.cycleType(true);
+				panel.setPreviewPlant(previewPlant);
+				break;
+			case VK_QUOTE: 		// [ - change flower type to the left
+				previewPlant = previewPlant.cycleType(false);
+				panel.setPreviewPlant(previewPlant);
+				break;
+
+
 
 		}
 		//repaint();

@@ -1,6 +1,8 @@
 package swen222.niwa.editor;
 
 import swen222.niwa.gui.graphics.RoomRenderer;
+import swen222.niwa.model.puzzle.Plant;
+import swen222.niwa.model.world.Direction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +15,10 @@ public class EditorPanel extends JPanel {
 	RoomRenderer rr;
 
 	boolean puzzleMode;
+	Plant previewPlant;
 
 	public EditorPanel(RoomRenderer rr) {
+		previewPlant = new Plant(Plant.Type.BASIC);
 		puzzleMode= false;
 		setDoubleBuffered(true);
 		this.rr = rr;
@@ -29,7 +33,8 @@ public class EditorPanel extends JPanel {
 		((Graphics2D) g).setPaint(grad);
 		g.fillRect(0,0,getWidth(), getHeight());
 		rr.draw(g, this.getWidth(), this.getHeight());
-		this.drawMode(g);
+		this.displayMode(g);
+		this.displayPreviewPlant(g);
 
 	}
 
@@ -38,19 +43,28 @@ public class EditorPanel extends JPanel {
 		repaint();
 	}
 
-	private void drawMode(Graphics g){
+	private void displayMode(Graphics g){
 
 		g.setFont(new Font("font",Font.PLAIN, 20));
 		g.setColor(Color.BLACK);
 		String debugText;
 		if(!puzzleMode){
-			debugText = "normalMode";
+			debugText = "Normal Mode";
 		}
 		else{
-			debugText = "puzzleMode";
+			debugText = "Puzzle Mode";
 		}
 		g.drawString(debugText,(int)(-this.getWidth()/2.2),(int)(-this.getHeight()/2.5));
 
+	}
+
+	private void displayPreviewPlant(Graphics g){
+		previewPlant.drawSprite(g, Direction.NORTH, (int)(this.getWidth()/2.2),(int)(-this.getHeight()/2.5), 150);
+	}
+
+	public void setPreviewPlant(Plant p){
+		this.previewPlant = p;
+		repaint();
 	}
 
 

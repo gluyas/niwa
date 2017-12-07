@@ -23,6 +23,7 @@ public class Plant implements Visible, Serializable {
 
 	/**
 	 * Trigger this Plant's effect.
+	 *
 	 * @param spell the Spell frame that triggered this Plant
 	 * @return a Spell instance with the modifications invoked by the Plant's effect
 	 */
@@ -34,6 +35,7 @@ public class Plant implements Visible, Serializable {
 	/**
 	 * Called when the Spell that triggered this Plant's effect fails. Reverts a single call of the trigger method.
 	 * Only override if the Plant's trigger method causes side effects.
+	 *
 	 * @param spell the Spell that was returned from the trigger method
 	 */
 	public void undo(Spell spell) {
@@ -54,28 +56,61 @@ public class Plant implements Visible, Serializable {
 
 	@Override
 	public Sprite sprite(Direction camera) {
-		return SPRITES[0].sprite(camera);
+		return SPRITES[type.ordinal()].sprite(camera);
 	}
 
 	// CLASS IMPLEMENTATIONS - using suppliers as a dirty way of
 
 	public enum Type {
 		BASIC,
-		PINWHEEL;
+		PINWHEEL,
+		ORCHID,
+		LOTUS,
+		IRIS;
 
 		public Plant make() {
 			return TYPES[this.ordinal()].apply(this);
 		}
 	}
 
+	/*
+	Return a plant of the next type in the list of enums
+	 */
+	public Plant cycleType(Boolean right) {
+		int typeNum = type.ordinal();
+		if(right) {
+			typeNum++;
+		}
+		else{
+			typeNum--;
+		}
+		if(typeNum>=Type.values().length){
+			typeNum = 0;
+		}
+		if(typeNum<0){
+			typeNum=Type.values().length-1;
+		}
+		return (Type.values()[typeNum]).make();
+
+	}
+
+
 	// this array holds factory methods to produce new Plants, with each entry corresponding to a single Type value
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //TODO: check the type!
 	private static final Function<Type, Plant>[] TYPES = new Function[]{
 			(Function<Type, Plant>) Plant::new,
 			(Function<Type, Plant>) Pinwheel::new,
+			(Function<Type, Plant>) Orchid::new,
+			(Function<Type, Plant>) Lotus::new,
+			(Function<Type, Plant>) Iris::new,
 	};
 
+	//placeholder sprites
 	private static final SpriteSet[] SPRITES = {
+			SpriteSet.get("redFlower2"),
+			SpriteSet.get("pinwheel"),
+			SpriteSet.get("lotus"),
+			SpriteSet.get("orchid"),
 			SpriteSet.get("iris")
 	};
 
@@ -94,11 +129,39 @@ public class Plant implements Visible, Serializable {
 			return super.trigger(spell);
 		}
 
-		@Override
-		public Sprite sprite(Direction camera) {
-			return super.sprite(camera);
-		}
+		private static final SpriteSet[] SPRITES = {
+				SpriteSet.get("pinwheel")
+		};
 	}
+
+	public static class Orchid extends Plant {
+		Orchid(Type type) { super(type); }
+
+		private static final SpriteSet[] SPRITES = {
+				SpriteSet.get("orchid")
+		};
+	}
+
+	public static class Lotus extends Plant {
+		Lotus(Type type) {
+			super(type);
+		}
+
+		private static final SpriteSet[] SPRITES = {
+				SpriteSet.get("lotus")
+		};
+	}
+
+	public static class Iris extends Plant {
+		Iris(Type type) {
+			super(type);
+		}
+
+		private static final SpriteSet[] SPRITES = {
+				SpriteSet.get("iris")
+		};
+	}
+
 
 
 }
