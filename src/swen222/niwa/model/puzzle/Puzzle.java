@@ -119,7 +119,9 @@ public final class Puzzle implements Iterable<Puzzle.Cell>, Serializable {
 
 		@Override
 		public Sprite sprite(Direction camera) {
-			if (Puzzle.this.state == State.VIRGIN) {
+			if (plant != null) {						// TODO: properly compose Sprites
+				return plant.sprite(camera);
+			} else if (Puzzle.this.state == State.VIRGIN) {
 				return CELL_VIRGIN.sprite(camera);
 			} else {
 				return CELL_CAPTURED.sprite(camera);
