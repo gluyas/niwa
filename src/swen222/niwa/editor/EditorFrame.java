@@ -2,6 +2,7 @@ package swen222.niwa.editor;
 
 import swen222.niwa.gui.graphics.RoomRenderer;
 import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.puzzle.Plant;
 import swen222.niwa.model.puzzle.Puzzle;
 import swen222.niwa.model.puzzle.PuzzleBuilder;
 import swen222.niwa.model.puzzle.Spell;
@@ -179,6 +180,7 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 				}
 				this.panel.setMode(puzzleMode);
 				break;
+
 		}
 
 		// PUZZLE EDITOR CONTROLS
@@ -208,6 +210,10 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
+			case VK_BACK_SLASH: 		// [ - create new flower
+				puzzleBuilder.addCell(player.getLocation().col, player.getLocation().row, Plant.Type.PINWHEEL, false);
+				previewPuzzleOutput();
+				break;
 
 		}
 		//repaint();

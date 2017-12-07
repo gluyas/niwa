@@ -5,6 +5,7 @@ import swen222.niwa.gui.graphics.SpriteSet;
 import swen222.niwa.gui.graphics.Visible;
 import swen222.niwa.model.world.Direction;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.function.Function;
 
@@ -14,6 +15,7 @@ import java.util.function.Function;
 public class Plant implements Visible, Serializable {
 	public final Type type;
 	int hits = 0;
+	private SpriteSet sprites;
 
 	public Plant(Type type) {
 		this.type = type;
@@ -52,7 +54,7 @@ public class Plant implements Visible, Serializable {
 
 	@Override
 	public Sprite sprite(Direction camera) {
-		return null;
+		return SPRITES[0].sprite(camera);
 	}
 
 	// CLASS IMPLEMENTATIONS - using suppliers as a dirty way of
@@ -73,8 +75,8 @@ public class Plant implements Visible, Serializable {
 			(Function<Type, Plant>) Pinwheel::new,
 	};
 
-	private static final SpriteSet[] SPRITES = new SpriteSet[] {
-			SpriteSet.get(""),
+	private static final SpriteSet[] SPRITES = {
+			SpriteSet.get("iris")
 	};
 
 	public static class Pinwheel extends Plant {
@@ -91,5 +93,12 @@ public class Plant implements Visible, Serializable {
 			}
 			return super.trigger(spell);
 		}
+
+		@Override
+		public Sprite sprite(Direction camera) {
+			return super.sprite(camera);
+		}
 	}
+
+
 }
