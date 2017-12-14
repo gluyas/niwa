@@ -13,20 +13,55 @@ public final class Animator implements Supplier<Boolean> {
 
 	public final long duration;
 
-	private Predicate<Float> lambda;
+	private final Predicate<Double> lambda;
+	private final long[] triggers;
+	private int triggerIndex = 0;
 
 	/**
-	 * Constructs an Animator using a lambda function
-	 * @param duration maximum duration of the animation
-	 * @param lambda function taking normalised time value over duration of the animation; return true for early termination
+	 * Constructs an Animator using a lambda function.
+	 * Triggers can optionally be used to introduce one-time event invocations on the lambda.
+	 * @param duration 	Maximum duration of the animation
+	 * @param lambda 	Function taking normalised time value over duration of the animation;
+	 *                  Return true to trigger an early termination.
+	 *                  A negative argument value indicates a trigger invocation; see below.
+	 * @param triggers	An array containing normalised time stamps. the first invocation of apply() after
+	 *                  after that time will call the lambda an additional time before the main invocation,
+	 *                  with the argument -(trigger index + 1). Each index will be called at most once.
 	 */
-	public Animator(long duration, Predicate<Float> lambda) {
+	public Animator(long duration, Predicate<Double> lambda, double ... triggers) {
 		this.start = Instant.now();
 		this.end = start.plusMillis(duration);
 
 		this.duration = duration;
 
 		this.lambda = lambda;
+
+		this.triggers = new long[triggers.length];
+		for (int i = 0; i < triggers.length; i++) {
+			this.triggers[i] = (long) (duration * triggers[i]);
+		}
+	}
+
+	/**
+	 * Constructs an Animator using a lambda function.
+	 * Triggers can optionally be used to introduce one-time event invocations on the lambda.
+	 * @param duration 	Maximum duration of the animation
+	 * @param lambda 	Function taking normalised time value over duration of the animation;
+	 *                  Return true to trigger an early termination.
+	 *                  A negative argument value indicates a trigger invocation; see below.
+	 * @param triggers	An array containing millisecond time stamps. the first invocation of apply() after
+	 *                  after that time will call the lambda an additional time before the main invocation,
+	 *                  with the argument -(trigger index + 1). Each index will be called at most once.
+	 */
+	public Animator(long duration, Predicate<Double> lambda, long ... triggers) {
+		this.start = Instant.now();
+		this.end = start.plusMillis(duration);
+
+		this.duration = duration;
+
+		this.lambda = lambda;
+
+		this.triggers = triggers;
 	}
 
 	/**
@@ -35,11 +70,21 @@ public final class Animator implements Supplier<Boolean> {
 	 */
 	public final boolean apply() {
 		Instant now = Instant.now();
+		long elapsed = start.until(now, ChronoUnit.MILLIS);
+
+		if (triggerIndex < triggers.length && elapsed >= triggers[triggerIndex]) {
+			if (lambda.test(-(triggerIndex + 1.0))) {
+				return true;
+			} else {
+				triggerIndex++;
+			}
+		}
+
 		if (now.isAfter(end)) {
-			lambda.test(1f);
+			lambda.test(1.0);
 			return true;
 		} else {
-			return lambda.test((float) start.until(now, ChronoUnit.MILLIS) / duration);
+			return lambda.test((double) elapsed / duration);
 		}
 	}
 
