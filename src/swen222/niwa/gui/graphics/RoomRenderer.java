@@ -143,6 +143,10 @@ public class RoomRenderer implements Observer {
 	private Animator spellAnimation(Deque<Spell> stack, long duration, double delay, Visible override,
 									BooleanSupplier callback) {
 		Spell spell = stack.poll();
+		if (spell == null) {	// TODO: stop this from ever happening
+			System.err.println("Spell animation failed");
+			return new Animator(0, (t) -> true);
+		}
 		tileOverride[spell.loc.col][spell.loc.row] = override;
 
 		return new Animator(duration, (t) -> {
