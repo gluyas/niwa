@@ -14,6 +14,7 @@ import java.awt.*;
 import java.lang.Math;
 import java.util.*;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 /**
  * Draws the state of a Room onto a graphics object
@@ -36,8 +37,12 @@ public class RoomRenderer implements Observer {
 
 	public static final long	ANIM_MOV_DURATION = 75;
 
-	public static final long 	ANIM_SPL_DURATION = 100;
-	public static final double	ANIM_SPL_DELAY = 0.75;
+	public static final long 	ANIM_SPL_STEP_DURATION = 150;
+	public static final double 	ANIM_SPL_STEP_DELAY = 0.75;
+
+	public static final long	ANIM_SPL_FAIL_FREEZE = 150;
+	public static final long 	ANIM_SPL_FAIL_DURATION = 100;
+	public static final double	ANIM_SPL_FAIL_DELAY = 0.25;
 
 	public static final Visible ANIM_SPL_GOOD = SpriteSet.get("spellBlue");
 	public static final Visible ANIM_SPL_FAIL = SpriteSet.get("spellOrange");
@@ -114,23 +119,44 @@ public class RoomRenderer implements Observer {
 	}
 
 	public void drawSpell(Spell spell) {
-		Stack<Spell> stack = new Stack<>();
-		spell.forEach(stack::add);
-		animations.add(spellAnimation(stack));
+		Deque<Spell> stack = new ArrayDeque<>();
+		spell.forEach(stack::addFirst);
+		animations.add(spellAnimation(
+			stack, ANIM_SPL_STEP_DURATION, ANIM_SPL_STEP_DELAY, ANIM_SPL_GOOD,
+			spell.terminal != null ? null : () -> {
+				spell.forEach(stack::addLast);
+				animationQueue.add(new Animator(ANIM_SPL_FAIL_FREEZE, (t) -> {
+					tileOverride[spell.loc.col][spell.loc.row] = ANIM_SPL_FAIL;
+					if (t >= 1) {
+						animationQueue.add(spellAnimation(
+								stack, ANIM_SPL_FAIL_DURATION, ANIM_SPL_FAIL_DELAY,
+								ANIM_SPL_FAIL, null)
+						);
+					}
+					return false;
+				}));
+				return true;
+			}
+		));
 	}
 
-	private Animator spellAnimation(Stack<Spell> stack) {
-		Spell spell = stack.pop();
-		tileOverride[spell.loc.col][spell.loc.row] = ANIM_SPL_GOOD;
+	private Animator spellAnimation(Deque<Spell> stack, long duration, double delay, Visible override,
+									BooleanSupplier callback) {
+		Spell spell = stack.poll();
+		tileOverride[spell.loc.col][spell.loc.row] = override;
 
-		return new Animator(ANIM_SPL_DURATION, (t) -> {
-			if (t == -1 && !stack.isEmpty()) {
-				animationQueue.add(spellAnimation(stack));
+		return new Animator(duration, (t) -> {
+			if (t == -1) {
+				if (stack.isEmpty()) {
+					if (callback != null && callback.getAsBoolean()) return true;
+				} else {
+					animationQueue.add(spellAnimation(stack, duration, delay, override, callback));
+				}
 			} else if (t == 1) {
 				tileOverride[spell.loc.col][spell.loc.row] = null;
 			}
 			return false;
-		}, ANIM_SPL_DELAY);
+		}, delay);
 	}
 
 	@Override
