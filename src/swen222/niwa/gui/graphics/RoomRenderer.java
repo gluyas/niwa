@@ -120,22 +120,17 @@ public class RoomRenderer implements Observer {
 	}
 
 	private Animator spellAnimation(Stack<Spell> stack) {
-		Spell spell = stack.peek();
+		Spell spell = stack.pop();
 		tileOverride[spell.loc.col][spell.loc.row] = ANIM_SPL_GOOD;
 
 		return new Animator(ANIM_SPL_DURATION, (t) -> {
-			if (!stack.empty() && stack.peek() == spell && t >= ANIM_SPL_DELAY) {
-				stack.pop();
-				if (!stack.isEmpty()) {
-					animationQueue.add(spellAnimation(stack));
-				} else {
-					if (spell.terminal == null) tileOverride[spell.loc.col][spell.loc.row] = ANIM_SPL_FAIL;
-				}
+			if (t == -1 && !stack.isEmpty()) {
+				animationQueue.add(spellAnimation(stack));
 			} else if (t == 1) {
 				tileOverride[spell.loc.col][spell.loc.row] = null;
 			}
 			return false;
-		});
+		}, ANIM_SPL_DELAY);
 	}
 
 	@Override
