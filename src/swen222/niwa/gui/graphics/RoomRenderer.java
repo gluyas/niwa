@@ -64,7 +64,6 @@ public class RoomRenderer implements Observer {
 	private double explodeFactor = 1;
 
 	private List<Animator> animations = new LinkedList<>();
-	private List<Animator> animationQueue = new ArrayList<>();
 
 	public RoomRenderer(Room subject, ObservableEntityTable<?> et) {
 		setRoom(subject);
@@ -125,10 +124,10 @@ public class RoomRenderer implements Observer {
 			stack, ANIM_SPL_STEP_DURATION, ANIM_SPL_STEP_DELAY, ANIM_SPL_GOOD,
 			spell.terminal != null ? null : () -> {
 				spell.forEach(stack::addLast);
-				animationQueue.add(new Animator(ANIM_SPL_FAIL_FREEZE, (t) -> {
+				animations.add(new Animator(ANIM_SPL_FAIL_FREEZE, (t) -> {
 					tileOverride[spell.loc.col][spell.loc.row] = ANIM_SPL_FAIL;
 					if (t >= 1) {
-						animationQueue.add(spellAnimation(
+						animations.add(spellAnimation(
 								stack, ANIM_SPL_FAIL_DURATION, ANIM_SPL_FAIL_DELAY,
 								ANIM_SPL_FAIL, null)
 						);
@@ -143,10 +142,6 @@ public class RoomRenderer implements Observer {
 	private Animator spellAnimation(Deque<Spell> stack, long duration, double delay, Visible override,
 									BooleanSupplier callback) {
 		Spell spell = stack.poll();
-		if (spell == null) {	// TODO: stop this from ever happening
-			System.err.println("Spell animation failed");
-			return new Animator(0, (t) -> true);
-		}
 		tileOverride[spell.loc.col][spell.loc.row] = override;
 
 		return new Animator(duration, (t) -> {
@@ -154,7 +149,7 @@ public class RoomRenderer implements Observer {
 				if (stack.isEmpty()) {
 					if (callback != null && callback.getAsBoolean()) return true;
 				} else {
-					animationQueue.add(spellAnimation(stack, duration, delay, override, callback));
+					animations.add(spellAnimation(stack, duration, delay, override, callback));
 				}
 			} else if (t == 1) {
 				tileOverride[spell.loc.col][spell.loc.row] = null;
@@ -249,9 +244,12 @@ public class RoomRenderer implements Observer {
 	public void draw(Graphics g, int width, int height) {
 		if (room == null || et == null) return;
 
-		animations.removeIf(Animator::apply);					// advance and cull animations
-		animations.addAll(animationQueue);
-		animationQueue.clear();
+		{
+			Collection<Animator> animations = new ArrayList<>(this.animations);
+			for (Animator anim : animations) {
+				if (anim.apply()) this.animations.remove(anim);
+			}
+		}
 
 		double scale = getRoomScale(width, height);
 		double blockSize = scale * Math.sqrt(2);
