@@ -69,8 +69,7 @@ public final class Animator implements Supplier<Boolean> {
 	 * @return 	true when the animation is complete
 	 */
 	public final boolean apply() {
-		Instant now = Instant.now();
-		long elapsed = start.until(now, ChronoUnit.MILLIS);
+		long elapsed = start.until(Instant.now(), ChronoUnit.MILLIS);
 
 		if (triggerIndex < triggers.length && elapsed >= triggers[triggerIndex]) {
 			if (lambda.test(-(triggerIndex + 1.0))) {
@@ -80,7 +79,7 @@ public final class Animator implements Supplier<Boolean> {
 			}
 		}
 
-		if (now.isAfter(end)) {
+		if (elapsed >= duration) {
 			lambda.test(1.0);
 			return true;
 		} else {
