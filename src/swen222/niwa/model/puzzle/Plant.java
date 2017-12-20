@@ -66,7 +66,8 @@ public class Plant implements Visible, Serializable {
 		PINWHEEL,
 		ORCHID,
 		LOTUS,
-		IRIS;
+		IRIS,
+		GATEPLANT;
 
 		public Plant make() {
 			return TYPES[this.ordinal()].apply(this);
@@ -103,15 +104,17 @@ public class Plant implements Visible, Serializable {
 			(Function<Type, Plant>) Orchid::new,
 			(Function<Type, Plant>) Lotus::new,
 			(Function<Type, Plant>) Iris::new,
+			(Function<Type, Plant>) GatePlant::new
 	};
 
 	//placeholder sprites
 	private static final SpriteSet[] SPRITES = {
 			SpriteSet.get("redFlower2"),
 			SpriteSet.get("pinwheel"),
-			SpriteSet.get("lotus"),
 			SpriteSet.get("orchid"),
-			SpriteSet.get("iris")
+			SpriteSet.get("lotus"),
+			SpriteSet.get("iris"),
+			SpriteSet.get("gateflower")
 	};
 
 	public static class Pinwheel extends Plant {
@@ -129,17 +132,11 @@ public class Plant implements Visible, Serializable {
 			return super.trigger(spell);
 		}
 
-		private static final SpriteSet[] SPRITES = {
-				SpriteSet.get("pinwheel")
-		};
 	}
 
 	public static class Orchid extends Plant {
 		Orchid(Type type) { super(type); }
 
-		private static final SpriteSet[] SPRITES = {
-				SpriteSet.get("orchid")
-		};
 	}
 
 	public static class Lotus extends Plant {
@@ -147,9 +144,6 @@ public class Plant implements Visible, Serializable {
 			super(type);
 		}
 
-		private static final SpriteSet[] SPRITES = {
-				SpriteSet.get("lotus")
-		};
 	}
 
 	public static class Iris extends Plant {
@@ -157,9 +151,11 @@ public class Plant implements Visible, Serializable {
 			super(type);
 		}
 
-		private static final SpriteSet[] SPRITES = {
-				SpriteSet.get("iris")
-		};
+	}
+
+	public static class GatePlant extends Plant {
+		GatePlant(Type type) {super(type); }
+
 	}
 
 

@@ -266,9 +266,10 @@
 			<spriteset name="iris">
 				<sprite img="resource/images/entities/flowers/iris.png" ay="0.8"/>
 			</spriteset>
-			<spriteSet name="gateFlower">
-				<sprite img="resource/images/entities/flowers/gate.png" ay="0.8"/>
-			</spriteSet>
+			<spriteset name="gateflower">
+				<sprite img="resource/images/entities/flowers/gateflower.png" ay="0.8"/>
+			</spriteset>
+
 		</group>
 		<group name="runes">
 			<spriteset name="rune1">
