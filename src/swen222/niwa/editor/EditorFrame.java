@@ -59,7 +59,8 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 		renderer = new RoomRenderer(null, null);
 		previewPlant = new Plant(Plant.Type.BASIC);
 
-		load();
+		//load();
+		loadMountain();
 
 		panel = new EditorPanel(renderer);
 		add(panel);
@@ -77,6 +78,15 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 		Timer refresh = new Timer(1000 / 120, (e) -> { if (renderer.animationsPending()) this.repaint();});
 		refresh.setRepeats(true);
 		refresh.start();
+	}
+
+	/*
+	Made the editor load the mountain map first for ease of use
+	 */
+	private void loadMountain(){
+		stageName="resource/rooms/mountain.xml";
+		refresh();
+
 	}
 
 	private void load() {
