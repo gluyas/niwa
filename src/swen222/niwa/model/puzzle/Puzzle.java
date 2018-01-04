@@ -38,6 +38,7 @@ public final class Puzzle implements Iterable<Puzzle.Cell>, Serializable {
 		} else return false;
 	}
 
+
 	private void reset() {
 		cells.stream()
 				.map(cell -> cell.plant)
@@ -129,7 +130,12 @@ public final class Puzzle implements Iterable<Puzzle.Cell>, Serializable {
 		}
 
 		public int getHits() {
-			return plant.getHits();
+			if(plant!=null) {
+				return plant.getHits();
+			}
+			else{
+				return 0;
+			}
 		}
 	}
 
