@@ -114,7 +114,7 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 		renderer.setRoom(newRoom);
 		renderer.setEntityTable(displayEntities);
 		room = newRoom;
-		puzzleMode = false;
+		puzzleMode = true;
 
 		repaint();
 	}
@@ -242,7 +242,6 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 	}
 
 
-
 	private void previewPuzzleOutput() {
 		if (puzzleOutput != null) {
 			for (Puzzle.Cell cell : puzzleOutput) {
@@ -258,6 +257,7 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 			puzzleOutput = null;
 		}
 	}
+
 
 	@Override
 	public void keyReleased(KeyEvent e) {

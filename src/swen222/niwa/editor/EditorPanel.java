@@ -67,6 +67,10 @@ public class EditorPanel extends JPanel {
 		repaint();
 	}
 
+	private void displayHitsNum(Graphics g){
+
+	}
+
 
 
 	public void setRR(RoomRenderer rr) {

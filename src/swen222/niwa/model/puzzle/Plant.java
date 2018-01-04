@@ -95,6 +95,10 @@ public class Plant implements Visible, Serializable {
 
 	}
 
+	public int getHits(){
+		return hits;
+	}
+
 
 	// this array holds factory methods to produce new Plants, with each entry corresponding to a single Type value
 	@SuppressWarnings("unchecked") //TODO: check the type!
@@ -124,9 +128,9 @@ public class Plant implements Visible, Serializable {
 
 		@Override
 		public Spell trigger(Spell spell) {
-			if (hits == 0) {
+			if ((hits & 1) == 0) {
 				spell = spell.dir(spell.dir.turnCW());
-			} else if (hits == 1) {
+			} else{
 				spell = spell.dir(spell.dir.turnCCW());
 			}
 			return super.trigger(spell);

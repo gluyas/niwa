@@ -127,6 +127,10 @@ public final class Puzzle implements Iterable<Puzzle.Cell>, Serializable {
 				return CELL_CAPTURED.sprite(camera);
 			}
 		}
+
+		public int getHits() {
+			return plant.getHits();
+		}
 	}
 
 	public enum State {

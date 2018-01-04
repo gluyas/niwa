@@ -3,6 +3,8 @@ package swen222.niwa.gui.graphics;
 import org.joml.*;
 
 import swen222.niwa.model.entity.Entity;
+import swen222.niwa.model.puzzle.Plant;
+import swen222.niwa.model.puzzle.Puzzle;
 import swen222.niwa.model.puzzle.Spell;
 import swen222.niwa.model.util.ObservableEntityTable;
 import swen222.niwa.model.world.Direction;
@@ -276,6 +278,12 @@ public class RoomRenderer implements Observer {
 					}
 
 					entity.sprite(facing).draw(g, (int) entPos.x, (int) entPos.y, blockSize);
+
+                    if (entity instanceof Puzzle.Cell) {
+                        Puzzle.Cell cell = (Puzzle.Cell) entity;
+                        int hits = cell.getHits();
+                        cell.sprite(facing).drawHits(g, (int) entPos.x, (int) entPos.y, hits);
+                    }
 				}
 			}
 

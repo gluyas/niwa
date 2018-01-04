@@ -85,5 +85,14 @@ public class Sprite {
 		int pixelAY = (int) (aY*pixelHeight);
 
 		g.drawImage(img, x - pixelAX, y - pixelAY, pixelWidth, pixelHeight, null);
+		//drawHits(g,x,y);
+	}
+
+	public void drawHits(Graphics g, int x, int y, int hits){
+		g.setFont(new Font("font",Font.PLAIN, 20));
+		g.setColor(Color.BLACK);
+		String debugText;
+		debugText = Integer.toString(hits);
+		g.drawString(debugText,x ,y);
 	}
 }
