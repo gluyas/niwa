@@ -67,6 +67,7 @@ public class Plant implements Visible, Serializable {
 		ORCHID,
 		LOTUS,
 		IRIS,
+		IRISMINI,
 		GATEPLANT;
 
 		public Plant make() {
@@ -108,6 +109,7 @@ public class Plant implements Visible, Serializable {
 			(Function<Type, Plant>) Orchid::new,
 			(Function<Type, Plant>) Lotus::new,
 			(Function<Type, Plant>) Iris::new,
+			(Function<Type, Plant>) IrisMini::new,
 			(Function<Type, Plant>) GatePlant::new
 	};
 
@@ -118,6 +120,7 @@ public class Plant implements Visible, Serializable {
 			SpriteSet.get("orchid"),
 			SpriteSet.get("lotus"),
 			SpriteSet.get("iris"),
+			SpriteSet.get("iris-mini"),
 			SpriteSet.get("gateflower")
 	};
 
@@ -128,7 +131,7 @@ public class Plant implements Visible, Serializable {
 
 		@Override
 		public Spell trigger(Spell spell) {
-			if ((hits & 1) == 0) {
+			if ((hits & 1) == 0 || hits==0) {
 				spell = spell.dir(spell.dir.turnCW());
 			} else{
 				spell = spell.dir(spell.dir.turnCCW());
@@ -153,6 +156,33 @@ public class Plant implements Visible, Serializable {
 	public static class Iris extends Plant {
 		Iris(Type type) {
 			super(type);
+		}
+
+		@Override
+		public Spell trigger(Spell spell) {
+			if ((hits & 1) == 0) {
+				spell = spell.dir(spell.dir.turnCW());
+			} else{
+				spell = spell.dir(spell.dir.turnCCW());
+			}
+			return super.trigger(spell);
+		}
+
+	}
+
+	public static class IrisMini extends Plant {
+		IrisMini(Type type) {
+			super(type);
+		}
+
+		@Override
+		public Spell trigger(Spell spell) {
+			if ((hits & 1) == 0) {
+				spell = spell.dir(spell.dir.turnCW());
+			} else{
+				spell = spell.dir(spell.dir.turnCCW());
+			}
+			return super.trigger(spell);
 		}
 
 	}

@@ -266,6 +266,9 @@
 			<spriteset name="iris">
 				<sprite img="resource/images/entities/flowers/iris.png" ay="0.8"/>
 			</spriteset>
+			<spriteset name="iris-mini">
+				<sprite img="resource/images/entities/flowers/iris-mini.png" ay="0.8"/>
+			</spriteset>
 			<spriteset name="gateflower">
 				<sprite img="resource/images/entities/flowers/gateflower.png" ay="0.8"/>
 			</spriteset>

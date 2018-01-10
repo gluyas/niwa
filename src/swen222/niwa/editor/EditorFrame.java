@@ -60,7 +60,7 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 		previewPlant = new Plant(Plant.Type.BASIC);
 
 		//load();
-		loadMountain();
+		loadInitialMap();
 
 		panel = new EditorPanel(renderer);
 		add(panel);
@@ -83,8 +83,8 @@ public class EditorFrame extends JFrame implements Observer, KeyListener {
 	/*
 	Made the editor load the mountain map first for ease of use
 	 */
-	private void loadMountain(){
-		stageName="resource/rooms/mountain.xml";
+	private void loadInitialMap(){
+		stageName="resource/rooms/niceForest.xml";
 		refresh();
 
 	}
